@@ -1,0 +1,12 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+
+
+<IfModule mod_rewrite.c>
+Options -Indexes
+RewriteEngine on
+DirectoryIndex upload.php
+</IfModule>
