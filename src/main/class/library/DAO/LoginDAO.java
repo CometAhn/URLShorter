@@ -2,12 +2,14 @@
  * * 기능 - 회원가입 - 회원삭제 - 회원정보 조회 - 회원정보 수정 - 로그인
  */
 
-package library;
+package library.DAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import library.Entity.Login;
+import library.dbconnection;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;

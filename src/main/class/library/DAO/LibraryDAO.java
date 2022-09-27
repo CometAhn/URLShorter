@@ -7,8 +7,12 @@
  * - 검색 기능(추가중?)
  */
 
-package library;
+package library.DAO;
 
+import library.Entity.Library;
+import library.Repository.LibraryRepository;
+import library.dbconnection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -20,6 +24,9 @@ import java.util.List;
 
 @Component
 public class LibraryDAO {
+
+	@Autowired
+	private LibraryRepository libraryrepository;
 
 	// 책 수량
 	public int getlistcount(String items, String text) {
@@ -61,6 +68,17 @@ public class LibraryDAO {
 
 	// 책 등록(administrator)
 	public void addBook(Library n) throws Exception {
+		Library lib = new Library();
+		lib.setTitle(n.getTitle());
+		lib.setWriter(n.getWriter());
+		lib.setDescription(n.getDescription());
+		lib.setCategory(n.getCategory());
+		lib.setPublisher(n.getPublisher());
+		lib.setStock(n.getStock());
+		lib.setBookCover(n.getBookCover());
+		Library newlib = libraryrepository.save(lib);
+
+		/*
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -89,10 +107,32 @@ public class LibraryDAO {
 				throw new RuntimeException(ex.getMessage());
 			}
 		}
+		 */
 	}
 
 	// 페이지 넘버링용 책 목록 가져오기
+	//Todo : 페이지 넘버링 해야함
 	public List<Library> getAll(int page, int limit, String items, String text) throws Exception {
+		int total_record = getlistcount(items, text);
+		int start = (page - 1) * limit;
+		int index = start + 1;
+
+		if (items == null && text == null) {
+			return libraryrepository.findAll();
+		} else {
+			if (items.equals("Title")) {
+				return libraryrepository.findByTitleContaining(text);
+			} else if (items.equals("Writer")) {
+				return libraryrepository.findByWriterContaining(text);
+			} else if (items.equals("Category")) {
+				return libraryrepository.findByCategoryContaining(text);
+			} else if (items.equals("Publisher")) {
+				return libraryrepository.findByPublisherContaining(text);
+			}
+		}
+
+		return libraryrepository.findAll();
+		/*
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -150,6 +190,7 @@ public class LibraryDAO {
 			}
 		}
 		return null;
+		 */
 	}
 
 	// 책 목록 전체 가져오기(안 쓸 듯?)

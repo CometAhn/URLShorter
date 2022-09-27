@@ -1,6 +1,8 @@
 
-package library;
+package library.DAO;
 
+import library.Entity.Review;
+import library.dbconnection;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -26,15 +28,15 @@ public class ReviewDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
-
+// todo : 여기 오류
 			while (rs.next()) {
 				Review n = new Review();
 				n.setTitle(rs.getString("Title"));
 				n.setDate(rs.getString("Date"));
-				n.setBid(rs.getInt("Bid"));
+				//n.setBid(rs.getInt("Bid"));
 				n.setScore(rs.getString("Score"));
 				n.setContents(rs.getString("Contents"));
-				n.setLid(rs.getString("lid"));
+				//n.setLid(rs.getString("lid"));
 				n.setId(rs.getInt("id"));
 				list.add(n);
 			}
@@ -65,9 +67,9 @@ public class ReviewDAO {
 			String sql = "insert into review(lid, bid, title, contents, date, score) value(?, ?, ?, ?, CURRENT_TIMESTAMP(), ?) ";
 			conn = dbconnection.getConnection();
 			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, r.getLid());
-			pstmt.setInt(2, r.getBid());
+			// todo : 여기오류
+			//pstmt.setString(1, r.getLid());
+			//pstmt.setInt(2, r.getBid());
 			pstmt.setString(3, r.getTitle());
 			pstmt.setString(4, r.getContents());
 			pstmt.setString(5, r.getScore());

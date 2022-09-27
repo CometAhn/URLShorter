@@ -1,0 +1,3 @@
+
+대여기간 테스트용 sql문
+update loan set EndDate = '2022-09-20 09:55:57' where id='test' and BID = 6

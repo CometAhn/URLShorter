@@ -100,7 +100,7 @@ int i = (pagenum * 5) - 4;
 			session.removeAttribute("error");
 			%>
 			<div class="booklist">
-				<c:forEach var="book" items="${booklist}" varStatus="status">
+				<c:forEach var="book" items="${booklist}" varStatus="status" begin="0" end="50" >
 					<c:if test="${book.stock!=0 }">
 						<a href="getbook/${book.bid}">
 							<div class="booklist_img">

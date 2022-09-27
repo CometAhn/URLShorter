@@ -6,11 +6,15 @@
  * * 대여 상태 데이터베이스(loan) varchar ID			회원 아이디 int BID				책 아이디 varchar StartDate	빌린 날짜 varchar EndDate		반납해야할 날짜 varchar ReturnDate	반납한 날짜 int status			상태, 0 반납, 1 대여중 한 아이디의 process가 3을 초과할 경우 대여 불가.  count 사용하자.
  */
 
-package library;
+package library.DAO;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
+import library.Entity.AllinOne;
+import library.Entity.Library;
+import library.Entity.Loan;
+import library.dbconnection;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -247,11 +251,11 @@ public class CartDAO {
 	}
 
 	// 책 대여 정보 조회
-	public List<Library> getAllLoan(String id) throws Exception {
+	public List<AllinOne> getAllLoan(String id) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<Library> BookList = new ArrayList<>();
+		List<AllinOne> all = new ArrayList();
 
 		String sql = "select booklist.bid, title, DATE_FORMAT(start_date, '%Y-%m-%d') as StartDate, DATE_FORMAT(end_date, '%Y-%m-%d') as EndDate, status, Writer, reviewed from booklist inner join loan on loan.bid = booklist.bid where lid = ? order by booklist.bid";
 
@@ -268,22 +272,25 @@ public class CartDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				Library n = new Library();
-				n.setBid(rs.getInt("BID"));
-				n.setTitle(rs.getString("Title"));
-				n.setStartDate(rs.getString("StartDate"));
-				n.setEndDate(rs.getString("EndDate"));
-				n.setStatus(rs.getBoolean("Status"));
-				n.setWriter(rs.getString("Writer"));
-				n.setReviewed(rs.getBoolean("reviewed"));
+				AllinOne a = new AllinOne();
+				a.setBid(rs.getInt("BID"));
+				a.setTitle(rs.getString("Title"));
+				a.setWriter(rs.getString("Writer"));
+				a.setStartDate(rs.getString("StartDate"));
+				a.setEndDate(rs.getString("EndDate"));
+				a.setStatus(rs.getBoolean("Status"));
+				a.setReviewed(rs.getBoolean("reviewed"));
 
 				String[] month = rs.getString("EndDate").split("-");
 				int end = Integer.parseInt(month[1]) * 30 + Integer.parseInt(month[2].substring(0, 2));
 
-				n.setPeriod(now - end);
-				BookList.add(n);
+				a.setPeriod(now - end);
+
+
+				all.add(a);
 			}
-			return BookList;
+			//return BookList;
+			return all;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -305,11 +312,11 @@ public class CartDAO {
 	}
 
 	// 책 반납 안한 책
-	public List<Library> getnonLoanbooks(String id) throws Exception {
+	public List<AllinOne> getnonLoanbooks(String id) throws Exception {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<Library> BookList = new ArrayList<>();
+		List<AllinOne> BookList = new ArrayList<>();
 
 		String sql = "select * from booklist inner join loan on loan.bid = booklist.bid where lid = ? and status=1";
 
@@ -320,7 +327,7 @@ public class CartDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				Library n = new Library();
+				AllinOne n = new AllinOne();
 				n.setBid(rs.getInt("BID"));
 				n.setTitle(rs.getString("Title"));
 				n.setStartDate(rs.getString("start_date"));

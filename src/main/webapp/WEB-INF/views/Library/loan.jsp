@@ -76,7 +76,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 						</div>
 					</c:if>
 				</c:forEach>
-				- 연체 시 (연체일 * 3)일만큼 도서를 대여 할 수 없습니다.
+				- 연체 시 (연체일 * 3)일동안 도서를 대여 할 수 없습니다.
 			</div>
 			<div class="ct1">
 				<h1>도서 대여 기록(반납하지 않은 책 제외)</h1>

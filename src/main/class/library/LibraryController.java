@@ -3,9 +3,15 @@ package library;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import library.DAO.CartDAO;
+import library.DAO.LibraryDAO;
+import library.DAO.LoginDAO;
+import library.DAO.ReviewDAO;
+import library.Entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -301,8 +307,7 @@ public class LibraryController {
 
 	// 로그인
 	@PostMapping("login")
-	public String login(@RequestParam String id, @RequestParam(name = "password") String pw,
-	                    Model m) throws Exception {
+	public String login(@RequestParam String id, @RequestParam(name = "password") String pw, Model m) throws Exception {
 		Login g = null;
 
 		try {
@@ -348,7 +353,7 @@ public class LibraryController {
 		// 장바구니 조회해서 등록된 책이라면 장바구니에 추가 x
 		// 이미 빌린 책을 조회해서 빌린 책이라면 장바구니에 추가 x
 		List<Library> list = null;
-		List<Library> list1 = null;
+		List<AllinOne> list1 = null;
 		try {
 			list = daoC.getAllCart(id); // 장바구니에 있는 책
 			list1 = daoC.getnonLoanbooks(id); // 빌리고 아직 반납 안한 책
@@ -365,7 +370,7 @@ public class LibraryController {
 			}
 
 			for (int i = 0; i < list1.size(); i++) {
-				Library check = list1.get(i);
+				AllinOne check = list1.get(i);
 				// 등록된 상품이랑 받아온 파라미터 값이 같다면,
 				if (check.getBid() == bid) {
 					// 장바구니에 담지 말고 오류 출력.
@@ -397,7 +402,7 @@ public class LibraryController {
 		// 이미 빌린 책을 조회해서 빌린 책이라면 장바구니에 추가 x
 		// 대여 후 장바구니 조회 기능을 넣자. count, list
 		List<Library> list = null;
-		List<Library> list1 = null;
+		List<AllinOne> list1 = null;
 		try {
 			list = daoC.getAllCart(id); // 장바구니에 있는 책
 			list1 = daoC.getnonLoanbooks(id); // 빌리고 아직 반납 안한 책
@@ -414,7 +419,7 @@ public class LibraryController {
 			}
 
 			for (int i = 0; i < list1.size(); i++) {
-				Library check = list1.get(i);
+				AllinOne check = list1.get(i);
 				// 등록된 상품이랑 받아온 파라미터 값이 같다면,
 				if (check.getBid() == bid) {
 					// 장바구니에 담지 말고 오류 출력.
@@ -507,6 +512,7 @@ public class LibraryController {
 	@GetMapping("loan")
 	public String loan(@RequestParam String id, Model m) {
 		List<Library> list;
+		List<AllinOne> all;
 		int count;
 
 		// 장바구니 조회 시작.
@@ -584,8 +590,9 @@ public class LibraryController {
 		// 대여 끝
 		// 대여 페이지 조회 시작
 		try {
-			list = daoC.getAllLoan(id);
-			m.addAttribute("booklist", list);
+			List<AllinOne> list3;
+			list3 = daoC.getAllLoan(id);
+			m.addAttribute("booklist", list3);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -600,7 +607,7 @@ public class LibraryController {
 	// 책 대여 정보
 	@GetMapping("listloan")
 	public String listloan(@RequestParam String id, Model m) {
-		List<Library> list = null;
+		List<AllinOne> list = null;
 		DecimalFormat df = new DecimalFormat("#0");
 		Calendar currentCalendar = Calendar.getInstance();
 		int tmonth = Integer.parseInt(df.format((currentCalendar.get(Calendar.MONTH) + 1) * 30));
@@ -613,10 +620,6 @@ public class LibraryController {
 			list = daoC.getAllLoan(id);
 			m.addAttribute("booklist", list);
 
-			for (int i = 0; i < list.size(); i++) {
-				Library check = list.get(i);
-				//System.out.println("연체기간 : " + check.getPeriod());
-			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -646,7 +649,7 @@ public class LibraryController {
 		// 반납 끝
 		// 대여 페이지
 		try {
-			List<Library> list;
+			List<AllinOne> list;
 			list = daoC.getAllLoan(id);
 			m.addAttribute("booklist", list);
 
@@ -713,7 +716,8 @@ public class LibraryController {
 			//리뷰 등록
 			daoR.addReview(Review);
 			//리뷰 등록 완료 처리
-			daoR.reviewed(Review.getLid(), Review.getBid());
+			// todo : 여기 오류
+			//daoR.reviewed(Review.getLid(), Review.getBid());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -724,9 +728,10 @@ public class LibraryController {
 		}
 
 		try {
-			List<Library> list;
-			list = daoC.getAllLoan(Review.getLid());
-			m.addAttribute("booklist", list);
+			List<AllinOne> list;
+			// todo : 여기 오류
+			//list = daoC.getAllLoan(Review.getLid());
+			//m.addAttribute("booklist", list);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -779,6 +784,8 @@ public class LibraryController {
 			m.addAttribute("msg", "2");
 			return controler;
 		}
+		// todo : 여기 오류
+		/*
 		try {
 			Library n = dao.getBook(r.getBid());
 			m.addAttribute("book", n);
@@ -792,7 +799,7 @@ public class LibraryController {
 			logger.warn("책 정보를 가져오는 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 정보를 정상적으로 가져오지 못했습니다!!");
 		}
-
+*/
 		m.addAttribute("msg", "3");
 		return "Library/View";
 	}
