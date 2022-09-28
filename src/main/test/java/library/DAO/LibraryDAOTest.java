@@ -24,12 +24,12 @@ class LibraryDAOTest {
 	// 해결 ㅇㅇ. mapped 명칭 잘못됨.
 	@Test
 	public void read() {
-		List<Library> librarylist = libraryRepository.findByBid(2);
+		/*List<Library> librarylist = libraryRepository.findByBid(2);
 		for (Library lib : librarylist) {
 			lib.getLoanList().stream().forEach(loan -> {
 				Login login = loan.getLogin();
 				System.out.println(lib.getLoanList().stream().toString());
 			});
-		}
+		}*/
 	}
 }

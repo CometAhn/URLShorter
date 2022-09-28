@@ -7,10 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import library.DAO.CartDAO;
-import library.DAO.LibraryDAO;
-import library.DAO.LoginDAO;
-import library.DAO.ReviewDAO;
+import library.DAO.*;
 import library.Entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +33,8 @@ public class LibraryController {
 	final LoginDAO daoG;
 	final CartDAO daoC;
 	final ReviewDAO daoR;
-	/*final RecommendDAO daoRc;
-	final LoanDAO daoL;*/
+	final RecommendDAO daoRc;
+	final LoanDAO daoL;
 
 
 	//// 책 시작
@@ -45,13 +42,13 @@ public class LibraryController {
 	private final String START_PAGE = "Library/List.jsp";
 
 	@Autowired
-	public LibraryController(LibraryDAO dao, LoginDAO daoG, CartDAO daoC, ReviewDAO daoR/*, RecommendDAO daoRc, LoanDAO daoL*/) {
+	public LibraryController(LibraryDAO dao, LoginDAO daoG, CartDAO daoC, ReviewDAO daoR, RecommendDAO daoRc, LoanDAO daoL) {
 		this.dao = dao;
 		this.daoG = daoG;
 		this.daoC = daoC;
 		this.daoR = daoR;
-		/*this.daoRc = daoRc;
-		this.daoL = daoL;*/
+		this.daoRc = daoRc;
+		this.daoL = daoL;
 	}
 
 	String controler = "Library/Control";
@@ -92,6 +89,9 @@ public class LibraryController {
 		int spage;
 		int epage;
 		int total_record = dao.getlistcount(items, text);
+
+		// 테스트 후 삭제하기!!
+		// System.out.println("토탈 값 가져오니? " + total_record);
 
 		int total_page;
 
@@ -182,14 +182,15 @@ public class LibraryController {
 	// 이번달 추천 책 + index
 	@GetMapping("/index")
 	public String home(Model m) {
-		List<Library> list;
+		List<Recommend> list;
 		try {
 			// 이번달 추천 책 사용하기 위해 추가
 			DecimalFormat df = new DecimalFormat("#0");
 			Calendar currentCalendar = Calendar.getInstance();
 
-			String month = df.format(currentCalendar.get(Calendar.MONTH) + 1);
-			list = dao.recommend(month);
+			Integer month = Integer.parseInt(df.format(currentCalendar.get(Calendar.MONTH) + 1));
+			System.out.println(month);
+			list = daoRc.recommend(month);
 
 			m.addAttribute("booklist", list);
 		} catch (Exception e) {
@@ -753,8 +754,11 @@ public class LibraryController {
 	@GetMapping("/delreview/{id}")
 	public String delreview(@PathVariable int id, Model m) {
 		try {
-			Library n = dao.getBookByid(id);
-			m.addAttribute("bid", n.getBid());
+			Review n = daoR.getBookByid(id);
+			// 지워도 됨. 해결함.
+			//System.out.println("bid 값 맞니? " + n.getLibrary().getBid());
+			m.addAttribute("bid", n.getLibrary().getBid());
+
 
 		} catch (SQLException e) {
 			e.printStackTrace();

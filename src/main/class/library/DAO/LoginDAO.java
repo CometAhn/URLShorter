@@ -5,11 +5,15 @@
 package library.DAO;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import library.Entity.Library;
 import library.Entity.Login;
+import library.Repository.LoginRepository;
 import library.dbconnection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -19,67 +23,34 @@ import java.sql.ResultSet;
 @Component
 public class LoginDAO {
 
+	@Autowired
+	LoginRepository loginRepository;
+
 	// 회원가입
 	public void regist(Login g) throws Exception {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+		System.out.println("lid 값이?" + g.getLid());
+		Login login = new Login();
 
-		try {
-			String sql = "insert into login(lid, password, name, gender, birth, email, phone, address, regist_day, grade ) value(?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(), 0)";
-			conn = dbconnection.getConnection();
-			pstmt = conn.prepareStatement(sql);
+		login.setLid(g.getLid());
+		login.setPassword(g.getPassword());
+		login.setName(g.getName());
+		login.setGender(g.getGender());
+		login.setBirth(g.getBirth());
+		login.setEmail(g.getEmail());
+		login.setPhone(g.getPhone());
+		login.setAddress(g.getAddress());
+		login.setGender("1");
+		login.setRegistDay(String.valueOf(LocalDateTime.now()));
 
-			pstmt.setString(1, g.getLid());
-			pstmt.setString(2, g.getPassword());
-			pstmt.setString(3, g.getName());
-			pstmt.setString(4, g.getGender());
-			pstmt.setString(5, g.getBirth());
-			pstmt.setString(6, g.getEmail());
-			pstmt.setString(7, g.getPhone());
-			pstmt.setString(8, g.getAddress());
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage());
-			}
-		}
+		Login newlogin = loginRepository.save(login);
 	}
 
 	// 회원 삭제
 	public void deleteID(String id) throws Exception {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
 
-		try {
+		Login login = loginRepository.findByLid(id);
 
-			String sql = "UPDATE login SET Used = 0 WHERE lid=?";
-			conn = dbconnection.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage());
-			}
-		}
+		loginRepository.delete(login);
 	}
 
 	// 조회
@@ -98,6 +69,8 @@ public class LoginDAO {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
+
+				// 이거 딴 방법 써야함! jsp에서  나눌까?그게 나을듯?
 				String[] brith = rs.getString("birth").split("/"); // 생년월일 나누기 ㅏㅏㅏㅏㅏㅏㅏ
 				String[] mail = rs.getString("email").split("@"); // 메일 나누기
 
@@ -105,15 +78,14 @@ public class LoginDAO {
 				g.setPassword(rs.getString("password"));
 				g.setName(rs.getString("name"));
 				g.setGender(rs.getString("gender"));
-				// todo : 게터 수정해야 할 수도?
-				//        일단은 둔다.
-				//        프로퍼티 spring.jpa.properties.hibernate.hbm2ddl.auto:update 사용 ㄴㄴ
-				//        컬럼 자동 생성됨.
+				// todo : 게터 수정해야 함. 대체 수단을 찾아야함.
+				/*
 				g.setBirthyy(brith[0]);
 				g.setBirthmm(brith[1]);
 				g.setBirthdd(brith[2]);
 				g.setEmail1(mail[0]);
 				g.setEmail2(mail[1]);
+				 */
 				g.setPhone(rs.getString("phone"));
 				g.setAddress(rs.getString("address"));
 				g.setBirth(rs.getString("regist_day"));

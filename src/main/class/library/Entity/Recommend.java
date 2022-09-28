@@ -19,6 +19,7 @@ public class Recommend {
 	private int id;
 	@ManyToOne
 	private Library library;
-	private int month;
+
+	private Integer month;
 
 }

@@ -14,5 +14,15 @@ public interface LibraryRepository extends JpaRepository<Library, Integer> {
 
 	List<Library> findByPublisherContaining(String text);
 
-	List<Library> findByBid(int bid);
+	Library findByBid(int bid);
+
+	int countBy();
+
+	int countByTitleContaining(String text);
+
+	int countByCategoryContaining(String text);
+
+	int countByWriterContaining(String text);
+
+	int countByPublisherContaining(String text);
 }

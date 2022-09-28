@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 public class Login {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue(strategy = GenerationType.AUTO)
 	private String lid;
 	private String password;
 	private String name;
@@ -30,11 +31,14 @@ public class Login {
 	private String email;
 	// 이거 컬럼 아님. get 저장용임.
 	// property spring.jpa.properties.hibernate.hbm2ddl.auto:update 사용 안 함.
+	// todo : 게터 수정해야 함. 대체 수단을 찾아야함.
+	/*
 	private String email1;
 	private String email2;
 	private String birthyy;
 	private String birthmm;
 	private String birthdd;
+	 */
 	//
 	private String phone;
 	private String address;
@@ -50,6 +54,7 @@ public class Login {
 	private List<Loan> loanList;
 
 	// 이거 컬럼 아님. get 저장용임.
+	/*
 	public String getBirth() {
 		return birthyy + "/" + birthmm + "/" + birthdd;
 	}
@@ -57,5 +62,6 @@ public class Login {
 	public String getEmail() {
 		return email1 + "@" + email2;
 	}
+	 */
 	//
 }

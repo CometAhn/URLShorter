@@ -29,23 +29,23 @@
 		<br>
 		<div class="booklist">
 			<c:forEach var="book" items="${booklist}" varStatus="status">
-				<c:if test="${book.stock!=0 }">
-					<a href="getbook/${book.bid}">
+				<c:if test="${book.library.stock!=0 }">
+					<a href="getbook/${book.library.bid}">
 						<div class="booklist_img">
-							<img src="${book.bookCover}" alt="">
-							<h3>${book.title}</h3>
-							<h4>${book.writer}</h4>
+							<img src="${book.library.bookCover}" alt="">
+							<h3>${book.library.title}</h3>
+							<h4>${book.library.writer}</h4>
 							<br>
-							<p>재고 수 : ${book.stock}</p>
+							<p>재고 수 : ${book.library.stock}</p>
 						</div>
 					</a>
 				</c:if>
-				<c:if test="${book.stock==0 }">
+				<c:if test="${book.library.stock==0 }">
 					<a onclick="nobook()">
 						<div class="booklist_img">
-							<img src="${book.bookCover}" alt="">
-							<h3>${book.title}</h3>
-							<h4>${book.writer}</h4>
+							<img src="${book.library.bookCover}" alt="">
+							<h3>${book.library.title}</h3>
+							<h4>${book.library.writer}</h4>
 							<br>
 							<p>(재고 없음)</p>
 						</div>
