@@ -15,7 +15,7 @@ if (msg != null) {
 %>
 <script>
 	alert('반납하지 않은책이 존재합니다.\n확인 후 다시 시도해주세요.');
-	location.href = "lib?action=listloan&id=${login.id}";
+	location.href = "lib?action=listloan&id=${login.lid}";
 </script>
 <%
 }
@@ -33,7 +33,7 @@ if (msg != null) {
 				<br>
 				<div class="signup_ct">
 					<form name="newMember" class="form-horizontal" action="/Lib/update" method="post" onsubmit="return checkForm()">
-						<input name="id" type="text" class="form-control" placeholder="id" hidden="" value="${login.id}">
+						<input name="lid" type="text" class="form-control" placeholder="id" hidden="" value="${login.lid}">
 						<h3>비밀번호</h3>
 						<p>
 							<input name="password" type="password" class="form-control" placeholder="password" value="${login.password}">
@@ -48,7 +48,7 @@ if (msg != null) {
 						</p>
 						<h3>생년월일</h3>
 						<p>
-							<input type="text" name="birthyy" maxlength="4" placeholder="년(4자)" size="6" value="${login.birthyy}"> <select name="birthmm" id="birthmm">
+							<input type="text" name="birthyy" maxlength="4" placeholder="년(4자)" size="6" value="${birthyy}"> <select name="birthmm" id="birthmm">
 								<option value="">월</option>
 								<option value="01">1</option>
 								<option value="02">2</option>
@@ -62,7 +62,7 @@ if (msg != null) {
 								<option value="10">10</option>
 								<option value="11">11</option>
 								<option value="12">12</option>
-							</select> <input type="text" name="birthdd" maxlength="2" placeholder="일" size="4" value="${login.birthdd}">
+							</select> <input type="text" name="birthdd" maxlength="2" placeholder="일" size="4" value="${birthdd}">
 						</p>
 						<h3>성별</h3>
 						<p>
@@ -76,7 +76,7 @@ if (msg != null) {
 
 						<h3>E-mail</h3>
 						<p>
-							<input type="text" name="mail1" maxlength="50" value="${login.mail1}">@ <select name="mail2" id="mail2">
+							<input type="text" name="email1" maxlength="50" value="${email1}">@ <select name="email2" id="mail2">
 								<option>naver.com</option>
 								<option>daum.net</option>
 								<option>gmail.com</option>
@@ -91,7 +91,7 @@ if (msg != null) {
 					</form>
 					<br>
 					<form name="newMember" class="form-horizontal" action="/Lib/delete" method="post">
-						<input name="id" type="text" class="form-control" placeholder="id" hidden="" value="${login.id}"> <input type="submit" class="btn btn-danger" value="회원탈퇴 ">
+						<input name="id" type="text" class="form-control" placeholder="id" hidden="" value="${login.lid}"> <input type="submit" class="btn btn-danger" value="회원탈퇴 ">
 					</form>
 				</div>
 			</div>
@@ -102,8 +102,8 @@ if (msg != null) {
 </html>
 <script type="text/javascript">
 	function init() {
-		setComboMailValue("${login.mail2}");
-		setComboBirthValue("${login.birthmm}");
+		setComboMailValue("${email2}");
+		setComboBirthValue("${birthmm}");
 	}
 	function setComboMailValue(val) {
 		var selectMail = document.getElementById('mail2');

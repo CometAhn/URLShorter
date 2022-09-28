@@ -224,9 +224,15 @@ public class LibraryController {
 
 	// 회원가입
 	@PostMapping("regist")
-	public String regist(@ModelAttribute Login g, Model m) {
+	public String regist(@ModelAttribute Login g, @RequestParam String birthyy, @RequestParam String birthmm, @RequestParam String birthdd, @RequestParam String email1, @RequestParam String email2, Model m) {
 		List<Login> list;
 		try {
+			// 년, 월, 일 값 birth에 넣기
+			g.setBirth(birthyy + "/" + birthmm + "/" + birthdd);
+			// 이메일 앞, 뒤 합쳐서 email에 넣기
+			g.setEmail(email1 + "@" + email2);
+			//System.out.println("생일 맞니?" + g.getBirth());
+			//System.out.println("이메일 맞니?" + g.getEmail());
 			String id = g.getLid();
 			list = daoG.getid(id);
 			for (int i = 0; i < list.size(); i++) {
@@ -257,7 +263,18 @@ public class LibraryController {
 
 		try {
 			g = daoG.edit(id);
+
+			// 번거롭지만 일단 ㄱ
+			String[] brith = g.getBirth().split("/"); // 생년월일 나누기
+			String[] mail = g.getEmail().split("@"); // 메일 나누기
+
 			m.addAttribute("login", g);
+			m.addAttribute("birthyy", brith[0]);
+			m.addAttribute("birthmm", brith[1]);
+			m.addAttribute("birthdd", brith[2]);
+			m.addAttribute("email1", mail[0]);
+			m.addAttribute("email2", mail[1]);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.warn("계정 조회 과정에서 문제 발생!!");
@@ -268,8 +285,16 @@ public class LibraryController {
 
 	// 업데이트
 	@PostMapping("/update")
-	public String update(@ModelAttribute Login g, Model m) {
+	public String update(@ModelAttribute Login g, @RequestParam String birthyy, @RequestParam String birthmm, @RequestParam String birthdd, @RequestParam String email1, @RequestParam String email2
+			, Model m) {
 		try {
+
+
+			// 년, 월, 일 값 birth에 넣기
+			g.setBirth(birthyy + "/" + birthmm + "/" + birthdd);
+			// 이메일 앞, 뒤 합쳐서 email에 넣기
+			g.setEmail(email1 + "@" + email2);
+			
 			daoG.update(g);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -360,16 +385,16 @@ public class LibraryController {
 
 		// 장바구니 조회해서 등록된 책이라면 장바구니에 추가 x
 		// 이미 빌린 책을 조회해서 빌린 책이라면 장바구니에 추가 x
-		List<Library> list = null;
+		List<Cart> list = null;
 		List<AllinOne> list1 = null;
 		try {
 			list = daoC.getAllCart(id); // 장바구니에 있는 책
 			list1 = daoC.getnonLoanbooks(id); // 빌리고 아직 반납 안한 책
 
 			for (int i = 0; i < list.size(); i++) {
-				Library check = list.get(i);
+				Cart check = list.get(i);
 				// 등록된 상품이랑 받아온 파라미터 값이 같다면,
-				if (check.getBid() == bid) {
+				if (check.getLibrary().getBid() == bid) {
 					// 장바구니에 담지 말고 오류 출력.
 					System.out.println("장바구니 추가되어 있는 책");
 					m.addAttribute("msg", "0");
@@ -409,16 +434,17 @@ public class LibraryController {
 		// 장바구니 조회해서 등록된 책이라면 장바구니에 추가 x
 		// 이미 빌린 책을 조회해서 빌린 책이라면 장바구니에 추가 x
 		// 대여 후 장바구니 조회 기능을 넣자. count, list
-		List<Library> list = null;
+		List<Cart> list = null;
 		List<AllinOne> list1 = null;
+		List<Cart> list2 = null;
 		try {
 			list = daoC.getAllCart(id); // 장바구니에 있는 책
 			list1 = daoC.getnonLoanbooks(id); // 빌리고 아직 반납 안한 책
 
 			for (int i = 0; i < list.size(); i++) {
-				Library check = list.get(i);
+				Cart check = list.get(i);
 				// 등록된 상품이랑 받아온 파라미터 값이 같다면,
-				if (check.getBid() == bid) {
+				if (check.getLibrary().getBid() == bid) {
 					// 장바구니에 담지 말고 오류 출력.
 					System.out.println("장바구니 추가되어 있는 책");
 					m.addAttribute("msg", "0");
@@ -447,12 +473,20 @@ public class LibraryController {
 			return controler;
 		}
 		// 추가 끝.
+
 		// 장바구니 조회 시작.
+		// todo : 리스트는 나오나, 제목, 수량 등 값이 안 나옴.
+		//          정 안되면 컨트롤러로 보내고, 컨트롤러에서 다시 조회로 보내자.
 		try {
 			count = daoC.getbookcount(id);
-			list = daoC.getAllCart(id); // 다시 조회
+			list2 = daoC.getAllCart(id); // 다시 조회
 
-			m.addAttribute("booklist", list); // 장바구니 목록
+			for (int i = 0; i < list.size(); i++) {
+				Cart check = list2.get(i);
+				System.out.println("책 제목 : " + check.getLibrary().getTitle());
+			}
+
+			m.addAttribute("booklist", list2); // 장바구니 목록
 			m.addAttribute("count", count); // 책 수
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -468,7 +502,7 @@ public class LibraryController {
 	@GetMapping("listcart")
 	public String listcart(@RequestParam String id, Model m) {
 		int count;
-		List<Library> list = null;
+		List<Cart> list = null;
 		try {
 			count = daoC.getbookcount(id);
 			list = daoC.getAllCart(id);
@@ -488,7 +522,7 @@ public class LibraryController {
 	@GetMapping("deleteCart")
 	public String deleteCart(@RequestParam String id, @RequestParam int bid, Model m) {
 		int count;
-		List<Library> list = null;
+		List<Cart> list = null;
 		try {
 			daoC.delCart(id, bid);
 		} catch (Exception e) {
@@ -519,7 +553,7 @@ public class LibraryController {
 	// 책 대여
 	@GetMapping("loan")
 	public String loan(@RequestParam String id, Model m) {
-		List<Library> list;
+		List<Cart> list;
 		List<AllinOne> all;
 		int count;
 
@@ -573,9 +607,9 @@ public class LibraryController {
 			list = daoC.getAllCart(id); // 장바구니에 있는 책
 
 			for (int i = 0; i < list.size(); i++) {
-				Library check = list.get(i);
+				Cart check = list.get(i);
 				// 등록된 상품의 개수가 0이면
-				if (check.getStock() == 0) {
+				if (check.getLibrary().getStock() == 0) {
 					// 대여 하지말고 오류 출력.
 					// 나중에 수정하자
 					//return "lib?action=listcart&id=" + id + "&msg=0";
@@ -585,7 +619,7 @@ public class LibraryController {
 				}
 			}
 			//System.out.println(" loan id값 : " + id);
-			daoC.LoanBook(id);
+			daoL.LoanBook(id);
 			daoC.delCartpro(id);
 			daoC.downcount(id);
 		} catch (Exception e) {

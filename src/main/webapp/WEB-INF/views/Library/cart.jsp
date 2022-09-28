@@ -74,13 +74,13 @@ int i = 0;
 				<c:forEach var="book" items="${booklist}" varStatus="status">
 					<div class="cartlist_a">
 						<div class="cartlist_abc">
-							<p>${book.title}(${book.writer })</p>
+							<p>${book.library.title}(${book.library.writer })</p>
 						</div>
 						<div class="cartlist_abc">
-							<p>${book.stock }</p>
+							<p>${book.library.stock }</p>
 						</div>
 						<div class="cartlist_abc">
-							<a href="/Lib/deleteCart?bid=${book.bid}&id=<%=sessionId%>"> <span class="badge bg-secondary">&times;</span></a>
+							<a href="/Lib/deleteCart?bid=${book.library.bid}&id=<%=sessionId%>"> <span class="badge bg-secondary">&times;</span></a>
 						</div>
 					</div>
 					<%

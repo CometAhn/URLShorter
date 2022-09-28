@@ -200,59 +200,6 @@ public class ReviewDAO {
 
 		Review test = reviewRepository.findById(id);
 
-		// 지워도 됨. 해결함.
-		//System.out.println("bid값 : " + test.getLibrary().getBid());
-
 		return reviewRepository.findByLibraryBid(test.getLibrary().getBid());
-
-
-
-
-
-		/*
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		Review r = new Review();
-		Library n = new Library();
-		String sql = "SELECT * From booklist inner join review on booklist.bid = review.library_bid where id = ?";
-
-		try {
-			conn = dbconnection.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, id);
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-
-				r.getLibrary().setBid(rs.getInt("bid"));
-				r.setTitle(rs.getString("title"));
-				r.getLibrary().setWriter(rs.getString("writer"));
-				r.getLibrary().setDescription(rs.getString("description"));
-				r.getLibrary().setCategory(rs.getString("category"));
-				r.getLibrary().setPublisher(rs.getString("publisher"));
-				r.getLibrary().setStock(rs.getInt("stock"));
-				r.getLibrary().setBookCover(rs.getString("book_cover"));
-				r.setDate(rs.getString("date"));
-				pstmt.executeQuery();
-			}
-			return r;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (pstmt != null)
-					pstmt.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage());
-			}
-		}
-		return null;
-	}
-		 */
 	}
 }

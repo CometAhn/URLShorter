@@ -11,10 +11,10 @@ package library.DAO;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
-import library.Entity.AllinOne;
-import library.Entity.Library;
-import library.Entity.Loan;
+import library.Entity.*;
+import library.Repository.CartRepository;
 import library.dbconnection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -26,159 +26,39 @@ import java.util.List;
 
 @Component
 public class CartDAO {
+	@Autowired
+	CartRepository cartRepository;
 
 	// 장바구니 추가
 	public void addCart(String id, int bid) throws Exception {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
+		Cart cart = new Cart();
+		Login lo = new Login();
+		Library l = new Library();
 
-		String sql = "insert into cart(login_lid, library_bid) value(?, ?)";
+		lo.setLid(id);
+		l.setBid(bid);
 
-		try {
-			conn = dbconnection.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			pstmt.setInt(2, bid);
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage());
-			}
-		}
+		cart.setLogin(lo);
+		cart.setLibrary(l);
+
+		Cart newcart = cartRepository.save(cart);
 	}
 
 	// 장바구니 조회
-	public List<Library> getAllCart(String id) throws Exception {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		List<Library> BookList = new ArrayList<>();
+	public List<Cart> getAllCart(String id) throws Exception {
 
-		String sql = "select * from booklist inner join cart on booklist.bid = any(select library_bid from cart where login_lid = ?) group by booklist.bid order by booklist.bid";
-
-		try {
-			conn = dbconnection.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				Library n = new Library();
-				n.setBid(rs.getInt("bid"));
-				n.setTitle(rs.getString("title"));
-				n.setDescription(rs.getString("description"));
-				n.setCategory(rs.getString("category"));
-				n.setPublisher(rs.getString("publisher"));
-				n.setStock(rs.getInt("stock"));
-				n.setDate(rs.getString("date"));
-				n.setWriter(rs.getString("writer"));
-				BookList.add(n);
-			}
-			return BookList;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage());
-			}
-		}
-		return null;
+		return cartRepository.findAllByLoginLid(id);
 	}
 
 	// 장바구니 목록 삭제
 	public void delCart(String id, int bid) throws SQLException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
 
-		String sql = "delete from cart where login_lid=? and library_bid=?";
 
-		try {
-			conn = dbconnection.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			pstmt.setInt(2, bid);
-			pstmt.executeUpdate();
+		Cart cart = cartRepository.findByLoginLidAndLibraryBid(id, bid);
 
-			if (pstmt.executeUpdate() == 0) {
-				throw new SQLException("DB에러");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage());
-			}
-		}
+		cartRepository.delete(cart);
 	}
 
-	// 책 대여
-	public void LoanBook(String id) throws Exception {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		PreparedStatement pstmt1 = null;
-		ResultSet rs = null;
-
-		String selectsql = "select * from cart where login_lid = ?";
-
-		try {
-			conn = dbconnection.getConnection();
-			pstmt = conn.prepareStatement(selectsql);
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				String loadid = rs.getString("login_lid");
-				int bid = rs.getInt("library_bid");
-
-				String insertsql = "insert into loan(login_lid, library_bid, start_date, end_date, status) value(?, ?,  CURRENT_TIMESTAMP(), DATE_ADD(CURRENT_TIMESTAMP, interval 7 DAY), 1)";
-
-				pstmt1 = conn.prepareStatement(insertsql);
-				pstmt1.setString(1, loadid);
-				pstmt1.setInt(2, bid);
-				pstmt1.executeUpdate();
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage());
-			}
-		}
-	}
 
 	// 책 대여 후 삭제 함수
 	public void delCartpro(String id) throws SQLException {
