@@ -1,6 +1,8 @@
 
 package library.DAO;
 
+import library.Entity.Library;
+import library.Entity.Login;
 import library.Entity.Review;
 import library.dbconnection;
 import org.springframework.stereotype.Component;
@@ -20,7 +22,7 @@ public class ReviewDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "select * from review where BID=?";
+		String sql = "select * from review where library_BID=?";
 		List<Review> list = new ArrayList<>();
 
 		try {
@@ -28,14 +30,19 @@ public class ReviewDAO {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
-// todo : 여기 오류
 			while (rs.next()) {
 				Review n = new Review();
+				Library lI = new Library();
+				Login lo = new Login();
 				n.setTitle(rs.getString("Title"));
 				n.setDate(rs.getString("Date"));
+				lI.setBid(rs.getInt("library_Bid"));
+				n.setLibrary(lI);
 				//n.setBid(rs.getInt("Bid"));
 				n.setScore(rs.getString("Score"));
 				n.setContents(rs.getString("Contents"));
+				lo.setLid(rs.getString("login_lid"));
+				n.setLogin(lo);
 				//n.setLid(rs.getString("lid"));
 				n.setId(rs.getInt("id"));
 				list.add(n);
@@ -64,12 +71,11 @@ public class ReviewDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "insert into review(lid, bid, title, contents, date, score) value(?, ?, ?, ?, CURRENT_TIMESTAMP(), ?) ";
+			String sql = "insert into review(login_lid, library_bid, title, contents, date, score) value(?, ?, ?, ?, CURRENT_TIMESTAMP(), ?) ";
 			conn = dbconnection.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			// todo : 여기오류
-			//pstmt.setString(1, r.getLid());
-			//pstmt.setInt(2, r.getBid());
+			pstmt.setString(1, r.getLogin().getLid());
+			pstmt.setInt(2, r.getLibrary().getBid());
 			pstmt.setString(3, r.getTitle());
 			pstmt.setString(4, r.getContents());
 			pstmt.setString(5, r.getScore());
@@ -89,10 +95,13 @@ public class ReviewDAO {
 	}
 
 	// 리뷰 작성 완료
+	// todo : 적절하지 못한 sql 조건. 변경해야 함.
+	//        sql 조건 결과가 하나가 아님!
+	//        review id값으로 조건 거는게 좋을듯!
 	public void reviewed(String id, int bid) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = "update loan set reviewed=1 where lid=? and bid=? and status=0";
+		String sql = "update loan set reviewed=1 where login_lid=? and library_bid=? and status=0";
 
 		try {
 			conn = dbconnection.getConnection();

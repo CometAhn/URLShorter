@@ -116,7 +116,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 						<div class="collapse" id="addForm${book.bid}">
 							<div class="card card-body">
 								<form action="/Lib/review" method="post" enctype="multipart/form-data">
-									<input type="text" name="lid" class="form-control" value="<%=sessionId%>" hidden> <input type="text" name="bid" class="form-control" value="${book.bid}" hidden> <label class="form-label"> 제목 </label> <input type="text" name="title" class="form-control"> <label class="form-label">리뷰 내용</label>
+									<input type="text" name="login.lid" class="form-control" value="<%=sessionId%>" hidden> <input type="text" name="library.bid" class="form-control" value="${book.bid}" hidden> <label class="form-label"> 제목 </label> <input type="text" name="title" class="form-control"> <label class="form-label">리뷰 내용</label>
 									<textarea rows="5" cols="50" name="contents" class="form-control"></textarea>
 									<label class="form-label"> 평점 </label> <input type="text" name="score" class="form-control">
 									<!-- 평점 추가 해야함 -->

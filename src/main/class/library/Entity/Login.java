@@ -26,13 +26,16 @@ public class Login {
 	private String password;
 	private String name;
 	private String gender;
+	private String birth;
+	private String email;
+	// 이거 컬럼 아님. get 저장용임.
+	// property spring.jpa.properties.hibernate.hbm2ddl.auto:update 사용 안 함.
+	private String email1;
+	private String email2;
 	private String birthyy;
 	private String birthmm;
 	private String birthdd;
-	private String birth;
-	private String email;
-	private String email1;
-	private String email2;
+	//
 	private String phone;
 	private String address;
 	private String registDay;
@@ -46,6 +49,7 @@ public class Login {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "login") // 이거 테이블 명 or .java명 인지?
 	private List<Loan> loanList;
 
+	// 이거 컬럼 아님. get 저장용임.
 	public String getBirth() {
 		return birthyy + "/" + birthmm + "/" + birthdd;
 	}
@@ -53,5 +57,5 @@ public class Login {
 	public String getEmail() {
 		return email1 + "@" + email2;
 	}
-
+	//
 }

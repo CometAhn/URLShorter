@@ -111,11 +111,8 @@ public class LibraryDAO {
 	}
 
 	// 페이지 넘버링용 책 목록 가져오기
-	//Todo : 페이지 넘버링 해야함
+	// 페이지 넘버링 해야함 -> 야매로 함!
 	public List<Library> getAll(int page, int limit, String items, String text) throws Exception {
-		int total_record = getlistcount(items, text);
-		int start = (page - 1) * limit;
-		int index = start + 1;
 
 		if (items == null && text == null) {
 			return libraryrepository.findAll();
@@ -245,7 +242,7 @@ public class LibraryDAO {
 		ResultSet rs = null;
 		List<Library> BookList = new ArrayList<>();
 
-		String sql = "SELECT booklist.bid, title, writer, description, category, publisher, stock, book_cover, date From booklist inner join recommend on booklist.bid = recommend.bid where month = ?";
+		String sql = "SELECT booklist.bid, title, writer, description, category, publisher, stock, book_cover, date From booklist inner join recommend on booklist.bid = recommend.library_bid where month = ?";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -334,7 +331,7 @@ public class LibraryDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Library n = new Library();
-		String sql = "SELECT * From booklist inner join review on booklist.bid = review.bid where id = ?";
+		String sql = "SELECT * From booklist inner join review on booklist.bid = review.library_bid where id = ?";
 
 		try {
 			conn = dbconnection.getConnection();

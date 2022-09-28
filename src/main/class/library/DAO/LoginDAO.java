@@ -105,6 +105,10 @@ public class LoginDAO {
 				g.setPassword(rs.getString("password"));
 				g.setName(rs.getString("name"));
 				g.setGender(rs.getString("gender"));
+				// todo : 게터 수정해야 할 수도?
+				//        일단은 둔다.
+				//        프로퍼티 spring.jpa.properties.hibernate.hbm2ddl.auto:update 사용 ㄴㄴ
+				//        컬럼 자동 생성됨.
 				g.setBirthyy(brith[0]);
 				g.setBirthmm(brith[1]);
 				g.setBirthdd(brith[2]);

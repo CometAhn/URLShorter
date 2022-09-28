@@ -100,7 +100,7 @@ int i = (pagenum * 5) - 4;
 			session.removeAttribute("error");
 			%>
 			<div class="booklist">
-				<c:forEach var="book" items="${booklist}" varStatus="status" begin="0" end="50" >
+				<c:forEach var="book" items="${booklist}" varStatus="status" begin="${spage}" end="${epage}" >
 					<c:if test="${book.stock!=0 }">
 						<a href="getbook/${book.bid}">
 							<div class="booklist_img">
@@ -151,7 +151,9 @@ int i = (pagenum * 5) - 4;
 							<option value="Writer">글쓴이</option>
 							<option value="Category">카테고리</option>
 							<option value="Publisher">출판사</option>
-						</select> <input name="text" type="text" /> <input type="submit" id="btnAdd" class="btn btn-primary" value="검색" />
+						</select>
+						<input name="text" type="text" />
+						<input type="submit" id="btnAdd" class="btn btn-primary" value="검색" />
 					</p>
 				</form>
 			</div>

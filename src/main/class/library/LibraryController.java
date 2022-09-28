@@ -89,7 +89,8 @@ public class LibraryController {
 	                       @RequestParam String text, Model m) {
 		List<Library> list;
 		int limit = LISTCOUNT;
-
+		int spage;
+		int epage;
 		int total_record = dao.getlistcount(items, text);
 
 		int total_page;
@@ -106,6 +107,10 @@ public class LibraryController {
 		try {
 			list = dao.getAll(pagenum, limit, items, text);
 
+			// 페이지 넘버링 야매 ㄱ
+			spage = 0 + (pagenum - 1) + ((pagenum - 1) * 8);
+			epage = 8 + (pagenum - 1) + ((pagenum - 1) * 8);
+
 			m.addAttribute("newslist", list);
 			m.addAttribute("booklist", list);
 			m.addAttribute("total_record", total_record);
@@ -113,6 +118,8 @@ public class LibraryController {
 			m.addAttribute("total_page", total_page);
 			m.addAttribute("items", items);
 			m.addAttribute("text", text);
+			m.addAttribute("spage", spage);
+			m.addAttribute("epage", epage);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("책 목록 생성 과정에서 문제 발생!!");
@@ -716,8 +723,7 @@ public class LibraryController {
 			//리뷰 등록
 			daoR.addReview(Review);
 			//리뷰 등록 완료 처리
-			// todo : 여기 오류
-			//daoR.reviewed(Review.getLid(), Review.getBid());
+			daoR.reviewed(Review.getLogin().getLid(), Review.getLibrary().getBid());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -729,9 +735,8 @@ public class LibraryController {
 
 		try {
 			List<AllinOne> list;
-			// todo : 여기 오류
-			//list = daoC.getAllLoan(Review.getLid());
-			//m.addAttribute("booklist", list);
+			list = daoC.getAllLoan(Review.getLogin().getLid());
+			m.addAttribute("booklist", list);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -784,22 +789,21 @@ public class LibraryController {
 			m.addAttribute("msg", "2");
 			return controler;
 		}
-		// todo : 여기 오류
-		/*
+
 		try {
-			Library n = dao.getBook(r.getBid());
+			Library n = dao.getBook(r.getLibrary().getBid());
 			m.addAttribute("book", n);
-			List<Review> list = daoR.getReview(r.getBid());
+			List<Review> list = daoR.getReview(r.getLibrary().getBid());
 			System.out.println();
 			m.addAttribute("reviewlist", list);
-			m.addAttribute("bid", r.getBid());
+			m.addAttribute("bid", r.getLibrary().getBid());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.warn("책 정보를 가져오는 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 정보를 정상적으로 가져오지 못했습니다!!");
 		}
-*/
+
 		m.addAttribute("msg", "3");
 		return "Library/View";
 	}

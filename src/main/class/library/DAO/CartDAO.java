@@ -32,7 +32,7 @@ public class CartDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
-		String sql = "insert into cart(lid, bid) value(?, ?)";
+		String sql = "insert into cart(login_lid, library_bid) value(?, ?)";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -63,7 +63,7 @@ public class CartDAO {
 		ResultSet rs = null;
 		List<Library> BookList = new ArrayList<>();
 
-		String sql = "select * from booklist inner join cart on booklist.bid = any(select bid from cart where lid = ?) group by booklist.bid order by booklist.bid";
+		String sql = "select * from booklist inner join cart on booklist.bid = any(select library_bid from cart where login_lid = ?) group by booklist.bid order by booklist.bid";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -109,7 +109,7 @@ public class CartDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
-		String sql = "delete from cart where lid=? and bid=?";
+		String sql = "delete from cart where login_lid=? and library_bid=?";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -144,7 +144,7 @@ public class CartDAO {
 		PreparedStatement pstmt1 = null;
 		ResultSet rs = null;
 
-		String selectsql = "select * from cart where lid = ?";
+		String selectsql = "select * from cart where login_lid = ?";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -153,10 +153,10 @@ public class CartDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				String loadid = rs.getString("lid");
-				int bid = rs.getInt("bid");
+				String loadid = rs.getString("login_lid");
+				int bid = rs.getInt("library_bid");
 
-				String insertsql = "insert into loan(lid, bid, start_date, end_date, status) value(?, ?,  CURRENT_TIMESTAMP(), DATE_ADD(CURRENT_TIMESTAMP, interval 7 DAY), 1)";
+				String insertsql = "insert into loan(login_lid, library_bid, start_date, end_date, status) value(?, ?,  CURRENT_TIMESTAMP(), DATE_ADD(CURRENT_TIMESTAMP, interval 7 DAY), 1)";
 
 				pstmt1 = conn.prepareStatement(insertsql);
 				pstmt1.setString(1, loadid);
@@ -185,7 +185,7 @@ public class CartDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
-		String sql = "delete from cart where lid=?";
+		String sql = "delete from cart where login_lid=?";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -215,7 +215,7 @@ public class CartDAO {
 		PreparedStatement pstmt1 = null;
 		ResultSet rs = null;
 
-		String selectsql = "SELECT stock, booklist.bid From booklist inner join loan on booklist.bid = loan.bid where lid = ? and status = 1 group by booklist.bid";
+		String selectsql = "SELECT stock, booklist.bid From booklist inner join loan on booklist.bid = loan.library_bid where login_lid = ? and status = 1 group by booklist.bid";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -257,7 +257,7 @@ public class CartDAO {
 		ResultSet rs = null;
 		List<AllinOne> all = new ArrayList();
 
-		String sql = "select booklist.bid, title, DATE_FORMAT(start_date, '%Y-%m-%d') as StartDate, DATE_FORMAT(end_date, '%Y-%m-%d') as EndDate, status, Writer, reviewed from booklist inner join loan on loan.bid = booklist.bid where lid = ? order by booklist.bid";
+		String sql = "select booklist.bid, title, DATE_FORMAT(start_date, '%Y-%m-%d') as StartDate, DATE_FORMAT(end_date, '%Y-%m-%d') as EndDate, status, Writer, reviewed from booklist inner join loan on loan.library_bid = booklist.bid where login_lid = ? order by booklist.bid";
 
 		try {
 			DecimalFormat df = new DecimalFormat("#0");
@@ -318,7 +318,7 @@ public class CartDAO {
 		ResultSet rs = null;
 		List<AllinOne> BookList = new ArrayList<>();
 
-		String sql = "select * from booklist inner join loan on loan.bid = booklist.bid where lid = ? and status=1";
+		String sql = "select * from booklist inner join loan on loan.library_bid = booklist.bid where login_lid = ? and status=1";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -360,7 +360,7 @@ public class CartDAO {
 	public void ReturnBook(String id, int bid) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = "update loan set status=0, return_date=CURRENT_TIMESTAMP() where lid=? and bid=?";
+		String sql = "update loan set status=0, return_date=CURRENT_TIMESTAMP() where login_lid=? and library_bid=?";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -395,7 +395,7 @@ public class CartDAO {
 		PreparedStatement pstmt1 = null;
 		ResultSet rs = null;
 
-		String selectsql = "SELECT stock, booklist.bid From booklist inner join loan on booklist.bid = loan.bid where lid = ? and status = 1 and booklist.bid = ? group by booklist.bid";
+		String selectsql = "SELECT stock, booklist.bid From booklist inner join loan on booklist.bid = loan.library_bid where login_lid = ? and status = 1 and booklist.bid = ? group by booklist.bid";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -440,7 +440,7 @@ public class CartDAO {
 		int x = 0;
 		String sql;
 
-		sql = "select count(*) from loan where lid=? and status = 1";
+		sql = "select count(*) from loan where login_lid=? and status = 1";
 
 		try {
 			conn = dbconnection.getConnection();
@@ -498,7 +498,7 @@ public class CartDAO {
 			while (rs.next()) {
 				String Overdue = rs.getString("overdue");
 
-				// TODO : 조건 다시 걸어야함.
+				//          조건 다시 걸어야함.(해결함!!!)
 				//			널이 아닐경우, 기존 Overdue에 연체기간만 더해서 오늘보다 Overdue가 낮을 수 있음.
 				//			해결방법 : Overdue가 널이 아니고,
 				//							Overdue(end)가 오늘(now)보다 작을 경우 (현재 날짜 + 연체일)

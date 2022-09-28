@@ -53,9 +53,9 @@
                         <h3> 아이디 </h3>
                             <p> <input name="lid" type="text" class="form-control" placeholder="id"></p>
                         <h3> 비밀번호 </h3>
-                            <p> <input name="password" type="text" class="form-control" placeholder="password"></p>
+                            <p> <input name="password" type="password" class="form-control" placeholder="password"></p>
                         <h3> 비밀번호 확인 </h3>
-                            <p> <input name="password_confirm" type="text" class="form-control" placeholder="password confirm"> </p>
+                            <p> <input name="password_confirm" type="password" class="form-control" placeholder="password confirm"> </p>
                         <h3> 이름 </h3>
                             <p> <input name="name" type="text" class="form-control" placeholder="name"></p>
                         <h3> 생년월일 </h3>
@@ -80,7 +80,7 @@
                             <p> <input name="phone" type="text" class="form-control" placeholder="phone"></p>
 
                         <h3> E-mail </h3>
-                            <p> <input type="text" name="mail1" maxlength="50">@ <select name="mail2">
+                            <p> <input type="text" name="email1" maxlength="50">@ <select name="email2">
 						<option>naver.com</option>
 						<option>daum.net</option>
 						<option>gmail.com</option>

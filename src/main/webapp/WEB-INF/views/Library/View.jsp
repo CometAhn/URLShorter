@@ -101,7 +101,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 					<h4 class="card-title">제목 : ${review.title}</h4>
 					<p class="card-text">${review.contents}</p>
 					<p class="card-text">평점 : ${review.score}</p>
-					<c:if test="${review.lid == sessionId}">
+					<c:if test="${review.login.lid == sessionId}">
 						<a href="/Lib/delreview/${review.id}" class="btn btn-danger">삭제</a>
 						<a class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#addForm${review.id}" aria-expanded="false" aria-controls="addForm">리뷰 수정</a>
 						<!-- 리뷰 수정 기능 -->
