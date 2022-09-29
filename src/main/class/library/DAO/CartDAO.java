@@ -62,29 +62,11 @@ public class CartDAO {
 
 	// 책 대여 후 삭제 함수
 	public void delCartpro(String id) throws SQLException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
 
-		String sql = "delete from cart where login_lid=?";
+		List<Cart> cart = cartRepository.findAllByLoginLid(id);
 
-		try {
-			conn = dbconnection.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception ex) {
-				throw new RuntimeException(ex.getMessage());
-			}
+		for(Cart cartt : cart){
+			cartRepository.delete(cartt);
 		}
 	}
 
