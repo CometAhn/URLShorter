@@ -6,6 +6,7 @@
 <body>
 	<%
 	// 그냥 컨트롤러로서 이용.
+    String sessionId = (String) session.getAttribute("sessionId");
 	String msg = (String) request.getAttribute("msg");
 	if (msg != null) {
 		if (msg.equals("0")) {
@@ -27,7 +28,11 @@
 		} else if (msg.equals("3")) {
 			session.setAttribute("iderror", "0"); // 가입된 아이디
 			response.sendRedirect("/Lib/register");
-		}
+		} else if (msg.equals("4")) {
+          			response.sendRedirect("/Lib/listcart?id=" + sessionId);
+        } else if (msg.equals("5")) {
+                    response.sendRedirect("/Lib/listloan?id=" + sessionId);
+        }
 	} else {
 		response.sendRedirect("/Lib/list?pagenum=1&items=Title&text=");
 	}

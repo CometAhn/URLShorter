@@ -110,16 +110,22 @@ color:black;
     flex-wrap: wrap;
 }
 
-.booklist_img > img{
+.booklist_img img{
     width: 500px;
     height: 350px;
     text-align: center;
 }
 
 .booklist_img {
+	position: relative;
     margin: 0 10px 20px;
     padding: 0 0 10px 0;
     background-color: antiquewhite;
+}
+
+.booklist_img > .btn btn-info{
+	position: absolute;
+
 }
 
 .booklist_search {

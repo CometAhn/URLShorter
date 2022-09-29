@@ -118,10 +118,17 @@ String sessionId = (String) session.getAttribute("sessionId");
 								<form action="/Lib/review" method="post" enctype="multipart/form-data">
 									<input type="text" name="login.lid" class="form-control" value="<%=sessionId%>" hidden>
 									<input type="text" name="library.bid" class="form-control" value="${book.library.bid}" hidden>
-									<input type="text" name="loan.id" class="form-control" value="${book.id}">
+									<input type="text" name="loan.id" class="form-control" value="${book.id}" hidden>
 									<label class="form-label"> 제목 </label> <input type="text" name="title" class="form-control"> <label class="form-label">리뷰 내용</label>
 									<textarea rows="5" cols="50" name="contents" class="form-control"></textarea>
-									<label class="form-label"> 평점 </label> <input type="text" name="score" class="form-control">
+									<label class="form-label"> 평점 </label>
+									<select name="score" class="form-control" value="${review.score}">
+                                        <option value="1"> ★☆☆☆☆ </option>
+                                        <option value="2"> ★★☆☆☆ </option>
+                                        <option value="3"> ★★★☆☆ </option>
+                                        <option value="4"> ★★★★☆ </option>
+                                        <option value="5"> ★★★★★ </option>
+                                    </select>
 									<!-- 평점 추가 해야함 -->
 									<button type="submit" class="btn btn-success mt-3">저장</button>
 								</form>

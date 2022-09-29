@@ -10,9 +10,10 @@ String sessionId = (String) session.getAttribute("sessionId");
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
 <title>뉴스 관리 앱</title>
 </head>
-<body>
+<body onload="init()">
 	<%
 	String msg = (String) request.getAttribute("msg");
 
@@ -122,7 +123,23 @@ String sessionId = (String) session.getAttribute("sessionId");
 				<div class="card-body">
 					<h4 class="card-title">제목 : ${review.title}</h4>
 					<p class="card-text">${review.contents}</p>
-					<p class="card-text">평점 : ${review.score}</p>
+					<p class="card-text">평점 :
+                        <c:if test="${review.score == '5'}">
+					         ★★★★★
+					    </c:if>
+                        <c:if test="${review.score == '4'}">
+					         ★★★★☆
+					    </c:if>
+                        <c:if test="${review.score == '3'}">
+	    				     ★★★☆☆
+    					</c:if>
+                        <c:if test="${review.score == '2'}">
+    					     ★★☆☆☆
+    					</c:if>
+                        <c:if test="${review.score == '1'}">
+    					     ★☆☆☆☆
+    					</c:if>
+					</p>
 					<c:if test="${review.login.lid == sessionId}">
 						<a href="/Lib/delreview/${review.loan.id}" class="btn btn-danger">삭제</a>
 						<a class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#addForm${review.id}" aria-expanded="false" aria-controls="addForm">리뷰 수정</a>
@@ -132,7 +149,14 @@ String sessionId = (String) session.getAttribute("sessionId");
 								<form action="/Lib/upreview" method="post" enctype="multipart/form-data">
 									<input type="text" name="id" class="form-control" value="${review.id}" hidden> <input type="text" name="library.bid" class="form-control" value="${book.bid}" hidden> <label class="form-label"> 제목 </label> <input type="text" name="title" class="form-control" value="${review.title}"> <label class="form-label">리뷰 내용</label>
 									<textarea rows="5" cols="50" name="contents" class="form-control">${review.contents}</textarea>
-									<label class="form-label"> 평점 </label> <input type="text" name="score" class="form-control" value="${review.score}">
+									<label class="form-label"> 평점 </label>
+                                    <select name="score" id="score" class="form-control">
+                                        <option value="1"> ★☆☆☆☆ </option>
+                                        <option value="2"> ★★☆☆☆ </option>
+                                        <option value="3"> ★★★☆☆ </option>
+                                        <option value="4"> ★★★★☆ </option>
+                                        <option value="5"> ★★★★★ </option>
+                                    </select>
 									<!-- 평점 추가 해야함 -->
 									<button type="submit" class="btn btn-success mt-3">수정</button>
 								</form>
@@ -148,3 +172,17 @@ String sessionId = (String) session.getAttribute("sessionId");
 	<jsp:include page="./footer.jsp" />
 </body>
 </html>
+<script type="text/javascript">
+    function init() {
+    		setComboScoreValue("${review.score}");
+    	}
+	function setComboScoreValue(val) {
+		var selectScore = document.getElementById('score');
+		for (i = 0, j = selectScore.length; i < j; i++) {
+			if (selectScore.options[i].value == val) {
+				selectScore.options[i].selected = true;
+				break;
+			}
+		}
+	}
+</script>

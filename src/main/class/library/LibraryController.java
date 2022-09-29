@@ -144,7 +144,6 @@ public class LibraryController {
 	}
 
 	// 책정보 삭제
-	//TODO : jsp에 삭제 버튼 없앰. 추가하자.
 	@GetMapping("/delete/{id}")
 	public String deleteBook(@PathVariable int id, Model m) {
 		try {
@@ -467,12 +466,13 @@ public class LibraryController {
 			m.addAttribute("msg", "2");
 			return controler;
 		}
+
 		// 추가 끝.
 
 		// 장바구니 조회 시작.
-		// todo : 리스트는 나오나, 제목, 수량 등 값이 안 나옴.
+		// todo : 리스트는 나오나, 제목, 수량 등 값이 안 나옴.(Cartlist)
 		//          방법이 없다면 컨트롤러로 보내고, 컨트롤러에서 다시 조회로 보내자.
-		try {
+		/*try {
 			count = daoL.getbookcount(id);
 			list2 = daoC.getAllCart(id); // 다시 조회
 
@@ -485,7 +485,10 @@ public class LibraryController {
 			m.addAttribute("msg", "2");
 			return controler;
 		}
-		return "Library/cart";
+		return "Library/cart";*/
+		// 야매 (컨트롤러로 보내고 컨트롤러에서 조회로 보냄.)
+		m.addAttribute("msg", "4");
+		return controler;
 	}
 
 	// 장바구니 조회
@@ -619,11 +622,14 @@ public class LibraryController {
 			m.addAttribute("msg", "2");
 			return controler;
 		}
+
 		// 대여 끝
+
+
 		// 대여 페이지 조회 시작
-		// todo : 리스트는 나오나, 제목, 수량 등 값이 안 나옴.
+		// todo : 리스트는 나오나, 제목, 수량 등 값이 안 나옴.(Loanlist)
 		//          방법이 없다면 컨트롤러로 보내고, 컨트롤러에서 다시 조회로 보내자.
-		try {
+		/*try {
 			List<Loan> list3;
 			list3 = daoL.getAllLoan(id);
 			m.addAttribute("booklist", list3);
@@ -635,7 +641,10 @@ public class LibraryController {
 			m.addAttribute("msg", "2");
 			return controler;
 		}
-		return "Library/loan";
+		return "Library/loan";*/
+		// 야매 (컨트롤러로 보내고 컨트롤러에서 조회로 보냄.)
+		m.addAttribute("msg", "5");
+		return controler;
 	}
 
 	// 책 대여 정보

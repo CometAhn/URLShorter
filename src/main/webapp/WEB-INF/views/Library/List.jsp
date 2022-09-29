@@ -53,7 +53,7 @@ int i = (pagenum * 5) - 4;
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="http://localhost/Library/resources/css/style.css" rel="stylesheet">
+<link href="http://localhost/Library/resources/css/style.css?123" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
 <title>책 관리 앱</title>
@@ -102,26 +102,32 @@ int i = (pagenum * 5) - 4;
 			<div class="booklist">
 				<c:forEach var="book" items="${booklist}" varStatus="status" begin="${spage}" end="${epage}" >
 					<c:if test="${book.stock!=0 }">
-						<a href="getbook/${book.bid}">
-							<div class="booklist_img">
+						<div class="booklist_img">
+				            <a href="getbook/${book.bid}">
 								<img src="${book.bookCover}" alt="">
 								<h3>${book.title}</h3>
 								<h4>${book.writer}</h4>
 								<br>
 								<p>재고 수 : ${book.stock}</p>
-							</div>
-						</a>
+					        </a>
+							<% if (admin == true) { %>
+						        <a href="/Lib/delete/${book.bid}" class="btn btn-info">삭제</a>
+						    <% } %>
+						</div>
 					</c:if>
 					<c:if test="${book.stock==0 }">
-						<a onclick="nobook()">
-							<div class="booklist_img">
+						<div class="booklist_img">
+						    <a onclick="nobook()">
 								<img src="${book.bookCover}" alt="">
 								<h3>${book.title}</h3>
 								<h4>${book.writer}</h4>
 								<br>
 								<p>(재고 없음)</p>
-							</div>
-						</a>
+						    </a>
+							<% if (admin == true) { %>
+						        <a href="/Lib/delete/${book.bid}" class="btn btn-info">삭제</a>
+						    <% } %>
+						</div>
 					</c:if>
 				</c:forEach>
 			</div>
