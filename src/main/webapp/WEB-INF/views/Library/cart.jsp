@@ -13,7 +13,6 @@ int i = 0;
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://localhost/Library/resources/css/style.css" rel="stylesheet">
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
-<link href="http://localhost/Lib/Library/resources/css/style.css" rel="stylesheet">
 <title>장바구니</title>
 </head>
 <body>
