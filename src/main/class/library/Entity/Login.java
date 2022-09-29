@@ -31,7 +31,7 @@ public class Login {
 	private String email;
 	// 이거 컬럼 아님. get 저장용임.
 	// property spring.jpa.properties.hibernate.hbm2ddl.auto:update 사용 안 함.
-	// todo : 게터 수정해야 함. 대체 수단을 찾아야함.
+	// 게터 수정해야 함. 대체 수단을 찾아야함.(첮음!)
 	/*
 	private String email1;
 	private String email2;

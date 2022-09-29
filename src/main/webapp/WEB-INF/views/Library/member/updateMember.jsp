@@ -8,18 +8,17 @@
 <title>회원 수정</title>
 </head>
 <%
-String msg = request.getParameter("msg");
 
-if (msg != null) {
-	if (msg.equals("0")) {
+String msg = (String) request.getAttribute("msg");
+    if (msg != null) {
+    	if (msg.equals("0")) {
 %>
 <script>
-	alert('반납하지 않은책이 존재합니다.\n확인 후 다시 시도해주세요.');
-	location.href = "lib?action=listloan&id=${login.lid}";
+	alert('반납하지 않은 책이 존재합니다.\n확인 후 다시 시도해주세요.');
 </script>
 <%
-}
-}
+        }
+    }
 %>
 <body onload="init()">
 	<jsp:include page="../menu.jsp" />

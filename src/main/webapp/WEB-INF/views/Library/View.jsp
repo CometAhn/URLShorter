@@ -57,16 +57,29 @@ String sessionId = (String) session.getAttribute("sessionId");
 	}
 	%>
 
+
+
 	<!-- 상단 메뉴 -->
 	<jsp:include page="./menu.jsp" />
 	<script type="text/javascript">
 		function addtocart() {
 			if (confirm("상품을 장바구니에 추가 하시겠습니까?")) {
-				document.addform.submit();
+		    location.href = "/Lib/addcarttocart?id=<%=sessionId%>&bid=${book.bid}";
 			} else {
-				document.addform.reset();
+
 			}
 		}
+		function addtocart1() {
+			if (confirm("상품을 장바구니에 추가 하시겠습니까?")) {
+		    location.href = "/Lib/addcart?id=<%=sessionId%>&bid=${book.bid}";
+			} else {
+
+			}
+		}
+    	function loginfirst() {
+		    alert('로그인 후 이용가능합니다.');
+		    location.href = "/Lib/loginpage";
+    	}
 	</script>
 
 	<section id="mid">
@@ -87,7 +100,16 @@ String sessionId = (String) session.getAttribute("sessionId");
 				<p class="card-text">재고수 : ${book.stock}</p>
 			</div>
 			<form name="addform" action="./addcart.jsp?id=${book.bid}" method="post">
-				<a href="/Lib/addcarttocart?id=<%=sessionId%>&bid=${book.bid}" class="btn btn-info" onclick="addtocart()">책 대여 &raquo;</a> <a href="/Lib/addcart?id=<%=sessionId%>&bid=${book.bid}" class="btn btn-warning" onclick="addtocart()">장바구니 &raquo;</a> <a href="/Lib/list?pagenum=1&items=Title&text=" class="btn btn-secondary">도서 목록 &raquo;</a> <a href="javascript:history.back()" " class="btn btn-primary"><< Back</a>
+				<% if (sessionId != null) {
+				    %>
+				<a class="btn btn-info" onclick="addtocart()">책 대여 &raquo;</a>
+				 <a class="btn btn-warning" onclick="addtocart1()">장바구니 &raquo;</a>
+				    <% } else { %>
+				<a class="btn btn-info" onclick="loginfirst()">책 대여 &raquo;</a>
+				 <a class="btn btn-warning" onclick="loginfirst()">장바구니 &raquo;</a>
+				 <% } %>
+
+				  <a href="/Lib/list?pagenum=1&items=Title&text=" class="btn btn-secondary">도서 목록 &raquo;</a> <a href="javascript:history.back()" " class="btn btn-primary"><< Back</a>
 			</form>
 		</div>
 		<hr>
@@ -102,13 +124,13 @@ String sessionId = (String) session.getAttribute("sessionId");
 					<p class="card-text">${review.contents}</p>
 					<p class="card-text">평점 : ${review.score}</p>
 					<c:if test="${review.login.lid == sessionId}">
-						<a href="/Lib/delreview/${review.id}" class="btn btn-danger">삭제</a>
+						<a href="/Lib/delreview/${review.loan.id}" class="btn btn-danger">삭제</a>
 						<a class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#addForm${review.id}" aria-expanded="false" aria-controls="addForm">리뷰 수정</a>
 						<!-- 리뷰 수정 기능 -->
 						<div class="collapse" id="addForm${review.id}">
 							<div class="card card-body">
 								<form action="/Lib/upreview" method="post" enctype="multipart/form-data">
-									<input type="text" name="id" class="form-control" value="${review.id}" hidden> <input type="text" name="bid" class="form-control" value="${book.bid}" hidden> <label class="form-label"> 제목 </label> <input type="text" name="title" class="form-control" value="${review.title}"> <label class="form-label">리뷰 내용</label>
+									<input type="text" name="id" class="form-control" value="${review.id}" hidden> <input type="text" name="library.bid" class="form-control" value="${book.bid}" hidden> <label class="form-label"> 제목 </label> <input type="text" name="title" class="form-control" value="${review.title}"> <label class="form-label">리뷰 내용</label>
 									<textarea rows="5" cols="50" name="contents" class="form-control">${review.contents}</textarea>
 									<label class="form-label"> 평점 </label> <input type="text" name="score" class="form-control" value="${review.score}">
 									<!-- 평점 추가 해야함 -->

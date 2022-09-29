@@ -22,6 +22,8 @@ public class Review {
 	private Login login;
 	@ManyToOne
 	private Library library;
+	@ManyToOne
+	private Loan loan;
 	private String title;
 	private String contents;
 	private String date;

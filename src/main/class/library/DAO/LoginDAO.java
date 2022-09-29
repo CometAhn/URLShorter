@@ -5,8 +5,12 @@
 package library.DAO;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import library.Entity.Library;
@@ -61,7 +65,7 @@ public class LoginDAO {
 
 	// 회원 수정
 	public void update(Login g) throws Exception {
-		
+
 		Login login = loginRepository.findByLid(g.getLid());
 
 		login.setPassword(g.getPassword());
@@ -86,5 +90,69 @@ public class LoginDAO {
 	public List<Login> getid(String id) throws SQLException {
 
 		return loginRepository.findAllByLid(id);
+	}
+
+	// 일정 기간 책 대여 하지마!
+	public void overdue(int period, String id) throws Exception {
+		// 음수일 경우, 0으로
+		if (period < 0) {
+			period = 0;
+		}
+
+		// 오늘 날짜 값 구하기 위해서 사용.
+		// 번거롭다!
+		DecimalFormat df = new DecimalFormat("#0");
+		Calendar cdate = Calendar.getInstance();
+		long tyear = Integer.parseInt(df.format((cdate.get(Calendar.YEAR) * 365)));
+		long tmonth = Integer.parseInt(df.format((cdate.get(Calendar.MONTH) + 1) * 30));
+		long tday = Integer.parseInt(df.format(cdate.get(Calendar.DATE)));
+		long now = tyear + tmonth + tday;
+
+
+		// 현재 날짜 구하기용.
+		LocalDateTime date = LocalDateTime.now();
+		String sdate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date);
+		String edate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date.plusDays(period * 3));
+
+
+		Login login = loginRepository.findByLid(id);
+
+		String Overdue = login.getOverdue();
+
+		if (Overdue == null) {
+			System.out.println("Overdue는 널이다");
+			System.out.println("sdate값 잘 나오니?" + sdate);
+
+			login.setOverdue(sdate);
+			Login newlogin = loginRepository.save(login);
+		} else {
+			// Overdue 날짜 값 구하기 위해서 사용.
+			// 번거롭다!
+			String[] Overdue1 = Overdue.split("-");
+			Long end = (long) (Integer.parseInt(Overdue1[0]) * 365 + Integer.parseInt(Overdue1[1]) * 30 + Integer.parseInt(Overdue1[2]));
+
+			if (now > end) {
+				System.out.println("기존 overdue값보다 오늘 날짜가 더 크다!");
+				System.out.println("sdate값 잘 나오니?" + sdate);
+
+				login.setOverdue(sdate);
+				Login newlogin = loginRepository.save(login);
+			} else {
+				System.out.println("기존 overdue값보다 오늘 날짜가 더 작다!");
+
+				// cdate 재활용.
+				// cdate에 overdue 값으로 넣기
+				cdate.set(Integer.parseInt(Overdue1[0]), Integer.parseInt(Overdue1[1]) - 1, Integer.parseInt(Overdue1[2]));
+
+				// period*3이 원하는 데이트 값.
+				cdate.add(Calendar.DATE, period * 3);
+
+				// 값 포맷 rdate.format(cal.getTime())
+				SimpleDateFormat rdate = new SimpleDateFormat("YYYY-MM-dd");
+
+				login.setOverdue(rdate.format(cdate.getTime()));
+				Login newlogin = loginRepository.save(login);
+			}
+		}
 	}
 }

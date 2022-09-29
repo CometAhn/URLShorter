@@ -31,6 +31,7 @@ create table if not exists loan(
     start_date  varchar(20) NOT NULL,
     return_date varchar(20),
     end_date  varchar(20) NOT NULL,
+	period int,
     status boolean not null,
    reviewed boolean not null default 0,
    PRIMARY KEY (id)
@@ -63,6 +64,7 @@ CREATE TABLE IF NOT EXISTS review(
    id int NOT NULL auto_increment,
    login_lid VARCHAR(10) NOT NULL,
    library_bid int not null,
+   loan_id int not null,
    title VARCHAR(20),
    contents VARCHAR(20),
    date VARCHAR(20),
@@ -85,6 +87,7 @@ alter table recommend add foreign key(library_bid) references booklist( bid )on 
 -- review fk
 alter table review add foreign key(login_lid) references login( lid )on delete cascade;
 alter table review add foreign key(library_bid) references booklist( bid )on delete cascade;
+alter table review add foreign key(loan_id) references loan( id )on delete cascade;
 
 # create data
 -- book

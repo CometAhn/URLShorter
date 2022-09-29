@@ -42,7 +42,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 						<div class="cartlist_a">
 							<div class="cartlist_abc">
 								<p>
-									<a href="getbook/${book.bid}"> ${book.title}(${book.writer})</a>
+									<a href="getbook/${book.library.bid}"> ${book.library.title}(${book.library.writer})</a>
 								</p>
 							</div>
 							<div class="cartlist_abc">
@@ -62,13 +62,13 @@ String sessionId = (String) session.getAttribute("sessionId");
 							<c:choose>
 								<c:when test="${book.period > 0}">
 									<div class="cartlist_abc">
-										<a href="/Lib/ReturnBook?bid=${book.bid}&id=<%=sessionId%>&period=${book.period}"> <span class="badge bg-secondary">반납하기</span></a>
+										<a href="/Lib/ReturnBook?bid=${book.library.bid}&id=<%=sessionId%>&period=${book.period}"> <span class="badge bg-secondary">반납하기</span></a>
 										</li>
 									</div>
 								</c:when>
 								<c:otherwise>
 									<div class="cartlist_abc">
-										<a href="/Lib/ReturnBook?bid=${book.bid}&id=<%=sessionId%>&period=0"> <span class="badge bg-secondary">반납하기</span></a>
+										<a href="/Lib/ReturnBook?bid=${book.library.bid}&id=<%=sessionId%>&period=0"> <span class="badge bg-secondary">반납하기</span></a>
 										</li>
 									</div>
 								</c:otherwise>
@@ -99,7 +99,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 						<div class="cartlist_a">
 							<div class="cartlist_abc">
 								<p>
-									<a href="getbook/${book.bid}"> ${book.title}(${book.writer})</a>
+									<a href="getbook/${book.library.bid}"> ${book.library.title}(${book.library.writer})</a>
 								</p>
 							</div>
 							<div class="cartlist_abc">
@@ -108,15 +108,18 @@ String sessionId = (String) session.getAttribute("sessionId");
 							<c:choose>
 								<c:when test="${book.reviewed == false}">
 									<div class="cartlist_abc">
-										<button class="btn btn-outline-info mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addForm${book.bid}" aria-expanded="false" aria-controls="addForm">리뷰 등록</button>
+										<button class="btn btn-outline-info mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addForm${book.library.bid}" aria-expanded="false" aria-controls="addForm">리뷰 등록</button>
 										</li>
 									</div>
 						</div>
 						<!-- 리뷰 등록 기능 -->
-						<div class="collapse" id="addForm${book.bid}">
+						<div class="collapse" id="addForm${book.library.bid}">
 							<div class="card card-body">
 								<form action="/Lib/review" method="post" enctype="multipart/form-data">
-									<input type="text" name="login.lid" class="form-control" value="<%=sessionId%>" hidden> <input type="text" name="library.bid" class="form-control" value="${book.bid}" hidden> <label class="form-label"> 제목 </label> <input type="text" name="title" class="form-control"> <label class="form-label">리뷰 내용</label>
+									<input type="text" name="login.lid" class="form-control" value="<%=sessionId%>" hidden>
+									<input type="text" name="library.bid" class="form-control" value="${book.library.bid}" hidden>
+									<input type="text" name="loan.id" class="form-control" value="${book.id}">
+									<label class="form-label"> 제목 </label> <input type="text" name="title" class="form-control"> <label class="form-label">리뷰 내용</label>
 									<textarea rows="5" cols="50" name="contents" class="form-control"></textarea>
 									<label class="form-label"> 평점 </label> <input type="text" name="score" class="form-control">
 									<!-- 평점 추가 해야함 -->

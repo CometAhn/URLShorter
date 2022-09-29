@@ -10,7 +10,9 @@
 package library.DAO;
 
 import library.Entity.Library;
+import library.Entity.Loan;
 import library.Repository.LibraryRepository;
+import library.Repository.LoanRepository;
 import library.dbconnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +21,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Component
@@ -27,6 +31,8 @@ public class LibraryDAO {
 
 	@Autowired
 	private LibraryRepository libraryrepository;
+	@Autowired
+	private LoanRepository loanRepository;
 
 	// 책 수량
 	public int getlistcount(String items, String text) {
@@ -94,4 +100,32 @@ public class LibraryDAO {
 
 		libraryrepository.delete(library);
 	}
+
+
+	// 책 개수 하나 줄이자
+	public void downcount(String id) throws Exception {
+
+		List<Loan> loanlist = loanRepository.findAllByLoginLidAndStatus(id, true);
+
+
+		for (Loan loan : loanlist) {
+			Library l = libraryrepository.findByBid(loan.getLibrary().getBid());
+			l.setStock(l.getStock() - 1);
+
+			Library newl = libraryrepository.save(l);
+		}
+	}
+
+	// 책 개수 하나 늘리자
+	public void upcount(String id, int bid) throws Exception {
+
+		Loan loan = loanRepository.findByLoginLidAndLibraryBidAndStatus(id, bid, true);
+
+		Library l = libraryrepository.findByBid(loan.getLibrary().getBid());
+		l.setStock(l.getStock() + 1);
+
+		Library newl = libraryrepository.save(l);
+	}
+
+
 }

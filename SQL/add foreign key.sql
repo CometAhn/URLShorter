@@ -14,3 +14,4 @@ alter table recommend add foreign key(library_bid) references booklist( bid )on 
 -- review fk
 alter table review add foreign key(login_lid) references login( lid )on delete cascade;
 alter table review add foreign key(library_bid) references booklist( bid )on delete cascade;
+alter table review add foreign key(loan_id) references loan( id )on delete cascade;

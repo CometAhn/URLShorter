@@ -6,6 +6,7 @@ create table if not exists loan(
     start_date  varchar(20) NOT NULL,
     return_date varchar(20),
     end_date  varchar(20) NOT NULL,
+	period int,
     status boolean not null,
    reviewed boolean not null default 0,
    PRIMARY KEY (id)
