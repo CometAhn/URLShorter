@@ -27,7 +27,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 			<div class="cartlist">
 				<div class="cartlist_info">
 					<div class="cartlist_abc">
-						<p>등수</p>
+						<p>순위</p>
 					</div>
 					<div class="cartlist_abc">
 						<p>아이디(이름)</p>
@@ -56,7 +56,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 			<div class="cartlist">
 				<div class="cartlist_info">
 					<div class="cartlist_abc">
-						<p>등수</p>
+						<p>순위</p>
 					</div>
 					<div class="cartlist_abc">
 						<p>아이디(이름)</p>

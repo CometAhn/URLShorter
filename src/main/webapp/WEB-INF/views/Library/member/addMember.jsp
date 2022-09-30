@@ -55,13 +55,13 @@
                 <div class="signup_ct">
                 <form name="newMember" class="form-horizontal" action="/Lib/regist" method="post" onsubmit="return checkForm()">
                     <h3> 아이디 </h3>
-                        <p> <input name="lid" type="text" class="form-control" placeholder="id"></p>
+                        <p> <input name="lid" type="text" class="form-control" placeholder="id" minlength = "3"></p>
                     <h3> 비밀번호 </h3>
                         <p> <input name="password" type="password" class="form-control" placeholder="password"></p>
                     <h3> 비밀번호 확인 </h3>
                         <p> <input name="password_confirm" type="password" class="form-control" placeholder="password confirm"> </p>
                     <h3> 이름 </h3>
-                        <p> <input name="name" type="text" class="form-control" placeholder="name"></p>
+                        <p> <input name="name" type="text" class="form-control" placeholder="name" minlength = "2"></p>
                     <h3> 생년월일 </h3>
                         <p> <input type="text" name="birthyy" maxlength="4" placeholder="년(4자)" size="6">
                         <select name="birthmm">

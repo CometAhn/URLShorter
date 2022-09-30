@@ -826,6 +826,54 @@ public class LibraryController {
 			RClist = daoG.reviewrank();
 			LClist = daoG.loanrank();
 
+			for (Login login : RClist) {
+
+				String userName = login.getName();
+
+				if (userName.length() < 3) { // 외자일 경우
+
+					login.setName(userName.substring(0, 1) + "*");
+
+				} else {
+
+					String frsName = userName.substring(0, 1);
+
+					// 사용자 이름 중간글자
+					String midName = userName.substring(1, userName.length() - 1);
+
+					// 사용자 이름 중간글자 마스킹
+					String cnvMidName = "";
+					for (int i = 0; i < midName.length(); i++) {
+						cnvMidName += "*"; // 중간 글자 수 만큼 * 표시
+					}
+
+					// 사용자 이름 마지막 글자
+					String lstName = userName.substring(userName.length() - 1, userName.length());
+
+					// 마스킹 완성된 사용자 이름
+					String maskingName = frsName + cnvMidName + lstName;
+
+					login.setName(maskingName);
+				}
+
+				String userid = login.getLid();
+
+				String frsName1 = userid.substring(0, 1);
+
+				String midName1 = userid.substring(1, userid.length() - 1);
+
+				String cnvMidName1 = "";
+				for (int i = 0; i < midName1.length(); i++) {
+					cnvMidName1 += "*";
+				}
+
+				String lstName1 = userid.substring(userid.length() - 1, userid.length());
+
+				String maskingName1 = frsName1 + cnvMidName1 + lstName1;
+
+				login.setLid(maskingName1);
+			}
+
 			m.addAttribute("RClist", RClist);
 			m.addAttribute("LClist", LClist);
 		} catch (Exception e) {
