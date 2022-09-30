@@ -1,3 +1,11 @@
-
+﻿
 대여기간 테스트용 sql문
 update loan set EndDate = '2022-09-20 09:55:57' where id='test' and BID = 6
+
+use librarydb;
+
+# 리뷰 가장 많이 쓴 사람의 리뷰 수, 아이디
+SELECT count(*), login_lid  FROM review group by login_lid order by count(*) desc limit 3;
+
+# 대여를 가장 많이 한 사람의 대여 수, 아이디
+select count(*), login_lid from loan group by login_lid order by count(*) desc limit 3;

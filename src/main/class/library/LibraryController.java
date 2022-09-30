@@ -320,25 +320,32 @@ public class LibraryController {
 
 		try {
 			g = daoG.login(id, pw);
-			m.addAttribute("login", g.getLid());
-			m.addAttribute("grade", g.isGrade());
-			m.addAttribute("name", g.getName());
+			if (g != null) {
+				m.addAttribute("login", g.getLid());
+				m.addAttribute("grade", g.isGrade());
+				m.addAttribute("name", g.getName());
+			} else {
+				m.addAttribute("error", "1");
+				return "Library/member/loginMember";
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.warn("로그인 과정에서 문제 발생!!");
 			m.addAttribute("error", "로그인에 실패했습니다!!!");
 		}
 
-		if (g.getLid() == null) {
-			// System.out.println("sql에서 일치하는 아이디를 못 가져옴. 아이디/비번 불일치 ㄱ");
-			m.addAttribute("error", "1");
-			return "Library/member/loginMember";
-		}
+		if (g != null) {
+			if (g.getLid() == null) {
+				// System.out.println("sql에서 일치하는 아이디를 못 가져옴. 아이디/비번 불일치 ㄱ");
+				m.addAttribute("error", "1");
+				return "Library/member/loginMember";
+			}
 
-		if (g.getLid() != null && g.isUsed() == false) {
-			// System.out.println("탈퇴한 계정(" + g.getLid() + ")에서 로그인 시도, 탈퇴 메시지 ㄱ");
-			m.addAttribute("error", "2");
-			return "Library/member/loginMember";
+			if (g.getLid() != null && g.isUsed() == false) {
+				// System.out.println("탈퇴한 계정(" + g.getLid() + ")에서 로그인 시도, 탈퇴 메시지 ㄱ");
+				m.addAttribute("error", "2");
+				return "Library/member/loginMember";
+			}
 		}
 		m.addAttribute("msg", "0");
 		return "Library/Control";
@@ -589,6 +596,7 @@ public class LibraryController {
 			daoL.LoanBook(id);
 			daoC.delCartpro(id);
 			dao.downcount(id);
+			daoG.uploancount(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("책 대여 과정에서 문제 발생!!");
@@ -721,13 +729,14 @@ public class LibraryController {
 
 	// 리뷰 등록기능
 	@PostMapping("/review")
-	public String addReview(@ModelAttribute Review Review, Model m) {
+	public String addReview(@ModelAttribute Review Review, Model m, @SessionAttribute String sessionId) {
 
 		try {
 			//리뷰 등록
 			daoR.addReview(Review);
 			//리뷰 등록 완료 처리
 			daoR.reviewed(Review.getLoan().getId());
+			daoG.upreviewcount(sessionId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("리뷰 추가 과정에서 문제 발생!!");
@@ -753,7 +762,7 @@ public class LibraryController {
 	}
 
 	@GetMapping("/delreview/{id}")
-	public String delreview(@PathVariable int id, Model m) {
+	public String delreview(@PathVariable int id, Model m, @SessionAttribute String sessionId) {
 		try {
 			Review n = daoR.getBookByid(id);
 			// 지워도 됨. 해결함.
@@ -767,6 +776,7 @@ public class LibraryController {
 		try {
 			daoR.delReview(id);
 			daoR.unreviewed(id);
+			daoG.downreviewcount(sessionId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("리뷰 삭제 과정에서 문제 발생!!");

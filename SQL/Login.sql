@@ -13,9 +13,11 @@ create table Login (
     grade boolean not null default 0,
     used boolean not null default 1,
     overdue varchar(20), 
+    review_count int not null default 0,
+    loan_count int not null default 0,
     primary key(lid) 
 ) default CHARSET=utf8;
 
 select * from Login;
-# 삭제
+# �궘�젣
 #drop table Login;

@@ -3,12 +3,15 @@ package library.DAO;
 import library.Entity.Library;
 import library.Entity.Loan;
 import library.Entity.Login;
+import library.Entity.Review;
 import library.Repository.LibraryRepository;
+import library.Repository.ReviewRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Transactional
@@ -17,6 +20,8 @@ class LibraryDAOTest {
 
 	@Autowired
 	LibraryRepository libraryRepository;
+	@Autowired
+	ReviewRepository reviewRepository;
 
 
 	// 오류
@@ -24,12 +29,6 @@ class LibraryDAOTest {
 	// 해결 ㅇㅇ. mapped 명칭 잘못됨.
 	@Test
 	public void read() {
-		/*List<Library> librarylist = libraryRepository.findByBid(2);
-		for (Library lib : librarylist) {
-			lib.getLoanList().stream().forEach(loan -> {
-				Login login = loan.getLogin();
-				System.out.println(lib.getLoanList().stream().toString());
-			});
-		}*/
+		//reviewRepository.countByLoanId();
 	}
 }

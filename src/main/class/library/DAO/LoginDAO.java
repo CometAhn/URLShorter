@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 
+import library.Entity.Library;
+import library.Entity.Loan;
 import library.Entity.Login;
 import library.Repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,8 @@ public class LoginDAO {
 		login.setAddress(g.getAddress());
 		login.setUsed(true);
 		login.setRegistDay(String.valueOf(LocalDateTime.now()));
+		login.setReviewCount(0);
+		login.setLoanCount(0);
 
 		Login newlogin = loginRepository.save(login);
 	}
@@ -144,5 +148,29 @@ public class LoginDAO {
 				Login newlogin = loginRepository.save(login);
 			}
 		}
+	}
+
+	// 리뷰카운트 하나 줄이자
+	public void downreviewcount(String id) throws Exception {
+		Login login = loginRepository.findByLid(id);
+
+		login.setReviewCount(login.getReviewCount() - 1);
+		Login newlogin = loginRepository.save(login);
+	}
+
+	// 리뷰카운트 하나 늘리자
+	public void upreviewcount(String id) throws Exception {
+		Login login = loginRepository.findByLid(id);
+
+		login.setReviewCount(login.getReviewCount() + 1);
+		Login newlogin = loginRepository.save(login);
+	}
+
+	// 대여카운트 하나 늘리자
+	public void uploancount(String id) throws Exception {
+		Login login = loginRepository.findByLid(id);
+
+		login.setLoanCount(login.getLoanCount() + 1);
+		Login newlogin = loginRepository.save(login);
 	}
 }

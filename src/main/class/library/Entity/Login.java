@@ -34,4 +34,6 @@ public class Login {
 	private List<Cart> cartList;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "login")
 	private List<Loan> loanList;
+	private int reviewCount;
+	private int loanCount;
 }

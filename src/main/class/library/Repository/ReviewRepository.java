@@ -16,4 +16,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
 	Review findByLoanId(int id);
 
+	int countByLoginLid(String lid);
+
 }
