@@ -4,6 +4,20 @@
 String sessionId = (String) session.getAttribute("sessionId");
 String name = (String) session.getAttribute("name");
 %>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script>
+    Kakao.init("372e9be4c85d8e5f3b182ea4e17070ae");
+    function sendLink() {
+      Kakao.Link.sendCustom({
+        templateId: 83300,
+        templateArgs: {
+          title: "{{ page.title }}",
+          description: "{{ page.excerpt }}",
+          url : "{{ page.url }}",
+        },
+      });
+    }
+</script>
 <section id="bottom">
 	<div>
 		<div class="bott">
@@ -64,6 +78,13 @@ String name = (String) session.getAttribute("name");
 					<div class="conticon">
 						<a href=""><i class="fab fa-twitter fa-lg"></i></a> <a href=""><i class="fab fa-facebook-f fa-lg"></i></a> <a href=""><i class="fab fa-youtube fa-lg"></i></a> <a href=""><i class="fab fa-linkedin-in fa-lg"></i></a>
 					</div>
+					<div class="conticon">
+							<li>
+                                    <a id="kakao-link-btn" href="javascript:sendLink()">
+                                     <img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" /></img>
+                                     </a>
+                            </li>
+                    </div>
 				</div>
 			</div>
 			<hr>
