@@ -816,4 +816,25 @@ public class LibraryController {
 		m.addAttribute("msg", "3");
 		return "Library/View";
 	}
+
+	// 이번달 추천 책 + index
+	@GetMapping("/rank")
+	public String rank(Model m) {
+		List<Login> RClist;
+		List<Login> LClist;
+		try {
+			RClist = daoG.reviewrank();
+			LClist = daoG.loanrank();
+
+			m.addAttribute("RClist", RClist);
+			m.addAttribute("LClist", LClist);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.warn("추천 책 출력 과정에서 문제 발생!!");
+			m.addAttribute("error", "추천 책 출력을 정상적으로 하지 못했습니다.");
+			m.addAttribute("msg", "2");
+			return controler;
+		}
+		return "Library/rank";
+	}
 }

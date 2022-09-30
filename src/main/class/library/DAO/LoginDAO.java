@@ -173,4 +173,12 @@ public class LoginDAO {
 		login.setLoanCount(login.getLoanCount() + 1);
 		Login newlogin = loginRepository.save(login);
 	}
+
+	public List<Login> reviewrank() throws Exception {
+		return loginRepository.findTop3ByOrderByReviewCountDesc();
+	}
+
+	public List<Login> loanrank() throws Exception {
+		return loginRepository.findTop3ByOrderByLoanCountDesc();
+	}
 }

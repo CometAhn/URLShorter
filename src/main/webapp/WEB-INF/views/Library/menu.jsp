@@ -10,7 +10,7 @@ String name = (String) session.getAttribute("name");
 	<div class="container1">
 		<div class="itlib">
 			<i class="fas fa-book-open fa-2x"></i>
-			<h1>아이티 도서관</h1>
+			<h3>아이티 도서관</h3>
 		</div>
 		<div class="menu">
 			<ul class="menubar">
@@ -29,6 +29,7 @@ String name = (String) session.getAttribute("name");
 					</c:otherwise>
 				</c:choose>
 				<li><a href="/Lib/map"> 도서관 안내 </a></li>
+				<li><a href="/Lib/rank"> 순위 </a></li>
 			</ul>
 		</div>
 
