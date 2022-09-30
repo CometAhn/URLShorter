@@ -151,11 +151,11 @@ String sessionId = (String) session.getAttribute("sessionId");
 									<textarea rows="5" cols="50" name="contents" class="form-control">${review.contents}</textarea>
 									<label class="form-label"> 평점 </label>
                                     <select name="score" id="score" class="form-control">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
+                                        <option value="1"> ★☆☆☆☆ </option>
+                                        <option value="2"> ★★☆☆☆ </option>
+                                        <option value="3"> ★★★☆☆ </option>
+                                        <option value="4"> ★★★★☆ </option>
+                                        <option value="5"> ★★★★★ </option>
                                     </select>
 									<!-- 평점 추가 해야함 -->
 									<button type="submit" class="btn btn-success mt-3">수정</button>
