@@ -13,7 +13,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
 <title>뉴스 관리 앱</title>
 </head>
-<body onload="init()">
+<body>
 	<%
 	String msg = (String) request.getAttribute("msg");
 
@@ -122,7 +122,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 			<div class="card w-75 mx-auto">
 				<div class="card-body">
 					<h4 class="card-title">제목 : ${review.title}</h4>
-					<p class="card-text">${review.contents}</p>
+					<p class="card-text">내용 : ${review.contents}</p>
 					<p class="card-text">평점 :
                         <c:if test="${review.score == '5'}">
 					         ★★★★★
@@ -151,11 +151,11 @@ String sessionId = (String) session.getAttribute("sessionId");
 									<textarea rows="5" cols="50" name="contents" class="form-control">${review.contents}</textarea>
 									<label class="form-label"> 평점 </label>
                                     <select name="score" id="score" class="form-control">
-                                        <option value="1"> ★☆☆☆☆ </option>
-                                        <option value="2"> ★★☆☆☆ </option>
-                                        <option value="3"> ★★★☆☆ </option>
-                                        <option value="4"> ★★★★☆ </option>
-                                        <option value="5"> ★★★★★ </option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
                                     </select>
 									<!-- 평점 추가 해야함 -->
 									<button type="submit" class="btn btn-success mt-3">수정</button>
@@ -172,17 +172,3 @@ String sessionId = (String) session.getAttribute("sessionId");
 	<jsp:include page="./footer.jsp" />
 </body>
 </html>
-<script type="text/javascript">
-    function init() {
-    		setComboScoreValue("${review.score}");
-    	}
-	function setComboScoreValue(val) {
-		var selectScore = document.getElementById('score');
-		for (i = 0, j = selectScore.length; i < j; i++) {
-			if (selectScore.options[i].value == val) {
-				selectScore.options[i].selected = true;
-				break;
-			}
-		}
-	}
-</script>

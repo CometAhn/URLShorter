@@ -14,8 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Loan {
-
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -31,5 +29,4 @@ public class Loan {
 	private boolean reviewed;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "loan")
 	private List<Review> reviewList;
-
 }

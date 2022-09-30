@@ -14,7 +14,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -27,6 +26,5 @@ public class Review {
 	private String title;
 	private String contents;
 	private String date;
-	private String score;
-
+	private int score;
 }

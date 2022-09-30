@@ -21,14 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/Lib")
 public class LibraryController {
-
-	private static final long serialVersionUID = 1L;
 	private final Logger logger = LoggerFactory.getLogger(this.getClass()); // 로거 선언
 
 	@Value("${lib.imgdir}")
 	String fdir;
 	static final int LISTCOUNT = 9;
-
 	final LibraryDAO dao;
 	final LoginDAO daoG;
 	final CartDAO daoC;
@@ -48,11 +45,8 @@ public class LibraryController {
 
 	String controler = "Library/Control";
 
-
 	@PostMapping("/add")
-	public String addBook(@ModelAttribute Library library, Model m,
-	                      @RequestParam("file") MultipartFile file) {
-
+	public String addBook(@ModelAttribute Library library, Model m, @RequestParam("file") MultipartFile file) {
 		try {
 			// 저장 파일 객체 생성
 			File dest = new File(fdir + "/" + file.getOriginalFilename());
@@ -63,7 +57,6 @@ public class LibraryController {
 			// library 객체에 파일 이름 저장
 			library.setBookCover(dest.getName());
 			dao.addBook(library);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("책 추가 과정에서 문제 발생!!");
@@ -77,15 +70,13 @@ public class LibraryController {
 
 	// getAll 메서드 구현
 	@GetMapping("/list")
-	public String listbook(@RequestParam int pagenum, @RequestParam String items,
-	                       @RequestParam String text, Model m) {
+	public String listbook(@RequestParam int pagenum, @RequestParam String items, @RequestParam String text, Model m) {
 		List<Library> list;
 		int limit = LISTCOUNT;
 		int spage;
 		int epage;
 		int total_record = dao.getlistcount(items, text);
 
-		// 테스트 후 삭제하기!!
 		// System.out.println("토탈 값 가져오니? " + total_record);
 
 		int total_page;
@@ -106,7 +97,6 @@ public class LibraryController {
 			spage = 0 + (pagenum - 1) + ((pagenum - 1) * 8);
 			epage = 8 + (pagenum - 1) + ((pagenum - 1) * 8);
 
-			m.addAttribute("newslist", list);
 			m.addAttribute("booklist", list);
 			m.addAttribute("total_record", total_record);
 			m.addAttribute("pagenum", pagenum);
@@ -126,15 +116,12 @@ public class LibraryController {
 	// getBook() 메서드 구현
 	@GetMapping("/getbook/{id}")
 	public String getBook(@PathVariable int id, Model m) {
-
 		try {
 			Library n = dao.getBook(id);
 			m.addAttribute("book", n);
+
 			List<Review> list = daoR.getReview(id);
-			System.out.println();
 			m.addAttribute("reviewlist", list);
-
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.warn("책 정보를 가져오는 과정에서 문제 발생!!");
@@ -158,27 +145,12 @@ public class LibraryController {
 		return controler;
 	}
 
-/*	// getFileName() 메서드 구현
-	private String getFilename(Part part) {
-		String fileName = null;
-		// 파일이름이 들어있는 헤더 영역을 가져옴
-		String header = part.getHeader("content-disposition");
-		System.out.println("Heder => " + header);
-
-		// 파일 이름이 들어 있는 속성 부분의 시작 위치를 가져와 " " 사이의 값만 가지고 옴
-		int start = header.indexOf("filename=");
-		fileName = header.substring(start + 10, header.length() - 1);
-		logger.warn("파일명 : " + fileName);
-		return fileName;
-	}
-*/
-
 	// 이번달 추천 책 + index
 	@GetMapping("/index")
 	public String home(Model m) {
 		List<Recommend> list;
 		try {
-			// 이번달 추천 책 사용하기 위해 추가
+			// 이번달 추천 책 사용하기 위해 이번달 구하기.
 			DecimalFormat df = new DecimalFormat("#0");
 			Calendar currentCalendar = Calendar.getInstance();
 
@@ -198,8 +170,7 @@ public class LibraryController {
 	}
 	//// 책 끝
 
-	//// 멤버 시작
-	// 로그인 페이지
+	// 페이지 이동하는 기능.
 	@GetMapping("map")
 	public String map() {
 		return "Library/map";
@@ -210,16 +181,22 @@ public class LibraryController {
 		return "Library/member/loginMember";
 	}
 
-	// 회원가입 페이지
 	@GetMapping("register")
 	public String register() {
 		return "Library/member/addMember";
 	}
 
+	@GetMapping("/logout")
+	public String logout() {
+		return "Library/member/logoutMember";
+	}
+
+	//// 멤버 시작
 	// 회원가입
 	@PostMapping("regist")
 	public String regist(@ModelAttribute Login g, @RequestParam String birthyy, @RequestParam String birthmm, @RequestParam String birthdd, @RequestParam String email1, @RequestParam String email2, Model m) {
 		List<Login> list;
+		List<Login> list1;
 		try {
 			// 년, 월, 일 값 birth에 넣기
 			g.setBirth(birthyy + "/" + birthmm + "/" + birthdd);
@@ -227,14 +204,23 @@ public class LibraryController {
 			g.setEmail(email1 + "@" + email2);
 			//System.out.println("생일 맞니?" + g.getBirth());
 			//System.out.println("이메일 맞니?" + g.getEmail());
-			String id = g.getLid();
-			list = daoG.getid(id);
+			list = daoG.getid(g.getLid());
+			list1 = daoG.getemail(g.getEmail());
+
 			for (int i = 0; i < list.size(); i++) {
 				Login check = list.get(i);
 				// 대소문자 구분 없이 검색한 아이디와 입력한 아이디가 같다면
-				if (check.getLid().toLowerCase().equals(id.toLowerCase())) {
+				if (check.getLid().equalsIgnoreCase(g.getLid())) {
 					// 회원가입 페이지로 이동 후 가입 된 아이디 경고창 ㄱ
 					m.addAttribute("msg", "3");
+					return controler;
+				}
+			}
+			for (Login emailcheck : list1) {
+				// 대소문자 구분 없이 검색한 이메일과 입력한 이메일이 같다면
+				if (emailcheck.getEmail().equalsIgnoreCase(g.getEmail())) {
+					// 회원가입 페이지로 이동 후 가입 된 아이디 경고창 ㄱ
+					m.addAttribute("msg", "6");
 					return controler;
 				}
 			}
@@ -268,7 +254,6 @@ public class LibraryController {
 			m.addAttribute("birthdd", brith[2]);
 			m.addAttribute("email1", mail[0]);
 			m.addAttribute("email2", mail[1]);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.warn("계정 조회 과정에서 문제 발생!!");
@@ -282,8 +267,6 @@ public class LibraryController {
 	public String update(@ModelAttribute Login g, @RequestParam String birthyy, @RequestParam String birthmm, @RequestParam String birthdd, @RequestParam String email1, @RequestParam String email2
 			, Model m) {
 		try {
-
-
 			// 년, 월, 일 값 birth에 넣기
 			g.setBirth(birthyy + "/" + birthmm + "/" + birthdd);
 			// 이메일 앞, 뒤 합쳐서 email에 넣기
@@ -313,8 +296,6 @@ public class LibraryController {
 			// 책 목록이 널이 아니라면?
 			if (count != 0) {
 				// 탈퇴 하지 말고 오류 출력.
-				System.out.println("아직 반납 안 한 책이 있음.");
-
 				m.addAttribute("id", id);
 				m.addAttribute("msg", "0");
 
@@ -349,26 +330,19 @@ public class LibraryController {
 		}
 
 		if (g.getLid() == null) {
-			System.out.println("sql에서 일치하는 아이디를 못 가져옴. 아이디/비번 불일치 ㄱ");
+			// System.out.println("sql에서 일치하는 아이디를 못 가져옴. 아이디/비번 불일치 ㄱ");
 			m.addAttribute("error", "1");
 			return "Library/member/loginMember";
 		}
+
 		if (g.getLid() != null && g.isUsed() == false) {
-			System.out.println("탈퇴한 계정(" + g.getLid() + ")에서 로그인 시도, 탈퇴 메시지 ㄱ");
+			// System.out.println("탈퇴한 계정(" + g.getLid() + ")에서 로그인 시도, 탈퇴 메시지 ㄱ");
 			m.addAttribute("error", "2");
 			return "Library/member/loginMember";
-		} else {
-			m.addAttribute("msg", "0");
-			return "Library/Control";
 		}
+		m.addAttribute("msg", "0");
+		return "Library/Control";
 	}
-
-	// 로그아웃 페이지
-	@GetMapping("/logout")
-	public String logout() {
-		return "Library/member/logoutMember";
-	}
-
 	//// 멤버 끝
 
 	// 장바구니, 책 대여 시작
@@ -390,7 +364,7 @@ public class LibraryController {
 				// 등록된 상품이랑 받아온 파라미터 값이 같다면,
 				if (check.getLibrary().getBid() == bid) {
 					// 장바구니에 담지 말고 오류 출력.
-					System.out.println("장바구니 추가되어 있는 책");
+					// System.out.println("장바구니 추가되어 있는 책");
 					m.addAttribute("msg", "0");
 					return "Library/View";
 				}
@@ -401,7 +375,7 @@ public class LibraryController {
 				// 등록된 상품이랑 받아온 파라미터 값이 같다면,
 				if (check.getLibrary().getBid() == bid) {
 					// 장바구니에 담지 말고 오류 출력.
-					System.out.println("빌리고 반납 안한 책");
+					// System.out.println("빌리고 반납 안한 책");
 					m.addAttribute("msg", "2");
 					return "Library/View";
 				}
@@ -495,7 +469,8 @@ public class LibraryController {
 	@GetMapping("listcart")
 	public String listcart(@RequestParam String id, Model m) {
 		int count;
-		List<Cart> list = null;
+		List<Cart> list;
+
 		try {
 			count = daoL.getbookcount(id);
 			list = daoC.getAllCart(id);
@@ -515,7 +490,7 @@ public class LibraryController {
 	@GetMapping("deleteCart")
 	public String deleteCart(@RequestParam String id, @RequestParam int bid, Model m) {
 		int count;
-		List<Cart> list = null;
+		List<Cart> list;
 		try {
 			daoC.delCart(id, bid);
 		} catch (Exception e) {
@@ -547,7 +522,6 @@ public class LibraryController {
 	@GetMapping("loan")
 	public String loan(@RequestParam String id, Model m) {
 		List<Cart> list;
-		List<Loan> all;
 		int count;
 
 		// 장바구니 조회 시작.
@@ -622,10 +596,7 @@ public class LibraryController {
 			m.addAttribute("msg", "2");
 			return controler;
 		}
-
 		// 대여 끝
-
-
 		// 대여 페이지 조회 시작
 		// todo : 리스트는 나오나, 제목, 수량 등 값이 안 나옴.(Loanlist)
 		//          방법이 없다면 컨트롤러로 보내고, 컨트롤러에서 다시 조회로 보내자.
@@ -677,11 +648,11 @@ public class LibraryController {
 	// 책 반납
 	@GetMapping("ReturnBook")
 	public String ReturnBook(@RequestParam String id, @RequestParam int bid, @RequestParam int period, Model m) {
+		Login g;
+
 		try {
 			dao.upcount(id, bid);
 			daoL.ReturnBook(id, bid);
-
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("책 반납 과정에서 문제 발생!!");
@@ -716,7 +687,6 @@ public class LibraryController {
 			return controler;
 		}
 
-		Login g;
 		try {
 			g = daoG.edit(id);
 		} catch (Exception e) {
@@ -745,7 +715,6 @@ public class LibraryController {
 				return "Library/loan";
 			}
 		}
-
 		return "Library/loan";
 	}
 	// 장 바구니, 책 대여 끝
@@ -755,12 +724,10 @@ public class LibraryController {
 	public String addReview(@ModelAttribute Review Review, Model m) {
 
 		try {
-
 			//리뷰 등록
 			daoR.addReview(Review);
 			//리뷰 등록 완료 처리
 			daoR.reviewed(Review.getLoan().getId());
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("리뷰 추가 과정에서 문제 발생!!");
@@ -773,7 +740,6 @@ public class LibraryController {
 			List<Loan> list;
 			list = daoL.getAllLoan(Review.getLogin().getLid());
 			m.addAttribute("booklist", list);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("책 대여 목록 생성 과정에서 문제 발생!!");
@@ -793,8 +759,6 @@ public class LibraryController {
 			// 지워도 됨. 해결함.
 			//System.out.println("bid 값 맞니? " + n.getLibrary().getBid());
 			m.addAttribute("bid", n.getLibrary().getBid());
-
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.warn("책 정보를 가져오는 과정에서 문제 발생!!");
@@ -803,7 +767,6 @@ public class LibraryController {
 		try {
 			daoR.delReview(id);
 			daoR.unreviewed(id);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("리뷰 삭제 과정에서 문제 발생!!");
@@ -811,9 +774,6 @@ public class LibraryController {
 			m.addAttribute("msg", "2");
 			return controler;
 		}
-
-
-		System.out.println("완료");
 		m.addAttribute("msg", "4");
 		return "Library/View";
 	}
@@ -838,13 +798,11 @@ public class LibraryController {
 			System.out.println();
 			m.addAttribute("reviewlist", list);
 			m.addAttribute("bid", r.getLibrary().getBid());
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.warn("책 정보를 가져오는 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 정보를 정상적으로 가져오지 못했습니다!!");
 		}
-
 		m.addAttribute("msg", "3");
 		return "Library/View";
 	}

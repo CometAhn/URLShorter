@@ -3,13 +3,9 @@ package library.DAO;
 import library.Entity.*;
 import library.Repository.CartRepository;
 import library.Repository.LoanRepository;
-import library.dbconnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -20,25 +16,20 @@ import java.util.List;
 
 @Component
 public class LoanDAO {
+
 	@Autowired
 	LoanRepository loanRepository;
-
 	@Autowired
 	CartRepository cartRepository;
 
-	//CartDAO daoC;
-
-
 	// 책 대여
 	public void LoanBook(String id) throws Exception {
-
-		// 현재 날짜 구하기용.
+		// 현재 날짜 구하기용 및 포맷
 		LocalDateTime date = LocalDateTime.now();
 		String sdate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(date);
 		String edate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(date.plusDays(7));
 
 		List<Cart> cart = cartRepository.findAllByLoginLid(id);
-		//List<Cart> cart = daoC.getAllCart(id);
 
 		for (int i = 0; i < cart.size(); i++) {
 			Cart cartd = cart.get(i);
@@ -65,10 +56,10 @@ public class LoanDAO {
 	public List<Loan> getAllLoan(String id) throws Exception {
 		DecimalFormat df = new DecimalFormat("#0");
 		Calendar currentCalendar = Calendar.getInstance();
+
 		int tmonth = Integer.parseInt(df.format((currentCalendar.get(Calendar.MONTH) + 1) * 30));
 		int tday = Integer.parseInt(df.format(currentCalendar.get(Calendar.DATE)));
 		int now = tmonth + tday;
-
 
 		List<Loan> newloan = new ArrayList();
 		List<Loan> loan = loanRepository.findAllByLoginLid(id);
@@ -93,23 +84,14 @@ public class LoanDAO {
 
 	// 책 반납 안한 책
 	public List<Loan> getnonLoanbooks(String id) throws Exception {
-
-
-		//List<Loan> loan = loanRepository.findAllByLoginLidAndStatus(id, true);
 		return loanRepository.findAllByLoginLidAndStatus(id, true);
 	}
 
 
 	// 책 반납
 	public void ReturnBook(String id, int bid) throws SQLException {
-
 		LocalDateTime date = LocalDateTime.now();
 		String sdate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(date);
-
-		// error : query did not return a unique result: 5
-		// 결과 값 row가 5개라서 List에 담아야함.
-		// 여러개의 리턴 데이트 값이 바뀌니 status가 1인 데이터만 조회로 바꿈.
-		// original : Loan loan = loanRepository.findByLoginLidAndLibraryBid(id, bid);
 
 		Loan loan = loanRepository.findByLoginLidAndLibraryBidAndStatus(id, bid, true);
 
@@ -121,8 +103,6 @@ public class LoanDAO {
 
 	// 대여 중인 책 수 카운트.
 	public int getbookcount(String id) {
-
-
 		return loanRepository.countByLoginLidAndStatus(id, true);
 	}
 }

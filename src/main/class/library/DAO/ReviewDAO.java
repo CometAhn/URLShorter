@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class ReviewDAO {
@@ -25,13 +24,11 @@ public class ReviewDAO {
 	LoanRepository loanRepository;
 
 	public List<Review> getReview(int id) throws SQLException {
-
 		return reviewRepository.findAllByLibraryBid(id);
 	}
 
 	// 리뷰 추가
 	public void addReview(Review r) throws Exception {
-
 		// 현재 날짜 구하기용.
 		LocalDateTime date = LocalDateTime.now();
 		String sdate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(date);
@@ -58,7 +55,6 @@ public class ReviewDAO {
 
 	// 리뷰 작성 완료
 	public void reviewed(int id) throws SQLException {
-
 		Loan loan = loanRepository.findById(id);
 
 		loan.setReviewed(true);
@@ -68,7 +64,6 @@ public class ReviewDAO {
 
 	// 리뷰 수정
 	public void update(Review r) throws Exception {
-
 		// 현재 날짜 구하기용.
 		LocalDateTime date = LocalDateTime.now();
 		String sdate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(date);
@@ -85,24 +80,18 @@ public class ReviewDAO {
 
 	// 리뷰 삭제
 	public void delReview(int id) throws SQLException {
-
 		Review re = reviewRepository.findByLoanId(id);
-
 		reviewRepository.delete(re);
 	}
 
 	// 리뷰 아이디 값으로 조회
 	public Review getBookByid(int id) throws SQLException {
-
 		return reviewRepository.findByLoanId(id);
 	}
 
 
 	// 리뷰 작성 완료 취소
 	public void unreviewed(int id) throws SQLException {
-
-		// 이거 일단은 list지만.. 원래는 Loan이어야 함!
-
 		Loan loan = loanRepository.findById(id);
 
 		loan.setReviewed(false);

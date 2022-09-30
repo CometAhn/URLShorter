@@ -32,6 +32,9 @@
           			response.sendRedirect("/Lib/listcart?id=" + sessionId);
         } else if (msg.equals("5")) {
                     response.sendRedirect("/Lib/listloan?id=" + sessionId);
+        } else if (msg.equals("6")) {
+         			session.setAttribute("iderror", "1"); // 가입된 이메일
+         			response.sendRedirect("/Lib/register");
         }
 	} else {
 		response.sendRedirect("/Lib/list?pagenum=1&items=Title&text=");

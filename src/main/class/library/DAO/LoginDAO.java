@@ -9,21 +9,13 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import library.Entity.Library;
 import library.Entity.Login;
 import library.Repository.LoginRepository;
-import library.dbconnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 @Component
 public class LoginDAO {
@@ -51,7 +43,6 @@ public class LoginDAO {
 
 	// 회원 삭제
 	public void deleteID(String id) throws Exception {
-
 		Login login = loginRepository.findByLid(id);
 
 		loginRepository.delete(login);
@@ -59,13 +50,11 @@ public class LoginDAO {
 
 	// 조회
 	public Login edit(String id) throws Exception {
-
 		return loginRepository.findByLid(id);
 	}
 
 	// 회원 수정
 	public void update(Login g) throws Exception {
-
 		Login login = loginRepository.findByLid(g.getLid());
 
 		login.setPassword(g.getPassword());
@@ -81,15 +70,18 @@ public class LoginDAO {
 
 	// 로그인
 	public Login login(String id, String pw) throws Exception {
-
 		return loginRepository.findByLidAndPassword(id, pw);
 	}
 
 
 	// 아이디 조회
 	public List<Login> getid(String id) throws SQLException {
-
 		return loginRepository.findAllByLid(id);
+	}
+
+	// 이메일 조회
+	public List<Login> getemail(String email) throws SQLException {
+		return loginRepository.findAllByEmail(email);
 	}
 
 	// 일정 기간 책 대여 하지마!
@@ -108,12 +100,10 @@ public class LoginDAO {
 		long tday = Integer.parseInt(df.format(cdate.get(Calendar.DATE)));
 		long now = tyear + tmonth + tday;
 
-
 		// 현재 날짜 구하기용.
 		LocalDateTime date = LocalDateTime.now();
 		String sdate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date);
 		String edate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date.plusDays(period * 3));
-
 
 		Login login = loginRepository.findByLid(id);
 
