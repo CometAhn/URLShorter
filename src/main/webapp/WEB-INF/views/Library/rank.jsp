@@ -11,7 +11,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://localhost/Library/resources/css/style.css" rel="stylesheet">
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
-<title>장바구니</title>
+<title>순위</title>
 </head>
 <body>
 	<jsp:include page="./menu.jsp" />
@@ -27,7 +27,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 			<div class="cartlist">
 				<div class="cartlist_info">
 					<div class="cartlist_abc">
-						<p>등 수</p>
+						<p>등수</p>
 					</div>
 					<div class="cartlist_abc">
 						<p>아이디(이름)</p>
@@ -56,7 +56,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 			<div class="cartlist">
 				<div class="cartlist_info">
 					<div class="cartlist_abc">
-						<p>등 수</p>
+						<p>등수</p>
 					</div>
 					<div class="cartlist_abc">
 						<p>아이디(이름)</p>
