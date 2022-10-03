@@ -37,16 +37,8 @@ public class LibraryDAO {
 
 	// 책 등록(administrator)
 	public void addBook(Library n) throws Exception {
-		Library lib = new Library();
-		lib.setTitle(n.getTitle());
-		lib.setWriter(n.getWriter());
-		lib.setDescription(n.getDescription());
-		lib.setCategory(n.getCategory());
-		lib.setPublisher(n.getPublisher());
-		lib.setStock(n.getStock());
-		lib.setBookCover("/img/" + n.getBookCover());
-		lib.setDate(LocalDate.now().toString());
-		Library newlib = libraryrepository.save(lib);
+		n.setBookCover("/img/" + n.getBookCover());
+		Library newlib = libraryrepository.save(n);
 	}
 
 	// 책 목록

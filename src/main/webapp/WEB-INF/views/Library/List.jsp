@@ -174,9 +174,20 @@ int i = (pagenum * 5) - 4;
 	<div class="collapse" id="addForm">
 		<div class="card card-body">
 			<form action="/Lib/add" method="post" enctype="multipart/form-data">
-				<label class="form-label">제목</label> <input type="text" name="title" class="form-control"><label class="form-label">글쓴이</label> <input type="text" name="writer" class="form-control"> <label class="form-label">책 내용</label>
+				<label class="form-label">제목</label>
+				<input type="text" name="title" class="form-control"><label class="form-label">
+				글쓴이</label>
+				<input type="text" name="writer" class="form-control">
+				<label class="form-label">책 내용</label>
 				<textarea rows="5" cols="50" name="description" class="form-control"></textarea>
-				<label class="form-label">분류</label> <input type="text" name="category" class="form-control"> <label class="form-label">출판사</label> <input type="text" name="publisher" class="form-control"> <label class="form-label">수량</label> <input type="text" name="stock" class="form-control"> <label class="form-label">이미지</label> <input type="file" name="file" class="form-control">
+				<label class="form-label">분류</label>
+				<input type="text" name="category" class="form-control">
+				<label class="form-label">출판사</label>
+				<input type="text" name="publisher" class="form-control">
+				<label class="form-label">수량</label>
+				<input type="text" name="stock" class="form-control">
+				<label class="form-label">이미지</label>
+				<input type="file" name="file" class="form-control">
 				<button type="submit" class="btn btn-success mt-3">저장</button>
 			</form>
 		</div>
