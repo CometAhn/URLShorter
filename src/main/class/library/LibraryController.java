@@ -43,7 +43,7 @@ public class LibraryController {
 		this.daoL = daoL;
 	}
 
-	String controler = "Library/Control";
+	String controller  = "Library/Control";
 
 	@PostMapping("/add")
 	public String addBook(@ModelAttribute Library library, Model m, @RequestParam("file") MultipartFile file) {
@@ -62,10 +62,10 @@ public class LibraryController {
 			logger.warn("책 추가 과정에서 문제 발생!!");
 			m.addAttribute("error", "책이 정상적으로 등록되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		m.addAttribute("msg", "1");
-		return controler;
+		return controller ;
 	}
 
 	// getAll 메서드 구현
@@ -140,9 +140,9 @@ public class LibraryController {
 			logger.warn("책 삭제 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 정보를 정상적으로 삭제되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
-		return controler;
+		return controller ;
 	}
 
 	// 이번달 추천 책 + index
@@ -164,7 +164,7 @@ public class LibraryController {
 			logger.warn("추천 책 출력 과정에서 문제 발생!!");
 			m.addAttribute("error", "추천 책 출력을 정상적으로 하지 못했습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		return "Library/index";
 	}
@@ -213,7 +213,7 @@ public class LibraryController {
 				if (check.getLid().equalsIgnoreCase(g.getLid())) {
 					// 회원가입 페이지로 이동 후 가입 된 아이디 경고창 ㄱ
 					m.addAttribute("msg", "3");
-					return controler;
+					return controller ;
 				}
 			}
 			for (Login emailcheck : list1) {
@@ -221,7 +221,7 @@ public class LibraryController {
 				if (emailcheck.getEmail().equalsIgnoreCase(g.getEmail())) {
 					// 회원가입 페이지로 이동 후 가입 된 아이디 경고창 ㄱ
 					m.addAttribute("msg", "6");
-					return controler;
+					return controller ;
 				}
 			}
 			daoG.regist(g); // 이상 없다면 가입
@@ -230,7 +230,7 @@ public class LibraryController {
 			logger.warn("계정 추가 중 오류 발생");
 			m.addAttribute("error", "계정 생성이 제대로 이루어지지 않았습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		m.addAttribute("error", "0");
 		return "Library/member/loginMember";
@@ -278,7 +278,7 @@ public class LibraryController {
 			logger.warn("계정 정보 변경 중 오류 발생");
 			m.addAttribute("error", "계정 정보 변경이 제대로 이루어지지 않았습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		m.addAttribute("error", "3");
 		return "Library/member/loginMember";
@@ -307,7 +307,7 @@ public class LibraryController {
 			logger.warn("계정 삭제 중 오류 발생");
 			m.addAttribute("error", "계정 삭제가 제대로 이루어지지 않았습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		m.addAttribute("error", "4");
 		return "Library/member/loginMember";
@@ -394,7 +394,7 @@ public class LibraryController {
 			logger.warn("책 담는중 중 오류 발생");
 			m.addAttribute("error", "책을 장바구니에 담지 못했습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		m.addAttribute("msg", "1");
 		return "Library/View";
@@ -445,7 +445,7 @@ public class LibraryController {
 			logger.warn("책 담는중 중 오류 발생");
 			m.addAttribute("error", "책을 장바구니에 담지 못했습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 
 		// 추가 끝.
@@ -464,12 +464,12 @@ public class LibraryController {
 			logger.warn("장바구니 목록 생성 과정에서 문제 발생!!");
 			m.addAttribute("error", "장바구니 목록이 정상적으로 처리되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		return "Library/cart";*/
 		// 야매 (컨트롤러로 보내고 컨트롤러에서 조회로 보냄.)
 		m.addAttribute("msg", "4");
-		return controler;
+		return controller ;
 	}
 
 	// 장바구니 조회
@@ -488,7 +488,7 @@ public class LibraryController {
 			logger.warn("장바구니 목록 생성 과정에서 문제 발생!!");
 			m.addAttribute("error", "장바구니 목록이 정상적으로 처리되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		return "Library/cart";
 	}
@@ -505,7 +505,7 @@ public class LibraryController {
 			logger.warn("장바구니 삭제 과정에서 문제 발생!!");
 			m.addAttribute("error", "장바구니가 삭제되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		// 삭제 끝
 		// 장바구니 조회 시작.
@@ -520,7 +520,7 @@ public class LibraryController {
 			logger.warn("장바구니 목록 생성 과정에서 문제 발생!!");
 			m.addAttribute("error", "장바구니 목록이 정상적으로 처리되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		return "Library/cart";
 	}
@@ -543,7 +543,7 @@ public class LibraryController {
 			logger.warn("장바구니 목록 생성 과정에서 문제 발생!!");
 			m.addAttribute("error", "장바구니 목록이 정상적으로 처리되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 
 		// 연체기간(Overdue)이 오늘보다 크면 대여 금지.
@@ -555,7 +555,7 @@ public class LibraryController {
 			logger.warn("책 대여 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 대여 과정에서 문제가 발생했습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		DecimalFormat df = new DecimalFormat("#0");
 		Calendar currentCalendar = Calendar.getInstance();
@@ -602,7 +602,7 @@ public class LibraryController {
 			logger.warn("책 대여 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 대여 과정에서 문제가 발생했습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		// 대여 끝
 		// 대여 페이지 조회 시작
@@ -618,12 +618,12 @@ public class LibraryController {
 			logger.warn("책 대여 목록 생성 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 대여 목록이 정상적으로 처리되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		return "Library/loan";*/
 		// 야매 (컨트롤러로 보내고 컨트롤러에서 조회로 보냄.)
 		m.addAttribute("msg", "5");
-		return controler;
+		return controller ;
 	}
 
 	// 책 대여 정보
@@ -648,7 +648,7 @@ public class LibraryController {
 			logger.warn("책 대여 목록 생성 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 대여 목록이 정상적으로 처리되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		return "Library/loan";
 	}
@@ -666,7 +666,7 @@ public class LibraryController {
 			logger.warn("책 반납 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 반납을 못했습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		// 반납 끝
 		// 대여 페이지
@@ -680,7 +680,7 @@ public class LibraryController {
 			logger.warn("책 대여 목록 생성 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 대여 목록이 정상적으로 처리되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		// 연체일*3일 만큼 연체 못하도록 ㄱ
 		try {
@@ -692,7 +692,7 @@ public class LibraryController {
 			logger.warn("연체 기간 설정 과정에서 문제 발생!!");
 			m.addAttribute("error", "연체 기간 설정이 정상적으로 처리되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 
 		try {
@@ -702,7 +702,7 @@ public class LibraryController {
 			logger.warn("책 대여 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 대여 과정에서 문제가 발생했습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		DecimalFormat df = new DecimalFormat("#0");
 		Calendar currentCalendar = Calendar.getInstance();
@@ -742,7 +742,7 @@ public class LibraryController {
 			logger.warn("리뷰 추가 과정에서 문제 발생!!");
 			m.addAttribute("error", "리뷰가 정상적으로 등록되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 
 		try {
@@ -754,7 +754,7 @@ public class LibraryController {
 			logger.warn("책 대여 목록 생성 과정에서 문제 발생!!");
 			m.addAttribute("error", "책 대여 목록이 정상적으로 처리되지 않았습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		// 리뷰 등록 완료
 		m.addAttribute("alert", "0");
@@ -782,7 +782,7 @@ public class LibraryController {
 			logger.warn("리뷰 삭제 과정에서 문제 발생!!");
 			m.addAttribute("error", "리뷰를 삭제하지 못했습니다!!");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		m.addAttribute("msg", "4");
 		return "Library/View";
@@ -798,7 +798,7 @@ public class LibraryController {
 			logger.warn("리뷰 변경 중 오류 발생");
 			m.addAttribute("error", "리뷰 변경이 제대로 이루어지지 않았습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 
 		try {
@@ -881,7 +881,7 @@ public class LibraryController {
 			logger.warn("추천 책 출력 과정에서 문제 발생!!");
 			m.addAttribute("error", "추천 책 출력을 정상적으로 하지 못했습니다.");
 			m.addAttribute("msg", "2");
-			return controler;
+			return controller ;
 		}
 		return "Library/rank";
 	}
