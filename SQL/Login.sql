@@ -3,6 +3,7 @@ use LibraryDB;
 create table Login ( 
     lid varchar(10) not null,
     password varchar(10) not null,
+    token varchar(15) not null default 0,
     name varchar(10) not null,
     gender varchar(4),
     birth  varchar(10),

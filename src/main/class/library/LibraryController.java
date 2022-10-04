@@ -1,14 +1,17 @@
 package library;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import library.DAO.*;
 import library.Entity.*;
+import library.Repository.LoginRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ public class LibraryController {
 	final ReviewDAO daoR;
 	final RecommendDAO daoRc;
 	final LoanDAO daoL;
+
+	@Autowired
+	KaKaoService ks;
 
 	@Autowired
 	public LibraryController(LibraryDAO dao, LoginDAO daoG, CartDAO daoC, ReviewDAO daoR, RecommendDAO daoRc, LoanDAO daoL) {
@@ -191,10 +197,11 @@ public class LibraryController {
 		return "Library/member/logoutMember";
 	}
 
+
 	//// 멤버 시작
 	// 회원가입
 	@PostMapping("regist")
-	public String regist(@ModelAttribute Login g, @RequestParam String birthyy, @RequestParam String birthmm, @RequestParam String birthdd, @RequestParam String email1, @RequestParam String email2, Model m) {
+	public String regist(@ModelAttribute Login g, @RequestParam String birthyy, @RequestParam String birthmm, @RequestParam String birthdd, @RequestParam String email1, @RequestParam String email2, @RequestParam String token, Model m) {
 		List<Login> list;
 		List<Login> list1;
 		try {
@@ -212,6 +219,7 @@ public class LibraryController {
 				// 대소문자 구분 없이 검색한 아이디와 입력한 아이디가 같다면
 				if (check.getLid().equalsIgnoreCase(g.getLid())) {
 					// 회원가입 페이지로 이동 후 가입 된 아이디 경고창 ㄱ
+					m.addAttribute("token", token);
 					m.addAttribute("msg", "3");
 					return controller;
 				}
@@ -220,6 +228,7 @@ public class LibraryController {
 				// 대소문자 구분 없이 검색한 이메일과 입력한 이메일이 같다면
 				if (emailcheck.getEmail().equalsIgnoreCase(g.getEmail())) {
 					// 회원가입 페이지로 이동 후 가입 된 아이디 경고창 ㄱ
+					m.addAttribute("token", token);
 					m.addAttribute("msg", "6");
 					return controller;
 				}
@@ -884,5 +893,57 @@ public class LibraryController {
 			return controller;
 		}
 		return "Library/rank";
+	}
+
+	@GetMapping("/klogout")
+	public String loginPage()
+	{
+		return "Library/member/loginMember";
+	}
+	@GetMapping("/kakao")
+	public String getCI(@RequestParam String code, Model m) throws Exception {
+
+		String access_token = ks.getToken(code);
+		Map<String, Object> userInfo = ks.getUserInfo(access_token);
+		String agreementInfo = ks.getAgreementInfo(access_token);
+
+		// 와! 문자 나누기!
+		String test = agreementInfo.replace("\"","");
+		test = test.replace("{","");
+		test = test.replace("}","");
+		test = test.replace("[","");
+		test = test.replace("]","");
+		String[] test1 = test.split(",");
+		String id = test1[0].substring(3);
+
+		Login g = null;
+
+		try {
+			g = daoG.findtoken(id);
+			if (g != null) {
+				m.addAttribute("login", g.getLid());
+				m.addAttribute("grade", g.isGrade());
+				m.addAttribute("name", g.getName());
+
+				m.addAttribute("msg", "0");
+				return "Library/Control";
+			} else {
+				// 토큰 없으니 회워가입 ㄱ(사실 토큰아니라 아이디 값임 ㅎ;)
+				m.addAttribute("msg", "0");
+				m.addAttribute("token", id);
+				return "Library/member/addMember";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			logger.warn("카카오 로그인 과정에서 문제 발생!!");
+			m.addAttribute("error", "카카오 로그인에 실패했습니다!!!");
+		}
+
+
+
+
+
+		//ci는 비즈니스 전환후 검수신청 -> 허락받아야 수집 가능
+		return "Library/member/kakao";
 	}
 }

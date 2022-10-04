@@ -24,6 +24,8 @@
 </head>
 <body>
 	<%
+
+	String msg = (String) request.getAttribute("msg");
     String iderror = (String) session.getAttribute("iderror");
     if (iderror != null) {
     	if (iderror.equals("0")) {
@@ -38,8 +40,21 @@
     			alert('가입된 이메일입니다.');
     		</script>
     	<%
-    	}
+    	} else if (iderror.equals("2")) {
+              	%>
+              	<%
+        }
 		session.removeAttribute("iderror"); // 세션 삭제
+    }
+
+    if (msg != null) {
+    	if (msg.equals("0")) {
+    	%>
+        	<script>
+        		alert('카카오 계정과 일치하는 계정이 없습니다.\n회원가입을 진행합니다.');
+        	</script>
+    	<%
+    	}
     }
     %>
 
@@ -54,6 +69,7 @@
                 <h1> 회원 가입 </h1> <br>
                 <div class="signup_ct">
                 <form name="newMember" class="form-horizontal" action="/Lib/regist" method="post" onsubmit="return checkForm()">
+						<input type="text" class="form-control" placeholder="token" name="token" value="${token}">
                     <h3> 아이디 </h3>
                         <p> <input name="lid" type="text" class="form-control" placeholder="id" minlength = "3"></p>
                     <h3> 비밀번호 </h3>
@@ -102,5 +118,7 @@
             </div>
         </div>
     </section>
+
+	<jsp:include page="../footer.jsp" />
 </body>
 </html>

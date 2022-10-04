@@ -26,12 +26,12 @@ public class Library {
 	private int stock;
 	private String bookCover;
 	private String date;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "library") // 이거 테이블 명 or .java명 인지?
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "library")
 	private List<Review> reviewList;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "library") // 이거 테이블 명 or .java명 인지?
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "library")
 	private List<Cart> cartList;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "library") // 이거 테이블 명 or .java명 인지?
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "library")
 	private List<Loan> loanList;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "library") // 이거 테이블 명 or .java명 인지?
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "library")
 	private List<Recommend> recommendList;
 }

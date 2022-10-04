@@ -29,12 +29,17 @@
 			session.setAttribute("iderror", "0"); // 가입된 아이디
 			response.sendRedirect("/Lib/register");
 		} else if (msg.equals("4")) {
-          			response.sendRedirect("/Lib/listcart?id=" + sessionId);
+            response.sendRedirect("/Lib/listcart?id=" + sessionId);
         } else if (msg.equals("5")) {
-                    response.sendRedirect("/Lib/listloan?id=" + sessionId);
+            response.sendRedirect("/Lib/listloan?id=" + sessionId);
         } else if (msg.equals("6")) {
-         			session.setAttribute("iderror", "1"); // 가입된 이메일
-         			response.sendRedirect("/Lib/register");
+            session.setAttribute("iderror", "1"); // 가입된 이메일
+            response.sendRedirect("/Lib/register");
+        } else if (msg.equals("7")) {
+			String token = (String) request.getAttribute("login");
+			session.setAttribute("token", token);
+            session.setAttribute("iderror", "2"); // 가입부터 먼저 ㄱ
+             response.sendRedirect("/Lib/register");
         }
 	} else {
 		response.sendRedirect("/Lib/list?pagenum=1&items=Title&text=");

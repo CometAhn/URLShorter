@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface LoginRepository extends JpaRepository<Login, String> {
 	Login findByLid(String id);
+	Login findByToken(String token);
 
 	List<Login> findAllByLid(String id);
 

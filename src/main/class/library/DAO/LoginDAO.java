@@ -27,22 +27,13 @@ public class LoginDAO {
 
 	// 회원가입
 	public void regist(Login g) throws Exception {
-		Login login = new Login();
 
-		login.setLid(g.getLid());
-		login.setPassword(g.getPassword());
-		login.setName(g.getName());
-		login.setGender(g.getGender());
-		login.setBirth(g.getBirth());
-		login.setEmail(g.getEmail());
-		login.setPhone(g.getPhone());
-		login.setAddress(g.getAddress());
-		login.setUsed(true);
-		login.setRegistDay(String.valueOf(LocalDateTime.now()));
-		login.setReviewCount(0);
-		login.setLoanCount(0);
+		g.setUsed(true);
+		g.setRegistDay(String.valueOf(LocalDateTime.now()));
+		g.setReviewCount(0);
+		g.setLoanCount(0);
 
-		Login newlogin = loginRepository.save(login);
+		Login newlogin = loginRepository.save(g);
 	}
 
 	// 회원 삭제
@@ -180,5 +171,9 @@ public class LoginDAO {
 
 	public List<Login> loanrank() throws Exception {
 		return loginRepository.findTop3ByOrderByLoanCountDesc();
+	}
+
+	public Login findtoken(String token) throws Exception {
+		return loginRepository.findByToken(token);
 	}
 }

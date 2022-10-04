@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,6 +19,8 @@ public class Login {
 	//@GeneratedValue(strategy = GenerationType.AUTO)
 	private String lid;
 	private String password;
+	@ColumnDefault("0")
+	private String token;
 	private String name;
 	private String gender;
 	private String birth;
