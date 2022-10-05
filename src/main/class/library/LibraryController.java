@@ -166,7 +166,6 @@ public class LibraryController {
 			Calendar currentCalendar = Calendar.getInstance();
 
 			Integer month = Integer.parseInt(df.format(currentCalendar.get(Calendar.MONTH) + 1));
-			System.out.println(month);
 			list = daoRc.recommend(month);
 
 			m.addAttribute("booklist", list);
@@ -214,7 +213,6 @@ public class LibraryController {
 		JSONObject json = re.getJSONResponse(gRecaptchaResponse);
 
 		boolean isSuccess = (boolean)json.get("success");
-		System.out.println("동희했니?" + isSuccess);
 		// 리캡챠 동의 안되어있으면, 로그인 ㄴㄴ
 		if(isSuccess == false) {
 			m.addAttribute("token", token);
@@ -229,7 +227,7 @@ public class LibraryController {
 			g.setEmail(email1 + "@" + email2);
 			//System.out.println("생일 맞니?" + g.getBirth());
 			//System.out.println("이메일 맞니?" + g.getEmail());
-			System.out.println("token test : " + token);
+			//System.out.println("token test : " + token);
 			list = daoG.getid(g.getLid());
 			list1 = daoG.getemail(g.getEmail());
 
@@ -473,7 +471,7 @@ public class LibraryController {
 				// 등록된 상품이랑 받아온 파라미터 값이 같다면,
 				if (check.getLibrary().getBid() == bid) {
 					// 장바구니에 담지 말고 오류 출력.
-					System.out.println("장바구니 추가되어 있는 책");
+					//System.out.println("장바구니 추가되어 있는 책");
 					m.addAttribute("msg", "0");
 					return "Library/View";
 				}
@@ -484,7 +482,7 @@ public class LibraryController {
 				// 등록된 상품이랑 받아온 파라미터 값이 같다면,
 				if (check.getLibrary().getBid() == bid) {
 					// 장바구니에 담지 말고 오류 출력.
-					System.out.println("빌리고 반납 안한 책");
+					//System.out.println("빌리고 반납 안한 책");
 					m.addAttribute("msg", "2");
 					return "Library/View";
 				}
@@ -857,7 +855,6 @@ public class LibraryController {
 			Library n = dao.getBook(r.getLibrary().getBid());
 			m.addAttribute("book", n);
 			List<Review> list = daoR.getReview(r.getLibrary().getBid());
-			System.out.println();
 			m.addAttribute("reviewlist", list);
 			m.addAttribute("bid", r.getLibrary().getBid());
 		} catch (SQLException e) {

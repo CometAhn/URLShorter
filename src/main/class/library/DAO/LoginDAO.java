@@ -113,8 +113,8 @@ public class LoginDAO {
 		String Overdue = login.getOverdue();
 
 		if (Overdue == null) {
-			System.out.println("Overdue는 널이다");
-			System.out.println("sdate값 잘 나오니?" + sdate);
+			//System.out.println("Overdue는 널이다");
+			//System.out.println("sdate값 잘 나오니?" + sdate);
 
 			login.setOverdue(sdate);
 			Login newlogin = loginRepository.save(login);
@@ -125,13 +125,13 @@ public class LoginDAO {
 			Long end = (long) (Integer.parseInt(Overdue1[0]) * 365 + Integer.parseInt(Overdue1[1]) * 30 + Integer.parseInt(Overdue1[2]));
 
 			if (now > end) {
-				System.out.println("기존 overdue값보다 오늘 날짜가 더 크다!");
-				System.out.println("sdate값 잘 나오니?" + sdate);
+				//System.out.println("기존 overdue값보다 오늘 날짜가 더 크다!");
+				//System.out.println("sdate값 잘 나오니?" + sdate);
 
 				login.setOverdue(sdate);
 				Login newlogin = loginRepository.save(login);
 			} else {
-				System.out.println("기존 overdue값보다 오늘 날짜가 더 작다!");
+				//System.out.println("기존 overdue값보다 오늘 날짜가 더 작다!");
 
 				// cdate 재활용.
 				// cdate에 overdue 값으로 넣기
