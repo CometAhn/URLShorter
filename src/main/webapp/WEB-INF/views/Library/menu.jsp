@@ -5,7 +5,6 @@
 String sessionId = (String) session.getAttribute("sessionId");
 String token = (String) session.getAttribute("token");
 String name = (String) session.getAttribute("name");
-System.out.println("토큰은? " + token);
 %>
 <!-- 상단 메뉴 -->
 <nav id="navbar">
