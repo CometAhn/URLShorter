@@ -916,7 +916,7 @@ public class LibraryController {
 	@GetMapping("/klogout")
 	public String loginPage()
 	{
-		return "Library/member/loginMember";
+		return "Library/member/logoutMember";
 	}
 	@GetMapping("/kakao")
 	public String getCI(@RequestParam String code, Model m) throws Exception {
