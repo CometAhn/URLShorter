@@ -12,6 +12,7 @@ import java.util.Map;
 import library.DAO.*;
 import library.Entity.*;
 import library.Repository.LoginRepository;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/Lib")
@@ -38,6 +41,8 @@ public class LibraryController {
 
 	@Autowired
 	KaKaoService ks;
+	@Autowired
+	reCAPTCHA re;
 
 	@Autowired
 	public LibraryController(LibraryDAO dao, LoginDAO daoG, CartDAO daoC, ReviewDAO daoR, RecommendDAO daoRc, LoanDAO daoL) {
@@ -325,8 +330,21 @@ public class LibraryController {
 
 	// 로그인
 	@PostMapping("login")
-	public String login(@RequestParam String id, @RequestParam(name = "password") String pw, Model m) throws Exception {
+	public String login(HttpServletRequest req, @RequestParam String id, @RequestParam(name = "password") String pw, Model m) throws Exception {
 		Login g = null;
+
+		String gRecaptchaResponse = req.getParameter("g-recaptcha-response");
+		JSONObject json = re.getJSONResponse(gRecaptchaResponse);
+
+		boolean isSuccess = (boolean)json.get("success");
+
+		// 리캡챠 동의 안되어있으면, 로그인 ㄴㄴ
+		if(isSuccess == false) {
+			m.addAttribute("error", "5");
+			m.addAttribute("id", id);
+			m.addAttribute("pw", pw);
+			return "Library/member/loginMember";
+		}
 
 		try {
 			g = daoG.login(id, pw);
@@ -344,22 +362,20 @@ public class LibraryController {
 			logger.warn("로그인 과정에서 문제 발생!!");
 			m.addAttribute("error", "로그인에 실패했습니다!!!");
 		}
-
-		if (g != null) {
+			if (g != null) {
 			if (g.getLid() == null) {
 				// System.out.println("sql에서 일치하는 아이디를 못 가져옴. 아이디/비번 불일치 ㄱ");
 				m.addAttribute("error", "1");
 				return "Library/member/loginMember";
 			}
-
-			if (g.getLid() != null && g.isUsed() == false) {
+				if (g.getLid() != null && g.isUsed() == false) {
 				// System.out.println("탈퇴한 계정(" + g.getLid() + ")에서 로그인 시도, 탈퇴 메시지 ㄱ");
 				m.addAttribute("error", "2");
 				return "Library/member/loginMember";
 			}
 		}
-		m.addAttribute("msg", "0");
-		return "Library/Control";
+	m.addAttribute("msg", "0");
+	return "Library/Control";
 	}
 	//// 멤버 끝
 

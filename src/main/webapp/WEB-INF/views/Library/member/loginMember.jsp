@@ -6,6 +6,18 @@
 <title>Login</title>
 </head>
 <body>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<script>
+		function onSubmit() {
+			if (grecaptcha.getResponse().length == 0) {
+				alert('reCAPTCHA를 확인해 주세요.');
+				return false;
+			}
+
+			return true;
+		}
+	</script>
+
 	<jsp:include page="../menu.jsp" />
 	<%
 	String msg = request.getParameter("msg");
@@ -60,19 +72,27 @@
                      	out.println("<div class='alert alert-danger'>");
                      	out.println("회원 탈퇴가 완료되었습니다.");
                      	out.println("</div>");
+                    } else if(error == "5"){
+                        out.println("<div class='alert alert-danger'>");
+                        out.println("보안 동의 후 다시 로그인 해주세요.");
+                        out.println("</div>");
                     }
                 }
 				%>
-				<form class="form-signin" action="/Lib/login" method="post">
+				<form class="form-signin" action="/Lib/login" method="post" onsubmit="return onSubmit();">
 					<h3>아이디</h3>
 					<p>
-						<input type="text" class="form-control" placeholder="ID" name="id" required autofocus>
+						<input type="text" class="form-control" placeholder="ID" name="id" value="${id}" required autofocus>
 					</p>
 					<h3>비밀번호</h3>
 					<p>
-						<input type="password" class="form-control" placeholder="Password" name="password" required>
+						<input type="password" class="form-control" placeholder="Password" name="password" value="${pw}" required>
 					</p>
 					<br>
+					<center>
+                        <div class="g-recaptcha" data-sitekey="6LctdVYiAAAAANSXZSeaohuJzWh5SCH6mvjrd-o9"></div>
+                        <br>
+                    </center>
 					<p>
 						<button class="btn btn btn-lg btn-success btn-block" type="submit">로그인</button>
 					</p>
