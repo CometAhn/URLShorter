@@ -80,7 +80,7 @@
 			</div>
 			<center>
 				<p>
-				    <a href="https://kauth.kakao.com/oauth/authorize?client_id=e6f60f053eb85f6437f9f7e99973580c&redirect_uri=http://localhost/Lib/kakao&response_type=code"><img src="/Library/resources/img/kakaoLogin.png" alt=""></a>
+				    <a href="https://kauth.kakao.com/oauth/authorize?client_id=e6f60f053eb85f6437f9f7e99973580c&redirect_uri=http://localhost/Lib/kakao&response_type=code"><img src="/Library/resources/img/kakao_login_large_narrow.png" alt=""></a>
 				</p>
 			</center>
 		</div>

@@ -81,7 +81,7 @@ String name = (String) session.getAttribute("name");
 					<div class="conticon">
 							<li>
                                     <a id="kakao-link-btn" href="javascript:sendLink()">
-                                     <img src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" /></img>
+                                     <img src="/Library/resources/img/kakaotalk_sharing_btn_small.png" /></img>
                                      </a>
                             </li>
                     </div>
