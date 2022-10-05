@@ -10,7 +10,7 @@
 	<script>
 		function onSubmit() {
 			if (grecaptcha.getResponse().length == 0) {
-				alert('reCAPTCHA를 확인해 주세요.');
+				alert('reCAPTCHA 동의 후 다시 로그인 해주세요.');
 				return false;
 			}
 
@@ -74,7 +74,7 @@
                      	out.println("</div>");
                     } else if(error == "5"){
                         out.println("<div class='alert alert-danger'>");
-                        out.println("보안 동의 후 다시 로그인 해주세요.");
+                        out.println("reCAPTCHA 동의 후 다시 로그인 해주세요.");
                         out.println("</div>");
                     }
                 }

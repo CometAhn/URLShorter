@@ -206,9 +206,22 @@ public class LibraryController {
 	//// 멤버 시작
 	// 회원가입
 	@PostMapping("regist")
-	public String regist(@ModelAttribute Login g, @RequestParam String birthyy, @RequestParam String birthmm, @RequestParam String birthdd, @RequestParam String email1, @RequestParam String email2, @RequestParam String token, Model m) {
+	public String regist(@ModelAttribute Login g, @RequestParam String birthyy, @RequestParam String birthmm, @RequestParam String birthdd, @RequestParam String email1, @RequestParam String email2, @RequestParam String token, Model m, HttpServletRequest req) {
 		List<Login> list;
 		List<Login> list1;
+
+		String gRecaptchaResponse = req.getParameter("g-recaptcha-response");
+		JSONObject json = re.getJSONResponse(gRecaptchaResponse);
+
+		boolean isSuccess = (boolean)json.get("success");
+		System.out.println("동희했니?" + isSuccess);
+		// 리캡챠 동의 안되어있으면, 로그인 ㄴㄴ
+		if(isSuccess == false) {
+			m.addAttribute("token", token);
+			m.addAttribute("iderror", "2");
+			return "Library/member/addMember";
+		}
+
 		try {
 			// 년, 월, 일 값 birth에 넣기
 			g.setBirth(birthyy + "/" + birthmm + "/" + birthdd);

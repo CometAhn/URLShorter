@@ -6,6 +6,11 @@
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	function checkForm() {
+		if (grecaptcha.getResponse().length == 0) {
+    		alert('reCAPTCHA를 확인해 주세요.');
+    		return false;
+    	}
+
 		if (!document.newMember.lid.value) {
 			alert("아이디를 입력하세요.");
 			return false;
@@ -23,6 +28,7 @@
 <title>회원 가입</title>
 </head>
 <body>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<%
 
 	String msg = (String) request.getAttribute("msg");
@@ -41,8 +47,11 @@
     		</script>
     	<%
     	} else if (iderror.equals("2")) {
-              	%>
-              	<%
+        %>
+    		<script>
+    			alert('reCAPTCHA 동의 후 다시 시도 해주세요.');
+    		</script>
+        <%
         }
 		// session.removeAttribute("iderror"); // 세션 삭제
     }
@@ -111,8 +120,16 @@
                             </p>
                         <h3> 주소 </h3>
                             <p> <input name="address" type="text" class="form-control" placeholder="address"></p>
-                        <p > <input type="submit" class="btn btn-primary " value="등록">
-                            <input type="reset" class="btn btn-primary " value="취소 " onclick="reset()"></p>
+
+					<center>
+                        <div class="g-recaptcha" data-sitekey="6LctdVYiAAAAANSXZSeaohuJzWh5SCH6mvjrd-o9"></div>
+                        <br>
+                    </center>
+
+                        <p>
+                    <input type="submit" class="btn btn-primary " value="등록">
+                            <input type="reset" class="btn btn-primary " value="취소 " onclick="reset()">
+                            </p>
                     </form>
                 </div>
             </div>
