@@ -3,7 +3,9 @@
 <link href="http://localhost/Library/resources/css/style.css" rel="stylesheet">
 <%
 String sessionId = (String) session.getAttribute("sessionId");
+String token = (String) session.getAttribute("token");
 String name = (String) session.getAttribute("name");
+System.out.println("토큰은? " + token);
 %>
 <!-- 상단 메뉴 -->
 <nav id="navbar">
@@ -23,7 +25,6 @@ String name = (String) session.getAttribute("name");
 						<li><a href="/Lib/loginpage"> 대여 목록 </a></li>
 					</c:when>
 					<c:otherwise>
-						<!-- 이 두개는 post로 바꿔야 보안에 좋을듯 -->
 						<li><a href="/Lib/listcart?id=<%=sessionId%>"> 장바구니 </a></li>
 						<li><a href="/Lib/listloan?id=<%=sessionId%>"> 대여 목록 </a></li>
 					</c:otherwise>
@@ -41,11 +42,15 @@ String name = (String) session.getAttribute("name");
 				<div class="menu1">
 					<a href="/Lib/register"> 회원 가입 </a>
 				</div>
-
 			</c:when>
 			<c:otherwise>
 				<div class="menu1">
-					<a href="/Lib/logout"> 로그아웃 </a>
+                    <c:if test="${token eq '0'}">
+					    <a href="/Lib/logout"> 로그아웃 </a>
+					</c:if>
+                    <c:if test="${token ne '0'}">
+					    <a href="https://kauth.kakao.com/oauth/logout?client_id=e6f60f053eb85f6437f9f7e99973580c&logout_redirect_uri=http://localhost/Lib/klogout"> 로그아웃 </a>
+					</c:if>
 				</div>
 				<div class="menu1">
 					<form name="newMember" action="/Lib/edit" method="post">

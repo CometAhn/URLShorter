@@ -26,7 +26,7 @@
 	<%
 
 	String msg = (String) request.getAttribute("msg");
-    String iderror = (String) session.getAttribute("iderror");
+    String iderror = (String) request.getAttribute("iderror");
     if (iderror != null) {
     	if (iderror.equals("0")) {
     	%>
@@ -44,7 +44,7 @@
               	%>
               	<%
         }
-		session.removeAttribute("iderror"); // 세션 삭제
+		// session.removeAttribute("iderror"); // 세션 삭제
     }
 
     if (msg != null) {
@@ -69,7 +69,7 @@
                 <h1> 회원 가입 </h1> <br>
                 <div class="signup_ct">
                 <form name="newMember" class="form-horizontal" action="/Lib/regist" method="post" onsubmit="return checkForm()">
-						<input type="text" class="form-control" placeholder="token" name="token" value="${token}">
+						<input type="text" class="form-control" placeholder="token" name="token" value="${token}" hidden>
                     <h3> 아이디 </h3>
                         <p> <input name="lid" type="text" class="form-control" placeholder="id" minlength = "3"></p>
                     <h3> 비밀번호 </h3>
@@ -99,9 +99,9 @@
                     <h3> 성별 </h3>
                         <p> <input name="gender" type="radio" value="남" /> 남 <input name="gender" type="radio" value="여" /> 여 </p>
                     <h3> 연락처 </h3>
-                        <p> <input name="phone" type="text" class="form-control" placeholder="phone"></p>
+                        <p> <input name="phone" type="number" class="form-control" placeholder="phone" minlength="11"></p>
                     <h3> E-mail </h3>
-                        <p> <input type="text" name="email1" maxlength="50">@
+                        <p> <input type="text" name="email1" maxlength="50" minlength="3">@
                     <select name="email2">
     				    <option>naver.com</option>
 					    <option>daum.net</option>

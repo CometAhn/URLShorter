@@ -211,6 +211,7 @@ public class LibraryController {
 			g.setEmail(email1 + "@" + email2);
 			//System.out.println("생일 맞니?" + g.getBirth());
 			//System.out.println("이메일 맞니?" + g.getEmail());
+			System.out.println("token test : " + token);
 			list = daoG.getid(g.getLid());
 			list1 = daoG.getemail(g.getEmail());
 
@@ -220,17 +221,17 @@ public class LibraryController {
 				if (check.getLid().equalsIgnoreCase(g.getLid())) {
 					// 회원가입 페이지로 이동 후 가입 된 아이디 경고창 ㄱ
 					m.addAttribute("token", token);
-					m.addAttribute("msg", "3");
-					return controller;
+					m.addAttribute("iderror", "0");
+					return "Library/member/addMember";
 				}
 			}
 			for (Login emailcheck : list1) {
 				// 대소문자 구분 없이 검색한 이메일과 입력한 이메일이 같다면
 				if (emailcheck.getEmail().equalsIgnoreCase(g.getEmail())) {
-					// 회원가입 페이지로 이동 후 가입 된 아이디 경고창 ㄱ
+					// 회원가입 페이지로 이동 후 가입 된 이메일 경고창 ㄱ
 					m.addAttribute("token", token);
-					m.addAttribute("msg", "6");
-					return controller;
+					m.addAttribute("iderror", "1");
+					return "Library/member/addMember";
 				}
 			}
 			daoG.regist(g); // 이상 없다면 가입
@@ -333,6 +334,7 @@ public class LibraryController {
 				m.addAttribute("login", g.getLid());
 				m.addAttribute("grade", g.isGrade());
 				m.addAttribute("name", g.getName());
+				m.addAttribute("token", g.getToken());
 			} else {
 				m.addAttribute("error", "1");
 				return "Library/member/loginMember";
@@ -924,6 +926,7 @@ public class LibraryController {
 				m.addAttribute("login", g.getLid());
 				m.addAttribute("grade", g.isGrade());
 				m.addAttribute("name", g.getName());
+				m.addAttribute("token", g.getToken());
 
 				m.addAttribute("msg", "0");
 				return "Library/Control";

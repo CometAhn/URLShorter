@@ -14,9 +14,11 @@
 			String id = (String) request.getAttribute("login");
 			Boolean grade = (Boolean) request.getAttribute("grade");
 			String name = (String) request.getAttribute("name");
+			String token = (String) request.getAttribute("token");
 			session.setAttribute("sessionId", id);
 			session.setAttribute("admin", grade);
 			session.setAttribute("name", name);
+			session.setAttribute("token", token);
 
 			response.sendRedirect("/Lib/index");
 		} else if (msg.equals("1")) {

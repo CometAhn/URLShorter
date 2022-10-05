@@ -28,10 +28,18 @@ public class LoginDAO {
 	// 회원가입
 	public void regist(Login g) throws Exception {
 
+		LocalDateTime date = LocalDateTime.now();
+		String sdate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(date);
+
 		g.setUsed(true);
-		g.setRegistDay(String.valueOf(LocalDateTime.now()));
+		g.setRegistDay(sdate);
 		g.setReviewCount(0);
 		g.setLoanCount(0);
+
+		// 토큰 값 없으면 0으로.
+		if(g.getToken().equals("")){
+			g.setToken("0");
+		}
 
 		Login newlogin = loginRepository.save(g);
 	}
