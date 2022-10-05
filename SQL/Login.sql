@@ -16,6 +16,8 @@ create table Login (
     overdue varchar(20), 
     review_count int not null default 0,
     loan_count int not null default 0,
+    emailkey varchar(10),
+    checked boolean not null default 0,
     primary key(lid) 
 ) default CHARSET=utf8;
 

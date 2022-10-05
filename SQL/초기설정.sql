@@ -53,6 +53,8 @@ create table Login (
     overdue varchar(20), 
     review_count int not null default 0,
     loan_count int not null default 0,
+    emailkey varchar(10),
+    checked boolean not null default 0,
     primary key(lid) 
 ) default CHARSET=utf8;
 
@@ -125,4 +127,4 @@ insert into recommend(month, library_bid) values(10, 15);
 
 
 # id
-insert into login(lid, password, name, gender, birth, email, phone, address, regist_day, grade, used) values('admin','1','김이름','남','2010/10/10','admin@ipi.pw', '010-0000-0000','주소', CURRENT_TIMESTAMP(), 1, 1);
+insert into login(lid, password, name, gender, birth, email, phone, address, regist_day, grade, used, checked) values('admin','1','김이름','남','2010/10/10','admin@ipi.pw', '010-0000-0000','주소', CURRENT_TIMESTAMP(), 1, 1,0);

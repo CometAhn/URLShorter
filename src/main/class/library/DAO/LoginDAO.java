@@ -37,10 +37,15 @@ public class LoginDAO {
 		g.setLoanCount(0);
 
 		// 토큰 값 없으면 0으로.
-		if(g.getToken().equals("")){
+		if (g.getToken().equals("")) {
 			g.setToken("0");
 		}
 
+		Login newlogin = loginRepository.save(g);
+	}
+
+	// 이메일 인증 후 변경
+	public void updateCheck(Login g) throws Exception {
 		Login newlogin = loginRepository.save(g);
 	}
 
