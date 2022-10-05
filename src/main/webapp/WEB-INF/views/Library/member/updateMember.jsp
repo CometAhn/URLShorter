@@ -12,15 +12,22 @@
 String msg = (String) request.getAttribute("msg");
     if (msg != null) {
     	if (msg.equals("0")) {
-%>
-<script>
-	alert('반납하지 않은 책이 존재합니다.\n확인 후 다시 시도해주세요.');
-</script>
-<%
+        %>
+        <script>
+        	alert('반납하지 않은 책이 존재합니다.\n확인 후 다시 시도해주세요.');
+        </script>
+        <%
+        } else if (msg.equals("1")) {
+        %>
+        <script>
+        	alert('reCAPTCHA 동의 후 다시 시도 해주세요.');
+        </script>
+        <%
         }
     }
 %>
 <body onload="init()">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<jsp:include page="../menu.jsp" />
 	<section id="mid">
 		<div class="banner">
@@ -86,6 +93,9 @@ String msg = (String) request.getAttribute("msg");
 						<p>
 							<input name="address" type="text" class="form-control" placeholder="address" value="${login.address}">
 						</p>
+						<center>
+                            <div class="g-recaptcha" data-sitekey="6LctdVYiAAAAANSXZSeaohuJzWh5SCH6mvjrd-o9"></div>
+                        </center>
 						<br> <input type="submit" class="btn btn-primary" value="회원수정 ">
 					</form>
 					<br>
@@ -123,6 +133,10 @@ String msg = (String) request.getAttribute("msg");
 		}
 	}
 	function checkForm() {
+		if (grecaptcha.getResponse().length == 0) {
+        	alert('reCAPTCHA를 확인해 주세요.');
+        	return false;
+        }
 		if (!document.newMember.id.value) {
 			alert("아이디를 입력하세요.");
 			return false;

@@ -293,7 +293,19 @@ public class LibraryController {
 	// 업데이트
 	@PostMapping("/update")
 	public String update(@ModelAttribute Login g, @RequestParam String birthyy, @RequestParam String birthmm, @RequestParam String birthdd, @RequestParam String email1, @RequestParam String email2
-			, Model m) {
+			, Model m, HttpServletRequest req) {
+
+		String gRecaptchaResponse = req.getParameter("g-recaptcha-response");
+		JSONObject json = re.getJSONResponse(gRecaptchaResponse);
+
+		boolean isSuccess = (boolean)json.get("success");
+
+		// 리캡챠 동의 안되어있으면, 로그인 ㄴㄴ
+		if(isSuccess == false) {
+			m.addAttribute("msg", "1");
+			return "Library/member/updateMember";
+		}
+
 		try {
 			// 년, 월, 일 값 birth에 넣기
 			g.setBirth(birthyy + "/" + birthmm + "/" + birthdd);
