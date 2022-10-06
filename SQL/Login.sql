@@ -18,6 +18,7 @@ create table Login (
     loan_count int not null default 0,
     emailkey varchar(10),
     checked boolean not null default 0,
+    temppw boolean,
     primary key(lid) 
 ) default CHARSET=utf8;
 

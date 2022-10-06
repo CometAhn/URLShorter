@@ -55,6 +55,7 @@ create table Login (
     loan_count int not null default 0,
     emailkey varchar(10),
     checked boolean not null default 0,
+    temppw boolean,
     primary key(lid) 
 ) default CHARSET=utf8;
 
@@ -127,4 +128,4 @@ insert into recommend(month, library_bid) values(10, 15);
 
 
 # id 비밀번호 : 1
-insert into login(lid, password, name, gender, birth, email, phone, address, regist_day, grade, used, checked) values('admin','356a192b7913b04c54574d18c28d46e6395428ab','김이름','남','2010/10/10','admin@ipi.pw', '010-0000-0000','주소', CURRENT_TIMESTAMP(), 1, 1,1);
+insert into login(lid, password, name, gender, birth, email, phone, address, regist_day, grade, used, checked, temppw) values('admin','356a192b7913b04c54574d18c28d46e6395428ab','김이름','남','2010/10/10','admin@ipi.pw', '010-0000-0000','주소', CURRENT_TIMESTAMP(), 1, 1,1,0);
