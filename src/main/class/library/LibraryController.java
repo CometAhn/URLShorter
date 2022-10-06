@@ -47,7 +47,7 @@ public class LibraryController {
     @Autowired
     reCAPTCHA re;
     @Autowired
-    private JavaMailSender mailSender;
+    SendMail sd;
 
     @Autowired
     public LibraryController(LibraryDAO dao, LoginDAO daoG, CartDAO daoC, ReviewDAO daoR, RecommendDAO daoRc, LoanDAO daoL) {
@@ -256,50 +256,12 @@ public class LibraryController {
                     return "Library/member/addMember";
                 }
             }
-
-            Random random = new Random();
-            int length = random.nextInt(5) + 5;
-
-            StringBuffer newWord = new StringBuffer();
-            for (int i = 0; i < length; i++) {
-                int choice = random.nextInt(3);
-                switch (choice) {
-                    case 0:
-                        newWord.append((char) ((int) random.nextInt(25) + 97));
-                        break;
-                    case 1:
-                        newWord.append((char) ((int) random.nextInt(25) + 65));
-                        break;
-                    case 2:
-                        newWord.append((char) ((int) random.nextInt(10) + 48));
-                        break;
-                    default:
-                        break;
-                }
-            }
-            //System.out.println("newWord = (" + newWord + "), length = " + length);
-
-            String USERNAME = g.getLid();
-            String EMAIL = g.getEmail();
-            String key = newWord.substring(0);
-
-            try {
-                MimeMessage msg = mailSender.createMimeMessage();
-                MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
-
-                messageHelper.setSubject(USERNAME + "님 인증 번호입니다.");
-                messageHelper.setText("인증번호는 " + newWord + " 입니다.");
-                messageHelper.setTo(EMAIL);
-                msg.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(EMAIL));
-                mailSender.send(msg);
-
-                g.setEmailkey(key);
-                g.setChecked(false);
-
-            } catch (MessagingException e) {
-                System.out.println("MessagingException");
-                e.printStackTrace();
-            }
+            
+            // 메일 보내기
+            String key = sd.sendmail(g.getLid(), g.getEmail());
+            System.out.println("key값 나오니? " + key);
+            g.setEmailkey(key);
+            g.setChecked(false);
 
             daoG.regist(g); // 이상 없다면 가입
         } catch (Exception e) {
@@ -1041,52 +1003,6 @@ public class LibraryController {
 
 
         //ci는 비즈니스 전환후 검수신청 -> 허락받아야 수집 가능
-        return "Library/member/kakao";
-    }
-
-
-    @GetMapping("/kakao1")
-    public String getCI(@RequestParam Map<String, Object> paramMap, Model m) throws Exception {
-
-
-        Random random = new Random();
-        int length = random.nextInt(5) + 5;
-
-        StringBuffer newWord = new StringBuffer();
-        for (int i = 0; i < length; i++) {
-            int choice = random.nextInt(3);
-            switch (choice) {
-                case 0:
-                    newWord.append((char) ((int) random.nextInt(25) + 97));
-                    break;
-                case 1:
-                    newWord.append((char) ((int) random.nextInt(25) + 65));
-                    break;
-                case 2:
-                    newWord.append((char) ((int) random.nextInt(10) + 48));
-                    break;
-                default:
-                    break;
-            }
-        }
-        //System.out.println("newWord = (" + newWord + "), length = " + length);
-
-        String USERNAME = (String) paramMap.get("username");
-        String EMAIL = (String) paramMap.get("email");
-        try {
-            MimeMessage msg = mailSender.createMimeMessage();
-            MimeMessageHelper messageHelper = new MimeMessageHelper(msg, true, "UTF-8");
-
-            messageHelper.setSubject(USERNAME + "님 이메일 인증입니다.");
-            messageHelper.setText("인증번호는 " + newWord + " 입니다.");
-            messageHelper.setTo(EMAIL);
-            msg.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(EMAIL));
-            mailSender.send(msg);
-
-        } catch (MessagingException e) {
-            System.out.println("MessagingException");
-            e.printStackTrace();
-        }
         return "Library/member/kakao";
     }
 
