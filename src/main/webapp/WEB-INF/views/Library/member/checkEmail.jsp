@@ -7,20 +7,6 @@
 </head>
 <body>
 	<jsp:include page="../menu.jsp" />
-	<%
-	String msg = request.getParameter("msg");
-
-	if (msg != null) {
-		if (msg.equals("0")) {
-	%>
-	<script>
-	alert('회원가입이 완료되었습니다.');
-	</script>
-	<%
-	}
-
-	}
-	%>
 
 	<section id="mid">
 		<div class="banner">
@@ -70,7 +56,6 @@
 				</form>
 			</div>
 		</div>
-
 	</section>
 	<jsp:include page="../footer.jsp"/>
 </body>
