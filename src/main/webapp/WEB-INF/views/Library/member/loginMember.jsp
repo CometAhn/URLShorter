@@ -56,7 +56,7 @@
 				}
 				if(error != null){
 				  if (error == "0") {
-                    out.println("<div class='alert alert-danger'>");
+                    out.println("<div class='alert alert-success'>");
                     out.println("계정 생성이 완료되었습니다.");
                         out.println("</div>");
                     } else if (error == "1") {
@@ -68,7 +68,7 @@
 				    	out.println("탈퇴한 계정입니다.");
 				    	out.println("</div>");
 				    } else if(error == "3"){
-                     	out.println("<div class='alert alert-danger'>");
+                     	out.println("<div class='alert alert-success'>");
                      	out.println("회원 정보가 변경되었습니다.");
                      	out.println("</div>");
                     } else if(error == "4"){
@@ -79,6 +79,14 @@
                     } else if(error == "5"){
                         out.println("<div class='alert alert-danger'>");
                         out.println("reCAPTCHA 동의 후 다시 로그인 해주세요.");
+                        out.println("</div>");
+                    } else if(error == "6"){
+                        out.println("<div class='alert alert-success'>");
+                        out.println("이메일로 임시 비밀번호를 전송했습니다.");
+                        out.println("</div>");
+                    } else if(error == "7"){
+                        out.println("<div class='alert alert-success'>");
+                        out.println("비밀번호가 변경되었습니다.");
                         out.println("</div>");
                     }
                 }
@@ -101,6 +109,9 @@
 						<button class="btn btn btn-lg btn-success btn-block" type="submit">로그인</button>
 					</p>
 				</form>
+				<p>
+				<a href="/Lib/findid">아이디 </a> / <a href="/Lib/findpw">비밀번호 </a>찾기
+				</p>
 			</div>
 			<center>
 				<p>

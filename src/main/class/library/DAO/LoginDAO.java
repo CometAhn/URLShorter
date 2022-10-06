@@ -56,17 +56,7 @@ public class LoginDAO {
 
 	// 회원 수정
 	public void update(Login g) throws Exception {
-		Login login = loginRepository.findByLid(g.getLid());
-
-		login.setPassword(g.getPassword());
-		login.setName(g.getName());
-		login.setGender(g.getGender());
-		login.setBirth(g.getBirth());
-		login.setEmail(g.getEmail());
-		login.setPhone(g.getPhone());
-		login.setAddress(g.getAddress());
-
-		Login newlogin = loginRepository.save(login);
+		Login newlogin = loginRepository.save(g);
 	}
 
 	// 로그인
@@ -181,5 +171,15 @@ public class LoginDAO {
 
 	public Login findtoken(String token) throws Exception {
 		return loginRepository.findByToken(token);
+	}
+
+	//이메일로 찾기
+	public Login findemail(String email) throws Exception {
+		return loginRepository.findByEmail(email);
+	}
+
+	//이메일, 아이디 찾기
+	public Login findlidemail(String email, String lid) throws Exception {
+		return loginRepository.findByEmailAndLid(email, lid);
 	}
 }

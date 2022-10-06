@@ -197,11 +197,20 @@ public class LibraryController {
 		return "Library/member/addMember";
 	}
 
-	@GetMapping("/logout")
+	@GetMapping("logout")
 	public String logout() {
 		return "Library/member/logoutMember";
 	}
 
+	@GetMapping("findid")
+	public String findid() {
+		return "Library/member/findID";
+	}
+
+	@GetMapping("findpw")
+	public String findpw() {
+		return "Library/member/findPW";
+	}
 
 	//// 멤버 시작
 	// 회원가입
@@ -327,7 +336,8 @@ public class LibraryController {
 			g.setBirth(birthyy + "/" + birthmm + "/" + birthdd);
 			// 이메일 앞, 뒤 합쳐서 email에 넣기
 			g.setEmail(email1 + "@" + email2);
-
+			// 비밀번호 변경했으니 임시비번 아닌 걸로 ㄱ
+			g.setTemppw(false);
 			daoG.update(g);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -419,13 +429,20 @@ public class LibraryController {
 				m.addAttribute("error", "2");
 				return "Library/member/loginMember";
 			}
+			// 이메일 인증이 안되어 있으면
 			if (g.isChecked() == false) {
 				// 이메일 인증부터 ㄱ
 				m.addAttribute("id", g.getLid());
 				m.addAttribute("email", g.getEmail());
 				m.addAttribute("error", "0");
 				return "Library/member/checkEmail";
-
+			}
+			// 임시번호라면
+			if (g.isTemppw() == true) {
+				// 비밀번호 변경 ㄱ
+				m.addAttribute("id", g.getLid());
+				m.addAttribute("error", "2");
+				return "Library/member/newPW";
 			}
 		}
 		m.addAttribute("msg", "0");
@@ -1048,4 +1065,139 @@ public class LibraryController {
 		}
 	}
 
+	@PostMapping("findidd")
+	public String findidd(HttpServletRequest req, @RequestParam String email, Model m) throws Exception {
+		Login g = null;
+
+		String gRecaptchaResponse = req.getParameter("g-recaptcha-response");
+		JSONObject json = re.getJSONResponse(gRecaptchaResponse);
+
+		boolean isSuccess = (boolean) json.get("success");
+
+		// 리캡챠 동의 안되어있으면, 로그인 ㄴㄴ
+		if (isSuccess == false) {
+			m.addAttribute("error", "0");
+			m.addAttribute("email", email);
+			return "Library/member/findID";
+		}
+
+		try {
+			g = daoG.findemail(email);
+
+			if (g != null) {
+				// 토큰 값이 있다면
+				if (!g.getToken().equals("0")) {
+					// 카카오 로그인 유도
+					m.addAttribute("error", "3");
+					return "Library/member/findID";
+				}
+
+				m.addAttribute("error", "2");
+				m.addAttribute("id", g.getLid());
+				return "Library/member/findID";
+			} else {
+				m.addAttribute("error", "1");
+				return "Library/member/findID";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			logger.warn("로그인 과정에서 문제 발생!!");
+			m.addAttribute("error", "로그인에 실패했습니다!!!");
+		}
+		return "Library/member/findID";
+	}
+
+	@PostMapping("findpww")
+	public String findpww(@RequestParam String email, @RequestParam String lid, Model m, HttpServletRequest req) {
+		Login g = null;
+
+		String gRecaptchaResponse = req.getParameter("g-recaptcha-response");
+		JSONObject json = re.getJSONResponse(gRecaptchaResponse);
+
+		boolean isSuccess = (boolean) json.get("success");
+		// 리캡챠 동의 안되어있으면, 다시시도 ㄱ
+		if (isSuccess == false) {
+			m.addAttribute("error", "0");
+			m.addAttribute("email", email);
+			m.addAttribute("id", lid);
+			return "Library/member/findPW";
+		}
+
+
+		try {
+			g = daoG.findlidemail(email, lid);
+
+			if (g != null) {
+				// 토큰 값이 있다면
+				if (!g.getToken().equals("0")) {
+					// 카카오 로그인 유도
+					m.addAttribute("error", "2");
+					return "Library/member/findPW";
+				}
+
+				// 이메일 전송하자
+				String key = sd.sendmail(g.getLid(), g.getEmail());
+				g.setPassword(sha1.encrypt(key));
+				g.setTemppw(true);
+
+				daoG.update(g); // 이상 없다면 변경
+				// 임시 이메일 보냈다고 ㄱ
+				m.addAttribute("error", "6");
+				return "Library/member/loginMember";
+			} else {
+				m.addAttribute("error", "1");
+				return "Library/member/findPW";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.warn("비밀번호 찾기 중 오류 발생");
+			m.addAttribute("error", "비밀 번호 조회가 정상적으로 이루어지지 않았습니다.");
+			m.addAttribute("msg", "2");
+			return controller;
+		}
+	}
+
+
+	@PostMapping("newpw")
+	public String newpw(@RequestParam String lid, @RequestParam String password, Model m, HttpServletRequest req) {
+		Login g = null;
+
+		String gRecaptchaResponse = req.getParameter("g-recaptcha-response");
+		JSONObject json = re.getJSONResponse(gRecaptchaResponse);
+
+		boolean isSuccess = (boolean) json.get("success");
+		// 리캡챠 동의 안되어있으면, 다시시도 ㄱ
+		if (isSuccess == false) {
+			m.addAttribute("error", "0");
+			m.addAttribute("id", lid);
+			m.addAttribute("pw", password);
+			return "Library/member/newPW";
+		}
+
+
+		try {
+			g = daoG.edit(lid);
+
+			if (g != null) {
+				// 새 번호를 암호화,
+				g.setPassword(sha1.encrypt(password));
+				// 임시 번호 체크 해제 후,
+				g.setTemppw(false);
+				// 업데이트
+				daoG.update(g);
+				m.addAttribute("error", "7");
+				m.addAttribute("id", lid);
+				return "Library/member/loginMember";
+			} else {
+				m.addAttribute("error", "1");
+				return "Library/member/newPW";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.warn("비밀번호 찾기 중 오류 발생");
+			m.addAttribute("error", "비밀 번호 조회가 정상적으로 이루어지지 않았습니다.");
+			m.addAttribute("msg", "2");
+			return controller;
+		}
+	}
 }
