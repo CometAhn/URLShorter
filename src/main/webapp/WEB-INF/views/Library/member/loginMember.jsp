@@ -1,11 +1,14 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <html>
 <head>
-<link rel="stylesheet" href="../resources/css/bootstrap.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="/js/loading.js"></script>
+<link href="http://localhost/css/style.css" rel="stylesheet">
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
 <title>Login</title>
 </head>
 <body>
+<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script>
 		function onSubmit() {
@@ -14,6 +17,7 @@
 				return false;
 			}
 
+            $('#loading').show();
 			return true;
 		}
 	</script>
@@ -36,7 +40,7 @@
 
 	<section id="mid">
 		<div class="banner">
-			<img src="/Library/resources/img/teachers_background.jpg" alt="">
+			<img src="/images/teachers_background.jpg" alt="">
 		</div>
 		<div class="contents">
 			<div class="login">
@@ -100,7 +104,7 @@
 			</div>
 			<center>
 				<p>
-				    <a href="https://kauth.kakao.com/oauth/authorize?client_id=e6f60f053eb85f6437f9f7e99973580c&redirect_uri=http://localhost/Lib/kakao&response_type=code"><img src="/Library/resources/img/kakao_login_large_narrow.png" alt=""></a>
+				    <a href="https://kauth.kakao.com/oauth/authorize?client_id=e6f60f053eb85f6437f9f7e99973580c&redirect_uri=http://localhost/Lib/kakao&response_type=code"><img src="/images/kakao_login_large_narrow.png" alt=""></a>
 				</p>
 			</center>
 		</div>

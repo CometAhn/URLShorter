@@ -9,13 +9,16 @@ int i = 0;
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="/js/loading.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="http://localhost/Library/resources/css/style.css" rel="stylesheet">
+<link href="http://localhost/css/style.css" rel="stylesheet">
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
 <title>장바구니</title>
 </head>
 <body>
+<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
 	<script type="text/javascript">
 		function manybookincart() {
 			alert('최대 3권까지 대여할 수 있습니다.');
@@ -51,7 +54,7 @@ int i = 0;
 	<!-- 첫번째 섹션 -->
 	<section id="mid">
 		<div class="banner">
-			<img src="/Library/resources/img/teachers_background.jpg" alt="">
+			<img src="/images/teachers_background.jpg" alt="">
 		</div>
 		<div class="contents">
 			<div class="ct1">

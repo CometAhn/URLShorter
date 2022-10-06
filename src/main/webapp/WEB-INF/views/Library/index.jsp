@@ -3,13 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="/js/loading.js"></script>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
-<link href="http://localhost/Library/resources/css/style.css" rel="stylesheet">
+<link href="http://localhost/css/style.css" rel="stylesheet">
 <title>Home</title>
 </head>
+<body>
+<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
 <script type="text/javascript">
 	function nobook() {
 		alert('재고가 없습니다.');
@@ -20,7 +24,7 @@
 <!-- 첫번째 섹션 -->
 <section id="mid">
 	<div class="banner">
-		<img src="/Library/resources/img/teachers_background.jpg" alt="">
+			<img src="/images/teachers_background.jpg" alt="">
 	</div>
 	<div class="contents">
 		<h1>환영 합니다</h1>

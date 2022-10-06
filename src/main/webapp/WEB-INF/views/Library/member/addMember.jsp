@@ -2,7 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-<link href="http://localhost/Library/resources/css/style.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="/js/loading.js"></script>
+<link href="http://localhost/css/style.css?1231312" rel="stylesheet">
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	function checkForm() {
@@ -23,11 +25,15 @@
 			alert("비밀번호를 동일하게 입력하세요.");
 			return false;
 		}
+
+	 $('#loading').show();
 	}
 </script>
 <title>회원 가입</title>
 </head>
 <body>
+
+<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<%
 
@@ -71,7 +77,7 @@
 
 	<section id="mid">
         <div class="banner">
-			<img src="/Library/resources/img/teachers_background.jpg" alt="">
+			<img src="/images/teachers_background.jpg" alt="">
         </div>
         <div class="contents">
             <div class="signup">
@@ -137,5 +143,6 @@
     </section>
 
 	<jsp:include page="../footer.jsp" />
+
 </body>
 </html>

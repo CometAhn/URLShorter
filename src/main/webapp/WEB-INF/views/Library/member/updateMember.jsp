@@ -3,10 +3,13 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <html>
 <head>
-<link href="http://localhost/Library/resources/css/style.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="/js/loading.js"></script>
+<link href="http://localhost/css/style.css" rel="stylesheet">
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
 <title>회원 수정</title>
 </head>
+<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
 <%
 
 String msg = (String) request.getAttribute("msg");
@@ -31,7 +34,7 @@ String msg = (String) request.getAttribute("msg");
 	<jsp:include page="../menu.jsp" />
 	<section id="mid">
 		<div class="banner">
-			<img src="/Library/resources/img/teachers_background.jpg" alt="">
+			<img src="/images/teachers_background.jpg" alt="">
 		</div>
 		<div class="contents">
 			<div class="signup">
@@ -149,5 +152,7 @@ String msg = (String) request.getAttribute("msg");
 			alert("비밀번호를 동일하게 입력하세요.");
 			return false;
 		}
+
+	$('#loading').show();
 	}
 </script>
