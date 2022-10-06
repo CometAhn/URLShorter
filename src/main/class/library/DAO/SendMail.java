@@ -1,6 +1,5 @@
 package library.DAO;
 
-import library.Entity.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -10,13 +9,14 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Random;
+
 @Component
 public class SendMail {
 
 	@Autowired
 	private JavaMailSender mailSender;
 
-	// 리뷰 추가
+	// 메일 보내기
 	public String sendmail(String id, String email) throws Exception {
 
 		Random random = new Random();

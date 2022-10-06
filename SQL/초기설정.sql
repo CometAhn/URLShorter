@@ -39,7 +39,7 @@ create table if not exists loan(
 
 create table Login ( 
     lid varchar(10) not null,
-    password varchar(10) not null,
+    password varchar(40) not null,
     token varchar(15) not null default 0,
     name varchar(10) not null,
     gender varchar(4),
@@ -126,5 +126,5 @@ insert into recommend(month, library_bid) values(10, 7);
 insert into recommend(month, library_bid) values(10, 15);
 
 
-# id
-insert into login(lid, password, name, gender, birth, email, phone, address, regist_day, grade, used, checked) values('admin','1','김이름','남','2010/10/10','admin@ipi.pw', '010-0000-0000','주소', CURRENT_TIMESTAMP(), 1, 1,0);
+# id 비밀번호 : 1
+insert into login(lid, password, name, gender, birth, email, phone, address, regist_day, grade, used, checked) values('admin','356a192b7913b04c54574d18c28d46e6395428ab','김이름','남','2010/10/10','admin@ipi.pw', '010-0000-0000','주소', CURRENT_TIMESTAMP(), 1, 1,1);

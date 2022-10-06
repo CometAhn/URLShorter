@@ -12,8 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 
-import library.Entity.Library;
-import library.Entity.Loan;
 import library.Entity.Login;
 import library.Repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +33,6 @@ public class LoginDAO {
 		g.setRegistDay(sdate);
 		g.setReviewCount(0);
 		g.setLoanCount(0);
-
-		// 토큰 값 없으면 0으로.
-		if (g.getToken().equals("")) {
-			g.setToken("0");
-		}
 
 		Login newlogin = loginRepository.save(g);
 	}
