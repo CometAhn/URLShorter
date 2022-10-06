@@ -45,7 +45,7 @@ String msg = (String) request.getAttribute("msg");
 						<input name="lid" type="text" class="form-control" placeholder="id" hidden="" value="${login.lid}">
 						<h3>비밀번호</h3>
 						<p>
-							<input name="password" type="password" class="form-control" placeholder="password" value="${login.password}">
+							<input name="password" type="password" class="form-control" placeholder="password" value="${login.password}" minlength="6" maxlength="16">
 						</p>
 						<h3>비밀번호 확인</h3>
 						<p>
@@ -80,7 +80,7 @@ String msg = (String) request.getAttribute("msg");
 						</p>
 						<h3>연락처</h3>
 						<p>
-							<input name="phone" type="text" class="form-control" placeholder="phone" value="${login.phone}"">
+							<input name="phone" type="text" class="form-control" placeholder="01000000000" value="${login.phone}" minlength="11" maxlength="11">
 						</p>
 
 						<h3>E-mail</h3>

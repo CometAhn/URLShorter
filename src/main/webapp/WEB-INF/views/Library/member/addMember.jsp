@@ -90,7 +90,7 @@
                     <h3> 비밀번호 </h3>
                         <p> <input name="password" type="password" class="form-control" placeholder="password"></p>
                     <h3> 비밀번호 확인 </h3>
-                        <p> <input name="password_confirm" type="password" class="form-control" placeholder="password confirm"> </p>
+                        <p> <input name="password_confirm" type="password" class="form-control" placeholder="password confirm" minlength="6" maxlength="16"> </p>
                     <h3> 이름 </h3>
                         <p> <input name="name" type="text" class="form-control" placeholder="name" minlength = "2"></p>
                     <h3> 생년월일 </h3>
@@ -114,7 +114,7 @@
                     <h3> 성별 </h3>
                         <p> <input name="gender" type="radio" value="남" /> 남 <input name="gender" type="radio" value="여" /> 여 </p>
                     <h3> 연락처 </h3>
-                        <p> <input name="phone" type="number" class="form-control" placeholder="phone" minlength="11"></p>
+                        <p> <input name="phone" type="number" class="form-control" placeholder="01000000000"  minlength="11" maxlength="11"></p>
                     <h3> E-mail </h3>
                         <p> <input type="text" name="email1" maxlength="50" minlength="3">@
                     <select name="email2">

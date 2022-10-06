@@ -66,7 +66,7 @@
 				<form name="newMember" class="form-signin" action="/Lib/newpw" method="post" onsubmit="return checkForm()">
 				    <input name="lid" type="text" class="form-control" value="${id}" hidden>
                     <h3>새 비밀번호</h3>
-                        <p> <input name="password" type="password" class="form-control" placeholder="password" value="${pw}"></p>
+                        <p> <input name="password" type="password" class="form-control" placeholder="password" value="${pw}" minlength="6" maxlength="16"></p>
                     <h3>비밀번호 확인</h3>
                         <p> <input name="password_confirm" type="password" class="form-control" placeholder="password confirm" value="${pw}"> </p>
 					<center>
