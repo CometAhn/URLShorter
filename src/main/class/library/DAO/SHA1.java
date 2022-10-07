@@ -1,5 +1,6 @@
 package library.DAO;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
@@ -9,9 +10,14 @@ import java.util.Random;
 @Component
 public class SHA1 {
 
+	// property에서 값 가져오기. abcdef
+	@Value("${lib.str}")
+	String str;
+
 	// 비밀번호 암호화
 	public String encrypt(String pw, String pwkey) throws Exception {
-		String newkey = pwkey + pw + "abcdef";
+
+		String newkey = pwkey + pw + str;
 		StringBuffer sb = new StringBuffer();
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-1"); // 이 부분을 SHA-256, MD5로만 바꿔주면 된다.
