@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 @Component
-public class SHA1 {
+public class Encrypt {
 
 	// property에서 값 가져오기. abcdef
 	@Value("${lib.str}")

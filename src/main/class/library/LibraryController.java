@@ -43,7 +43,7 @@ public class LibraryController {
 	@Autowired
 	SendMail sd;
 	@Autowired
-	SHA1 sha1;
+	Encrypt enc;
 
 	@Autowired
 	public LibraryController(LibraryDAO dao, LoginDAO daoG, CartDAO daoC, ReviewDAO daoR, RecommendDAO daoRc, LoanDAO daoL) {
@@ -243,9 +243,9 @@ public class LibraryController {
 			list1 = daoG.getemail(g.getEmail());
 
 			// db저장용 난문자열
-			String pwkey = sha1.randnum();
+			String pwkey = enc.randnum();
 			// 비밀번호 SHA-1 변환
-			g.setPassword(sha1.encrypt(g.getPassword(), pwkey));
+			g.setPassword(enc.encrypt(g.getPassword(), pwkey));
 			g.setPasswordKey(pwkey);
 
 			for (int i = 0; i < list.size(); i++) {
@@ -272,7 +272,7 @@ public class LibraryController {
 			if (g.getToken().equals("")) {
 				g.setToken("0");
 				// key = 인증용
-				String key = sha1.randnum();
+				String key = enc.randnum();
 				sd.sendmail(g.getLid(), g.getEmail(), key);
 				System.out.println("key값 나오니? " + key);
 				g.setEmailkey(key);
@@ -344,9 +344,9 @@ public class LibraryController {
 
 			// 비밀번호 암호화
 			// db저장용 난문자열
-			String pwkey = sha1.randnum();
+			String pwkey = enc.randnum();
 			// 비밀번호 SHA-1 변환 저장 / 난문자열 저장
-			g.setPassword(sha1.encrypt(g.getPassword(), pwkey));
+			g.setPassword(enc.encrypt(g.getPassword(), pwkey));
 			g.setPasswordKey(pwkey);
 
 			// 비밀번호 변경했으니 임시비번 아닌 걸로 ㄱ
@@ -423,7 +423,7 @@ public class LibraryController {
 			}
 
 			// 입력한 비밀번호와 db에서 받아온 난문자열로 암호화한 후
-			String sha1pw = sha1.encrypt(pw, g.getPasswordKey());
+			String sha1pw = enc.encrypt(pw, g.getPasswordKey());
 
 			// 비밀번호와 일치하는지 확인
 			if (g.getPassword().equals(sha1pw)) {
@@ -1164,12 +1164,12 @@ public class LibraryController {
 
 
 				// db저장용 난문자열
-				String pwkey = sha1.randnum();
+				String pwkey = enc.randnum();
 				// key = 임시비밀번호
-				String pw = sha1.randnum();
+				String pw = enc.randnum();
 				// 이메일 전송하자
 				sd.sendmailpw(g.getLid(), g.getEmail(), pw);
-				g.setPassword(sha1.encrypt(pw, pwkey));
+				g.setPassword(enc.encrypt(pw, pwkey));
 				g.setTemppw(true);
 				g.setPasswordKey(pwkey);
 
@@ -1213,9 +1213,9 @@ public class LibraryController {
 
 			if (g != null) {
 				// db저장용 난문자열
-				String pwkey = sha1.randnum();
+				String pwkey = enc.randnum();
 				// 새 번호를 암호화,
-				g.setPassword(sha1.encrypt(password, pwkey));
+				g.setPassword(enc.encrypt(password, pwkey));
 				// 임시 번호 체크 해제 후,
 				g.setTemppw(false);
 				// 난문자열 저장
