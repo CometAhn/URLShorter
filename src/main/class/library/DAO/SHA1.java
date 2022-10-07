@@ -12,24 +12,21 @@ public class SHA1 {
 	// 비밀번호 암호화
 	public String encrypt(String pw, String pwkey) throws Exception {
 		String newkey = pwkey + pw + "abcdef";
-		String retVal = null;
+		StringBuffer sb = new StringBuffer();
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-1"); // 이 부분을 SHA-256, MD5로만 바꿔주면 된다.
 			md.update(newkey.getBytes()); // newkey를 SHA-1으로 변환할 예정!
 
 			byte byteData[] = md.digest();
 
-			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < byteData.length; i++) {
 				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 			}
 
-			retVal = sb.toString();
-			System.out.println(retVal); // 결과물이 출력됨.
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		return retVal;
+		return sb.toString();
 	}
 
 	// 랜덤 숫자 생성
@@ -55,10 +52,7 @@ public class SHA1 {
 			}
 		}
 
-		String key = newWord.substring(0);
-
-
-		return key;
+		return newWord.substring(0);
 	}
 
 }
