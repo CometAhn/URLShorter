@@ -25,7 +25,7 @@
 	}
 </script>
 
-    <div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
+    <div id="loading"><img id="loading-image" src="/images/loading.gif" alt="Loading..." /></div>
 	<jsp:include page="../menu.jsp" />
 
 	<section id="mid">

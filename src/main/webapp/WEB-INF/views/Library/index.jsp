@@ -13,7 +13,7 @@
 <title>Home</title>
 </head>
 <body>
-<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
+<div id="loading"><img id="loading-image" src="/images/loading.gif" alt="Loading..." /></div>
 <script type="text/javascript">
 	function nobook() {
 		alert('재고가 없습니다.');

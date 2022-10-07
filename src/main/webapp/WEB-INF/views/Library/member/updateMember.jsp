@@ -9,7 +9,7 @@
 <script src="https://kit.fontawesome.com/e561738355.js" crossorigin="anonymous"></script>
 <title>회원 수정</title>
 </head>
-<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
+<div id="loading"><img id="loading-image" src="/images/loading.gif" alt="Loading..." /></div>
 <%
 
 String msg = (String) request.getAttribute("msg");

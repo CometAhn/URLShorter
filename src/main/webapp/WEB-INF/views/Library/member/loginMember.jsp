@@ -8,7 +8,7 @@
 <title>Login</title>
 </head>
 <body>
-<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
+<div id="loading"><img id="loading-image" src="/images/loading.gif" alt="Loading..." /></div>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script>
 		function onSubmit() {

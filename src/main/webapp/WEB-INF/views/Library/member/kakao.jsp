@@ -10,7 +10,7 @@ script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88Aw
 <title>회원 가입</title>
 </head>
 <body>
-    <div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
+    <div id="loading"><img id="loading-image" src="/images/loading.gif" alt="Loading..." /></div>
 	<jsp:include page="../menu.jsp" />
 
 	<section id="mid">

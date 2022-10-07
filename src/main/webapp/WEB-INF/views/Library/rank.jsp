@@ -16,7 +16,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 <title>순위</title>
 </head>
 <body>
-<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
+<div id="loading"><img id="loading-image" src="/images/loading.gif" alt="Loading..." /></div>
 	<jsp:include page="./menu.jsp" />
 	<!-- 첫번째 섹션 -->
 	<section id="mid">

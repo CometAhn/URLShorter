@@ -16,7 +16,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 <title>뉴스 관리 앱</title>
 </head>
 <body>
-<div id="loading"><img id="loading-image" src="/images/Spin-1s-200px.gif" alt="Loading..." /></div>
+<div id="loading"><img id="loading-image" src="/images/loading.gif" alt="Loading..." /></div>
 
 	<%
 	String msg = (String) request.getAttribute("msg");
