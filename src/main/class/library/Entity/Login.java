@@ -19,6 +19,7 @@ public class Login {
 	//@GeneratedValue(strategy = GenerationType.AUTO)
 	private String lid;
 	private String password;
+	private String passwordKey;
 	@ColumnDefault("0")
 	private String token;
 	private String name;

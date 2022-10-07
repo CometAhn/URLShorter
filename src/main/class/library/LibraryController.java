@@ -242,8 +242,11 @@ public class LibraryController {
 			list = daoG.getid(g.getLid());
 			list1 = daoG.getemail(g.getEmail());
 
+			// db저장용 난문자열
+			String pwkey = sha1.randnum();
 			// 비밀번호 SHA-1 변환
-			g.setPassword(sha1.encrypt(g.getPassword()));
+			g.setPassword(sha1.encrypt(g.getPassword(), pwkey));
+			g.setPasswordKey(pwkey);
 
 			for (int i = 0; i < list.size(); i++) {
 				Login check = list.get(i);
@@ -268,7 +271,9 @@ public class LibraryController {
 			// 소셜 이용자가 아니라면, 메일 보내기
 			if (g.getToken().equals("")) {
 				g.setToken("0");
-				String key = sd.sendmail(g.getLid(), g.getEmail());
+				// key = 인증용
+				String key = sha1.randnum();
+				sd.sendmail(g.getLid(), g.getEmail(), key);
 				System.out.println("key값 나오니? " + key);
 				g.setEmailkey(key);
 				g.setChecked(false);
@@ -295,7 +300,7 @@ public class LibraryController {
 		Login g = null;
 
 		try {
-			g = daoG.edit(id);
+			g = daoG.check(id);
 
 			// 번거롭지만 일단 ㄱ
 			String[] brith = g.getBirth().split("/"); // 생년월일 나누기
@@ -336,8 +341,17 @@ public class LibraryController {
 			g.setBirth(birthyy + "/" + birthmm + "/" + birthdd);
 			// 이메일 앞, 뒤 합쳐서 email에 넣기
 			g.setEmail(email1 + "@" + email2);
+
+			// 비밀번호 암호화
+			// db저장용 난문자열
+			String pwkey = sha1.randnum();
+			// 비밀번호 SHA-1 변환 저장 / 난문자열 저장
+			g.setPassword(sha1.encrypt(g.getPassword(), pwkey));
+			g.setPasswordKey(pwkey);
+
 			// 비밀번호 변경했으니 임시비번 아닌 걸로 ㄱ
 			g.setTemppw(false);
+
 			daoG.update(g);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -398,19 +412,30 @@ public class LibraryController {
 		}
 
 		try {
-			// 입력한 비밀번호를 SHA-1화 한 후
-			String sha1pw = sha1.encrypt(pw);
-			// 조회
-			g = daoG.login(id, sha1pw);
+			// 아이디 값으로 데이터 조회.
+			g = daoG.check(id);
 
-			// 비밀번호 SHA-1 변환
-			if (g != null) {
+			// 아이디가 틀렸다면
+			if (g == null) {
+				// System.out.println("sql에서 일치하는 아이디를 못 가져옴. 아이디/비번 불일치 ㄱ");
+				m.addAttribute("error", "1");
+				return "Library/member/loginMember";
+			}
+
+			// 입력한 비밀번호와 db에서 받아온 난문자열로 암호화한 후
+			String sha1pw = sha1.encrypt(pw, g.getPasswordKey());
+
+			// 비밀번호와 일치하는지 확인
+			if (g.getPassword().equals(sha1pw)) {
+				// 일치하면 로그인
 				m.addAttribute("login", g.getLid());
 				m.addAttribute("grade", g.isGrade());
 				m.addAttribute("name", g.getName());
 				m.addAttribute("token", g.getToken());
 			} else {
+				// 아니라면 다시 로그인 시도 ㄱ
 				m.addAttribute("error", "1");
+				// 아이디와 비밀번호를 다시 확인해주세요.
 				return "Library/member/loginMember";
 			}
 		} catch (SQLException e) {
@@ -419,12 +444,14 @@ public class LibraryController {
 			m.addAttribute("error", "로그인에 실패했습니다!!!");
 		}
 		if (g != null) {
+			// 이거 현재 안씀. Login temp에서 미리 아이디 체크함.
+			/*
 			if (g.getLid() == null) {
 				// System.out.println("sql에서 일치하는 아이디를 못 가져옴. 아이디/비번 불일치 ㄱ");
 				m.addAttribute("error", "1");
 				return "Library/member/loginMember";
-			}
-			if (g.getLid() != null && g.isUsed() == false) {
+			}*/
+			if (/*g.getLid() != null && */g.isUsed() == false) {
 				// System.out.println("탈퇴한 계정(" + g.getLid() + ")에서 로그인 시도, 탈퇴 메시지 ㄱ");
 				m.addAttribute("error", "2");
 				return "Library/member/loginMember";
@@ -647,7 +674,7 @@ public class LibraryController {
 		// 연체기간(Overdue)이 오늘보다 크면 대여 금지.
 		Login g;
 		try {
-			g = daoG.edit(id);
+			g = daoG.check(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("책 대여 과정에서 문제 발생!!");
@@ -794,7 +821,7 @@ public class LibraryController {
 		}
 
 		try {
-			g = daoG.edit(id);
+			g = daoG.check(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.warn("책 대여 과정에서 문제 발생!!");
@@ -1038,7 +1065,7 @@ public class LibraryController {
 		Login g = null;
 
 		try {
-			g = daoG.edit(id);
+			g = daoG.check(id);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.warn("로그인 과정에서 문제 발생!!");
@@ -1135,10 +1162,16 @@ public class LibraryController {
 					return "Library/member/findPW";
 				}
 
+
+				// db저장용 난문자열
+				String pwkey = sha1.randnum();
+				// key = 임시비밀번호
+				String pw = sha1.randnum();
 				// 이메일 전송하자
-				String key = sd.sendmail(g.getLid(), g.getEmail());
-				g.setPassword(sha1.encrypt(key));
+				sd.sendmailpw(g.getLid(), g.getEmail(), pw);
+				g.setPassword(sha1.encrypt(pw, pwkey));
 				g.setTemppw(true);
+				g.setPasswordKey(pwkey);
 
 				daoG.update(g); // 이상 없다면 변경
 				// 임시 이메일 보냈다고 ㄱ
@@ -1176,13 +1209,17 @@ public class LibraryController {
 
 
 		try {
-			g = daoG.edit(lid);
+			g = daoG.check(lid);
 
 			if (g != null) {
+				// db저장용 난문자열
+				String pwkey = sha1.randnum();
 				// 새 번호를 암호화,
-				g.setPassword(sha1.encrypt(password));
+				g.setPassword(sha1.encrypt(password, pwkey));
 				// 임시 번호 체크 해제 후,
 				g.setTemppw(false);
+				// 난문자열 저장
+				g.setPasswordKey(pwkey);
 				// 업데이트
 				daoG.update(g);
 				m.addAttribute("error", "7");

@@ -110,7 +110,7 @@
 					</p>
 				</form>
 				<p>
-				<a href="/Lib/findid">아이디 </a> / <a href="/Lib/findpw">비밀번호 </a>찾기
+				<a href="/Lib/findid">아이디 </a> / <a href="/Lib/findpw">비밀번호 찾기</a>
 				</p>
 			</div>
 			<center>

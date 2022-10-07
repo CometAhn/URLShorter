@@ -50,7 +50,7 @@ public class LoginDAO {
 	}
 
 	// 조회
-	public Login edit(String id) throws Exception {
+	public Login check(String id) throws Exception {
 		return loginRepository.findByLid(id);
 	}
 
