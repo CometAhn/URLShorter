@@ -35,7 +35,7 @@ public class SHA1 {
 		return sb.toString();
 	}
 
-	// 랜덤 숫자 생성
+	// 랜덤 문자 생성
 	public String randnum() {
 		Random random = new Random();
 		int length = random.nextInt(5) + 5;

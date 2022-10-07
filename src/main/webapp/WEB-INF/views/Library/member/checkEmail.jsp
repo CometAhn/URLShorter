@@ -50,7 +50,7 @@
                   }
                 }
 				%>
-				<form name="newMember" class="form-signin" action="/Lib/emailcheck" method="post" onsubmit="return checkForm()">
+				<form name="newMember" class="form-signin" action="/Lib/emailcheck" method="post" onsubmit="return checkForm()" autocomplete="off">
 					<p>
 						<input type="text" class="form-control" name="id" value="${id}" hidden>
 					</p>

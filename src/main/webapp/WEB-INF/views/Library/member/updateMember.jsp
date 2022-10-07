@@ -41,7 +41,7 @@ String msg = (String) request.getAttribute("msg");
 				<h1>회원 정보 수정</h1>
 				<br>
 				<div class="signup_ct">
-					<form name="newMember" class="form-horizontal" action="/Lib/update" method="post" onsubmit="return checkForm()">
+					<form name="newMember" class="form-horizontal" action="/Lib/update" method="post" onsubmit="return checkForm()" autocomplete="off">
 						<input name="lid" type="text" class="form-control" placeholder="id" hidden="" value="${login.lid}">
 						<h3>비밀번호</h3>
 						<p>

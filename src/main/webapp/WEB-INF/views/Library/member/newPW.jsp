@@ -63,7 +63,7 @@
                   }
                 }
 				%>
-				<form name="newMember" class="form-signin" action="/Lib/newpw" method="post" onsubmit="return checkForm()">
+				<form name="newMember" class="form-signin" action="/Lib/newpw" method="post" onsubmit="return checkForm()" autocomplete="off">
 				    <input name="lid" type="text" class="form-control" value="${id}" hidden>
                     <h3>새 비밀번호</h3>
                         <p> <input name="password" type="password" class="form-control" placeholder="password" value="${pw}" minlength="6" maxlength="16"></p>

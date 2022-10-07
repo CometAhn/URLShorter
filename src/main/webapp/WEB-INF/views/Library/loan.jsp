@@ -118,7 +118,7 @@ String sessionId = (String) session.getAttribute("sessionId");
 						<!-- 리뷰 등록 기능 -->
 						<div class="collapse" id="addForm${book.library.bid}">
 							<div class="card card-body">
-								<form action="/Lib/review" method="post" enctype="multipart/form-data">
+								<form action="/Lib/review" method="post" enctype="multipart/form-data" autocomplete="off">
 									<input type="text" name="login.lid" class="form-control" value="<%=sessionId%>" hidden>
 									<input type="text" name="library.bid" class="form-control" value="${book.library.bid}" hidden>
 									<input type="text" name="loan.id" class="form-control" value="${book.id}" hidden>

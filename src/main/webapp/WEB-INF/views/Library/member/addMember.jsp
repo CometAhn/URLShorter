@@ -83,7 +83,7 @@
             <div class="signup">
                 <h1> 회원 가입 </h1> <br>
                 <div class="signup_ct">
-                <form name="newMember" class="form-horizontal" action="/Lib/regist" method="post" onsubmit="return checkForm()">
+                <form name="newMember" class="form-horizontal" action="/Lib/regist" method="post" onsubmit="return checkForm()" autocomplete="off">
 						<input type="text" class="form-control" placeholder="token" name="token" value="${token}" hidden>
                     <h3> 아이디 </h3>
                         <p> <input name="lid" type="text" class="form-control" placeholder="id" minlength = "3"></p>
