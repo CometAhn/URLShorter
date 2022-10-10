@@ -1,0 +1,52 @@
+    <?php
+    if (isset($_SESSION['success'])) {
+		echo "	<script>
+		function copy_to_clipboard() {
+		alert(\"스크립트부터되는지 테스트\")
+		}
+	</script>";
+
+        echo "<p class='success'>" . $_SESSION['success'] . "</p>";
+		echo "<h3><div id='copyok' class=\"copyok\" style='display:none'>복사완료</div></h3>";
+		echo "\t<input type=\"submit\" id=\"btn_div_copy\" value=\"복사\" class=\"submit_copy\">";
+		echo "	<script>
+    //function copy_to_clipboard1(){
+		 document.getElementById(\"btn_div_copy\").onclick = function()
+		 {
+        // a 내부 텍스트 취득
+        const valOfDIV = document.getElementById(\"a\").innerText;
+
+        // textarea 생성
+        const textArea = document.createElement('textarea');
+
+        // textarea 추가
+        document.body.appendChild(textArea);
+
+        // textara의 value값으로 div내부 텍스트값 설정
+        textArea.value = valOfDIV;
+
+        // textarea 선택 및 복사
+        textArea.select();
+        document.execCommand('copy');
+		//alert(\"복사완료\")
+		document.getElementById('copyok').style.display='block';
+        // textarea 제거
+        document.body.removeChild(textArea);
+    }
+	</script>";
+        unset($_SESSION['success']);
+    }
+    if (isset($_SESSION['error'])) {
+        echo "<p class='alert'>" . $_SESSION['error'] . "</p>";
+        unset($_SESSION['error']);
+    }
+    if (isset($_GET['error']) && $_GET['error'] == 'db') {
+        echo "<p class='alert'>데이터베이스 연결 오류!</p>";
+    }
+    if (isset($_GET['error']) && $_GET['error'] == 'inurl') {
+        echo "<p class='alert'>올바른 URL이 아닙니다!</p>";
+    }
+    if (isset($_GET['error']) && $_GET['error'] == 'dnp') {
+        echo "<p class='alert'>등록된 주소가 아닙니다. 다시 입력해주세요.</p>";
+    }
+    ?>
