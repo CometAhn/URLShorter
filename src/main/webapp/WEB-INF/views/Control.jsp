@@ -1,8 +1,4 @@
-	<%
-	String addr = (String) request.getAttribute("addr");
-
-
-             response.sendRedirect(addr);
-
-
-	%>
+<%
+    String addr = (String) request.getAttribute("addr");
+    response.sendRedirect(addr);
+%>
