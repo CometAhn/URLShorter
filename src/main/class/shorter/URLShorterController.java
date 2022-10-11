@@ -2,8 +2,6 @@ package shorter;
 
 import shorter.DAO.*;
 import shorter.Entity.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +11,6 @@ import java.util.List;
 
 @Controller
 public class URLShorterController {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass()); // 로거 선언
 
 	final URLShorterDAO dao;
 
@@ -24,7 +21,7 @@ public class URLShorterController {
 	public URLShorterController(URLShorterDAO dao) {
 		this.dao = dao;
 	}
-	
+
 	final String http = "http://localhost/";
 
 	@GetMapping("")

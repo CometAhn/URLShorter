@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Shorter {
-
 	// php에서 사용하는 방식 java에서 쓰자.
 	// shorter값은 비워두고 데이터 입력.
 	// 그 데이터의 id값 + 10000000을
@@ -13,11 +12,9 @@ public class Shorter {
 
 	// 랜덤 문자 생성
 	public String makeShorter(int id) {
-
 		id += 10000000;
 		return base_convert(Integer.toString(id), 10, 36);
 	}
-
 
 	public static String base_convert(final String inputValue, final int fromBase, final int toBase) {
 		if (fromBase < 2 || fromBase > 36 || toBase < 2 || toBase > 36) {
@@ -29,7 +26,6 @@ public class Shorter {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
 		return ret;
 	}
 }
