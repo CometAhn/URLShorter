@@ -70,7 +70,7 @@
     }
     %>
 
-	<form action="" method="post" onsubmit="return loading()">
+	<form action="/" method="post" onsubmit="return loading()">
         <div class="section group">
             <div class="col span_3_of_3">
                 <input type="url" id="input" name="input" autocomplete="off" name="url" class="input" placeholder="Ex)https://www.naver.com" required autofocus>
