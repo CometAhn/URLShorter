@@ -90,13 +90,16 @@ public class URLShorterController {
     @GetMapping("/{shorter}")
     public String gotoadr(@PathVariable String shorter, Model m) throws Exception {
         try {
+            // 입력받은 단축 주소로 데이터 검색.
             Url u = dao.getDataToShorter(shorter);
 
+            // 데이터가 있다면,
             if (u != null) {
                 m.addAttribute("addr", u.getAddr());
                 //데이터 업데이트 : 마지막 사용 시간
                 dao.update(u);
-            } else {
+                return "/Control";
+            } else { // 데이터가 없다면.
                 // 에러 출력 :  존재하지 않는 단축 주소입니다.
                 m.addAttribute("error", "1");
                 return "/index";
@@ -107,6 +110,5 @@ public class URLShorterController {
             e.printStackTrace();
             return "/index";
         }
-        return "/Control";
     }
 }
