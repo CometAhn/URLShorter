@@ -13,11 +13,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Url {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private String addr;
-	private String shorter;
-	private String timestampt;
-	private String lastUsed;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String addr;
+    private String shorter;
+    private boolean customCheck;
+    private String timestampt;
+    private String lastUsed;
 }
